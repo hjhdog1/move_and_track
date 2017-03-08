@@ -45,7 +45,7 @@ bool acqFlag,stopFlag, once;
 double time0;
 std::ofstream fRec, fPos, fTrck[3];
 
-
+double preciseInc = 10.936 * 0.998888 * 1.000049260526897;
 DWORD WINAPI tracking_tracker3_Thread(LPVOID pData)
 {
 	DOUBLE_POSITION_MATRIX_TIME_Q_RECORD record;				
