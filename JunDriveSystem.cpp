@@ -71,10 +71,10 @@ void JunDriveSystem::Dither(double target_angle, double dither_magnitude, int nu
 	MoveTo(target_angle);
 }
 
-double JunDriveSystem::GetCurrentAngle()
+double JunDriveSystem::GetCurrentAngle(int amp_id)
 {
 	double angle;
-	amp[4].GetPositionActual(angle);
+	amp[amp_id].GetPositionActual(angle);
 
 	return angle/m_to_inc;
 }

@@ -29,6 +29,7 @@
 
 #include "JunDriveSystem.h"
 #include "JunEMTracker.h"
+#include "JunStreamWriter.h"
 
 using namespace std;
 
@@ -48,116 +49,125 @@ bool acqFlag,stopFlag, once;
 double time0;
 std::ofstream fRec, fPos, fTrck[3];
 
-// JHa - temporary
-JunEMTracker* sensor;
-
-double preciseInc = 10.936 * 0.998888 * 1.000049260526897;
-DWORD WINAPI tracking_tracker3_Thread(LPVOID pData)
-{
-	DOUBLE_POSITION_MATRIX_TIME_Q_RECORD record;				
-	DOUBLE_POSITION_MATRIX_TIME_Q_RECORD* pRecord = &record;	
-	COORD coordinate;
-	double pos[7];
-
-	while(!stopFlag)
-	{
-		if(!acqFlag)	
-		{
-			int i = 2;
-			int errCode = GetAsynchronousRecord(i, pRecord, sizeof(record));
-			if(errCode!=BIRD_ERROR_SUCCESS) {		errorHandler(errCode);		}
-
-			if(once)	{
-				time0 = record.time;	once = false;
-			}
-
-			coordinate.Y=6+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-			printf("%8.3f %8.3f %8.3f %8.3f", record.s[0][0], record.s[0][1], record.s[0][2], record.x*25.4);
-			fTrck[i]<<record.s[0][0]<<"\t"<<record.s[0][1]<<"\t"<<record.s[0][2]<<"\t"<<record.x*25.4<<"\n";
-
-			coordinate.Y=7+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-			printf("%8.3f %8.3f %8.3f %8.3f", record.s[1][0], record.s[1][1], record.s[1][2], record.y*25.4);
-			fTrck[i]<<record.s[1][0]<<"\t"<<record.s[1][1]<<"\t"<<record.s[1][2]<<"\t"<<record.y*25.4<<"\n";
-
-			coordinate.Y=8+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-			printf("%8.3f %8.3f %8.3f %8.3f", record.s[2][0], record.s[2][1], record.s[2][2], record.z*25.4);
-			fTrck[i]<<record.s[2][0]<<"\t"<<record.s[2][1]<<"\t"<<record.s[2][2]<<"\t"<<record.z*25.4<<"\n";
-
-			coordinate.Y=9+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-			printf("%8.3f %8.3f %8.3f %8.3f", 0, 0, 0, 1);
-
-
-		}
-		::Sleep(10);
-	}
-
-	return 1;
-}
-
-DWORD WINAPI tracking_Thread(LPVOID pData)
-{
-	DOUBLE_POSITION_MATRIX_TIME_Q_RECORD record;				
-	DOUBLE_POSITION_MATRIX_TIME_Q_RECORD* pRecord = &record;	
-	COORD coordinate;
-	double pos[7];
-
-	while(!stopFlag)
-	{
-		if(acqFlag)	
-		{
-			for(int i=0; i<2; i++)
-			{
-				//int errCode = GetAsynchronousRecord(i, pRecord, sizeof(record));
-				//if(errCode!=BIRD_ERROR_SUCCESS) {		errorHandler(errCode);		}
-
-				//if(once)	{
-				//	time0 = record.time;	once = false;
-				//}
-
-				//coordinate.Y=6+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-				//printf("%8.3f %8.3f %8.3f %8.3f", record.s[0][0], record.s[0][1], record.s[0][2], record.x*25.4);
-				//fTrck[i]<<record.s[0][0]<<"\t"<<record.s[0][1]<<"\t"<<record.s[0][2]<<"\t"<<record.x*25.4<<"\n";
-
-				//coordinate.Y=7+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-				//printf("%8.3f %8.3f %8.3f %8.3f", record.s[1][0], record.s[1][1], record.s[1][2], record.y*25.4);
-				//fTrck[i]<<record.s[1][0]<<"\t"<<record.s[1][1]<<"\t"<<record.s[1][2]<<"\t"<<record.y*25.4<<"\n";
-
-				//coordinate.Y=8+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-				//printf("%8.3f %8.3f %8.3f %8.3f", record.s[2][0], record.s[2][1], record.s[2][2], record.z*25.4);
-				//fTrck[i]<<record.s[2][0]<<"\t"<<record.s[2][1]<<"\t"<<record.s[2][2]<<"\t"<<record.z*25.4<<"\n";
-
-				//coordinate.Y=9+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-				//printf("%8.3f %8.3f %8.3f %8.3f", 0, 0, 0, 1);
-				if(sensor->getTransformation(i, record))
-					sensor->displayTransformation(i, record);
-			}
-
-			//for(int i=0; i<7; i++)	{	myAmp[i].GetPositionActual(pos[i]);		}
-
-			//coordinate.Y=16;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-			//printf("%8.3f %8.3f %8.3f %8.3f %8.3f %8.3f %8.3f", pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6]);
-			//fPos<<(record.time - time0)<<"\t"<<pos[3]<<"\t"<<pos[4]<<std::endl;
-		}
-		//::Sleep(10);
-	}
-
-	return 1;
-}
+//
+//double preciseInc = 10.936 * 0.998888 * 1.000049260526897;
+//DWORD WINAPI tracking_tracker3_Thread(LPVOID pData)
+//{
+//	DOUBLE_POSITION_MATRIX_TIME_Q_RECORD record;				
+//	DOUBLE_POSITION_MATRIX_TIME_Q_RECORD* pRecord = &record;	
+//	COORD coordinate;
+//	double pos[7];
+//
+//	while(!stopFlag)
+//	{
+//		if(!acqFlag)	
+//		{
+//			int i = 2;
+//			int errCode = GetAsynchronousRecord(i, pRecord, sizeof(record));
+//			if(errCode!=BIRD_ERROR_SUCCESS) {		errorHandler(errCode);		}
+//
+//			if(once)	{
+//				time0 = record.time;	once = false;
+//			}
+//
+//			coordinate.Y=6+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+//			printf("%8.3f %8.3f %8.3f %8.3f", record.s[0][0], record.s[0][1], record.s[0][2], record.x*25.4);
+//			fTrck[i]<<record.s[0][0]<<"\t"<<record.s[0][1]<<"\t"<<record.s[0][2]<<"\t"<<record.x*25.4<<"\n";
+//
+//			coordinate.Y=7+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+//			printf("%8.3f %8.3f %8.3f %8.3f", record.s[1][0], record.s[1][1], record.s[1][2], record.y*25.4);
+//			fTrck[i]<<record.s[1][0]<<"\t"<<record.s[1][1]<<"\t"<<record.s[1][2]<<"\t"<<record.y*25.4<<"\n";
+//
+//			coordinate.Y=8+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+//			printf("%8.3f %8.3f %8.3f %8.3f", record.s[2][0], record.s[2][1], record.s[2][2], record.z*25.4);
+//			fTrck[i]<<record.s[2][0]<<"\t"<<record.s[2][1]<<"\t"<<record.s[2][2]<<"\t"<<record.z*25.4<<"\n";
+//
+//			coordinate.Y=9+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+//			printf("%8.3f %8.3f %8.3f %8.3f", 0, 0, 0, 1);
+//
+//
+//		}
+//		::Sleep(10);
+//	}
+//
+//	return 1;
+//}
+//
+//DWORD WINAPI tracking_Thread(LPVOID pData)
+//{
+//	DOUBLE_POSITION_MATRIX_TIME_Q_RECORD record;				
+//	DOUBLE_POSITION_MATRIX_TIME_Q_RECORD* pRecord = &record;	
+//	COORD coordinate;
+//	double pos[7];
+//
+//	while(!stopFlag)
+//	{
+//		if(acqFlag)	
+//		{
+//			for(int i=0; i<2; i++)
+//			{
+//				//int errCode = GetAsynchronousRecord(i, pRecord, sizeof(record));
+//				//if(errCode!=BIRD_ERROR_SUCCESS) {		errorHandler(errCode);		}
+//
+//				//if(once)	{
+//				//	time0 = record.time;	once = false;
+//				//}
+//
+//				//coordinate.Y=6+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+//				//printf("%8.3f %8.3f %8.3f %8.3f", record.s[0][0], record.s[0][1], record.s[0][2], record.x*25.4);
+//				//fTrck[i]<<record.s[0][0]<<"\t"<<record.s[0][1]<<"\t"<<record.s[0][2]<<"\t"<<record.x*25.4<<"\n";
+//
+//				//coordinate.Y=7+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+//				//printf("%8.3f %8.3f %8.3f %8.3f", record.s[1][0], record.s[1][1], record.s[1][2], record.y*25.4);
+//				//fTrck[i]<<record.s[1][0]<<"\t"<<record.s[1][1]<<"\t"<<record.s[1][2]<<"\t"<<record.y*25.4<<"\n";
+//
+//				//coordinate.Y=8+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+//				//printf("%8.3f %8.3f %8.3f %8.3f", record.s[2][0], record.s[2][1], record.s[2][2], record.z*25.4);
+//				//fTrck[i]<<record.s[2][0]<<"\t"<<record.s[2][1]<<"\t"<<record.s[2][2]<<"\t"<<record.z*25.4<<"\n";
+//
+//				//coordinate.Y=9+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+//				//printf("%8.3f %8.3f %8.3f %8.3f", 0, 0, 0, 1);
+//				if(sensor->getTransformation(i, record))
+//					sensor->displayTransformation(i, record);
+//			}
+//
+//			//for(int i=0; i<7; i++)	{	myAmp[i].GetPositionActual(pos[i]);		}
+//
+//			//coordinate.Y=16;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+//			//printf("%8.3f %8.3f %8.3f %8.3f %8.3f %8.3f %8.3f", pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6]);
+//			//fPos<<(record.time - time0)<<"\t"<<pos[3]<<"\t"<<pos[4]<<std::endl;
+//		}
+//		//::Sleep(10);
+//	}
+//
+//	return 1;
+//}
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	sensor = new JunEMTracker();
+	JunDriveSystem drive;
+	JunEMTracker sensor;
 
-	HANDLE hThread = CreateThread(NULL, 0, tracking_Thread, 0, 0, NULL);
-	stopFlag = false;
-	acqFlag = true;
+	JunStreamWriter::Initialize(&drive, &sensor);
 	
+	fPos.open("./JAng.txt");
+	fTrck[0].open("./Trck1.txt");
+	fTrck[1].open("./Trck2.txt");
+	fTrck[2].open("./Trck3.txt");
 
-	//JunDriveSystem drive;
-	//drive.Dither(0.0, 50, 5);
-	//drive.Home();
+	for(int i = 0 ; i < 3; i++)
+		JunStreamWriter::SetStream_sensor(i, &(fTrck[i]));
+	JunStreamWriter::SetStream_drive(&fPos);
 
-	::Sleep(10000000);
+	JunStreamWriter::StartWriting();
+
+	drive.Dither(0.0, 50, 5);
+	drive.Home();
+	
+	JunStreamWriter::StopWriting();
+
+
+	::Sleep(3000);
 }
 
 //

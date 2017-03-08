@@ -17,7 +17,7 @@ public:
 	void					MoveTo(double angle);
 	void					Home();
 	void					Dither(double target_angle, double dither_magnitude, int num_dither_steps);
-	double					GetCurrentAngle();
+	double					GetCurrentAngle(int amp_id = 4);
 
 private:
 	void					InitializeAmp();
