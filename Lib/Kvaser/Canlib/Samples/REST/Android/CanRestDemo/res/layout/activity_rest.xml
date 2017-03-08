@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical">
+  
+  <TextView android:id="@+id/t_logTop"
+    android:layout_width="fill_parent"
+    android:layout_height="0dip"
+    android:layout_weight=".4"
+    android:text="Result from Get"
+    android:scrollbars="vertical"
+    android:maxLines="15"/>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal" >
+
+	  <Button android:id="@+id/b_is_device_status"
+  		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  		android:layout_weight=".1"
+  		android:text="Status"/>
+      	  
+	  <Button android:id="@+id/b_can_init"
+  		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  		android:layout_weight=".1"
+  		android:text="Init"/>
+
+	  <Button android:id="@+id/b_can_open_channel"
+  		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  		android:layout_weight=".1"
+  		android:text="Open Channel"/>
+   </LinearLayout>
+	  	  
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal" >
+	  
+  	  <Button android:id="@+id/b_can_bus_output_control"
+  		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  		android:layout_weight=".1"
+  		android:text="Set Bus Output Control"/>
+	  
+	  <Button android:id="@+id/b_can_set_bus_params"
+  		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  		android:layout_weight=".1"
+  		android:text="Set Bus Params"/>
+   </LinearLayout>
+ 
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal" >
+  
+        <Button
+        android:id="@+id/b_can_bus_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".1"
+        android:text="Bus on" />
+      
+	  <Button android:id="@+id/b_can_bus_off"
+  		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  		android:layout_weight=".1"
+  		android:text="Bus off"/>
+	  
+	  <Button
+        android:id="@+id/b_can_read"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".1"
+        android:text="CAN Read" />
+	  
+	</LinearLayout>  
+        
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal" >
+
+ 	<Button
+        android:id="@+id/b_can_flush_rx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".1"
+        android:text="Flush RX" />
+
+ 	<Button
+        android:id="@+id/b_can_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".1"
+        android:text="Close Channel" />
+
+ 		<Button
+        android:id="@+id/b_can_unload_library"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".1"
+        android:text="Unload" />
+ 	
+  </LinearLayout>
+  
+  <TextView android:id="@+id/t_logBottom"
+  android:layout_width="fill_parent"
+  android:layout_height="0dip"
+  android:layout_weight=".2"
+  android:text="@string/log_header"
+  android:scrollbars="vertical"
+  android:maxLines="15"
+  android:gravity="bottom"/>
+  
+</LinearLayout>

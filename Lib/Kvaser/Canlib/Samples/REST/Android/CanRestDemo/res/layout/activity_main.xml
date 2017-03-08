@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:contentDescription="Kvaser Logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/kvaser_logo" />
+    
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="18dip"
+        android:layout_marginBottom="24dip"
+        android:textSize="24sp"
+        android:text="@string/hello" />
+
+    <Button
+        android:id="@+id/b_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_settings"
+        android:onClick="startSettings" />
+
+    <Button
+        android:id="@+id/b_raw_rest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_raw_rest"
+        android:onClick="startRawRest"  />
+    
+    <Button
+        android:id="@+id/b_read_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_read_log"
+        android:onClick="startReadLog"  />
+    <Button
+        android:id="@+id/b_write"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_write"
+        android:onClick="startWrite"  />
+    
+</LinearLayout>

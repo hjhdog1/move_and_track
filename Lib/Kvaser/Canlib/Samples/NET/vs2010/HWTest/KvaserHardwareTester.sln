@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KvaserHardwareTester", "KvaserHardwareTester.csproj", "{6AEB8128-3967-4280-9303-392F9B1DB56D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6AEB8128-3967-4280-9303-392F9B1DB56D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AEB8128-3967-4280-9303-392F9B1DB56D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AEB8128-3967-4280-9303-392F9B1DB56D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AEB8128-3967-4280-9303-392F9B1DB56D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

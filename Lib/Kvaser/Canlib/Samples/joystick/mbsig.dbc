@@ -1,0 +1,305 @@
+VERSION "HIPBNYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY/4/%%%/4/'%**4YYY///"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+
+BS_:
+
+BU_: TestNode SimulationSender ReceiveNode HelpSimulator VEHICLE_ECU RETARDER DVDPlayer MotorolaECU SignedIntNode UnsignedIntNode Node32Ints MultiPlexer Tester JoyStick
+
+
+BO_ 153 ReceiveMessage: 1 HelpSimulator
+
+BO_ 103 Float: 8 SimulationSender
+ SG_ Cosinus_float : 32|32@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Sinus_float : 0|32@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 102 Ramp: 8 SimulationSender
+ SG_ Triangle : 16|16@1- (1,0) [-1000|1000] "" Vector__XXX
+ SG_ SawTooth : 0|16@1+ (1,0) [0|1000] "" Vector__XXX
+
+BO_ 101 Digital: 8 SimulationSender
+ SG_ Val128 : 56|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Val64 : 48|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Val32 : 40|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Val16 : 32|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Val8 : 24|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Val4 : 16|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Val2 : 8|8@1+ (1,0) [0|255] ""  ReceiveNode,HelpSimulator
+ SG_ Val1 : 0|8@1+ (1,0) [0|255] ""  ReceiveNode
+
+BO_ 100 TrigData: 8 SimulationSender
+ SG_ Cosinus2 m1 : 56|8@1+ (1,0) [0|100] ""  HelpSimulator
+ SG_ Sinus2 m0 : 56|8@1+ (1,0) [0|200] ""  HelpSimulator
+ SG_ ModeSwitch M : 48|8@1+ (1,0) [0|0] ""  SimulationSender,ReceiveNode,HelpSimulator
+ SG_ Cosinus : 32|16@1- (1,0) [-100|100] ""  ReceiveNode,HelpSimulator
+ SG_ Sinus : 16|16@1- (1,0) [-100|100] "Volt"  ReceiveNode
+ SG_ SinState : 0|2@1+ (1,0) [0|0] ""  ReceiveNode
+
+BO_ 2348814353 ABC1_A_B: 8 VEHICLE_ECU
+ SG_ ReqTorqTorqLimit : 24|8@1+ (1,-125) [-125|125] "%" Vector__XXX
+ SG_ ReqSpeedSpeedLim : 8|16@1+ (0.125,0) [0|8031.88] "rpm" Vector__XXX
+ SG_ OverCtrlModePrior : 4|2@1+ (1,0) [0|3] "-" Vector__XXX
+ SG_ ReqSpeedCtrlCond : 2|2@1+ (1,0) [0|3] "-" Vector__XXX
+ SG_ OverrideCtrlModes : 0|2@1+ (1,0) [0|3] "-" Vector__XXX
+
+BO_ 2565865488 ERCA_B: 8 RETARDER
+ SG_ ActRetPercTorque : 8|8@1+ (1,-125) [-125|125] "%" Vector__XXX
+ SG_ RetEnblShiftAssSw : 6|2@1+ (1,0) [0|3] "-" Vector__XXX
+ SG_ RetEnblBrkAssSw : 4|2@1+ (1,0) [0|3] "-" Vector__XXX
+ SG_ EngRetTorqueMode : 0|4@1+ (1,0) [0|15] "-" Vector__XXX
+
+BO_ 301 FWD_CMD: 8 ReceiveNode
+ SG_ FWD_CMD : 0|32@1- (1,0) [-1|1] "%" Vector__XXX
+ SG_ FWD_CMD_Status : 32|8@1+ (1,0) [0|255] "bits" Vector__XXX
+
+BO_ 0 LiveSignals: 8 SimulationSender
+ SG_ LiveSpeed : 8|8@1+ (0.4,0) [0|100] "" Vector__XXX
+ SG_ LiveSine : 0|8@1- (0.008,0) [-1|1] "" Vector__XXX
+ SG_ LiveSteps : 16|8@1+ (3,0) [0|50] "" Vector__XXX
+
+BO_ 1 uint4msg: 1 SimulationSender
+ SG_ uint4 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ bit0 : 0|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ bit1 : 1|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ bit2 : 2|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ bit3 : 3|1@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 2 BigEndians: 8 Tester
+ SG_ BigEndian16 : 7|16@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ BigEndian4 : 19|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ FloatDivBy4 : 39|32@0- (0.25,3) [0|0] "" Vector__XXX
+ SG_ Intel8 : 20|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 3 multimess: 8 Vector__XXX
+ SG_ Multiplex M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ SignalOne m0 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ SignalTwo m1 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 4 SingleAt32: 8 Vector__XXX
+ SG_ SingleSig : 39|32@0- (0.25,3) [0|0] "" Vector__XXX
+
+BO_ 2364539904 Idtest: 8 Vector__XXX
+ SG_ Testsignal : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 5 DoubleMsg: 8 Tester
+ SG_ DoubleSignal : 0|64@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 6 SingleMsg: 8 Vector__XXX
+ SG_ IntelSingle : 0|32@1- (1,0) [0|0] "" Vector__XXX
+ SG_ MotorolaSingle : 39|32@0- (1,0) [0|0] "" Vector__XXX
+
+BO_ 2147483655 ExtendedZero: 2 DVDPlayer
+ SG_ U12 : 0|12@1+ (0.025,0) [0|0] "" Vector__XXX
+
+BO_ 2147483656 ExtendedOne: 2 DVDPlayer
+ SG_ S12 : 0|12@1- (0.025,0) [0|0] "" Vector__XXX
+
+BO_ 9 Test127: 8 DVDPlayer
+ SG_ Signal127 : 0|8@1+ (0.1,-12.7) [0|0] "" Vector__XXX
+
+BO_ 11 ByteAt0: 8 DVDPlayer
+ SG_ Byte : 0|8@1+ (1,0) [0|0] "kV" Vector__XXX
+
+BO_ 2147483658 AssortedBigBits: 2 MotorolaECU
+ SG_ U4at0 : 7|4@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ U8At4 : 3|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ U4at12state : 11|3@0+ (10,0) [0|0] "" Vector__XXX
+
+BO_ 12 EventMessage: 0 MotorolaECU
+
+BO_ 13 Float2: 8 Tester
+ SG_ Float_10 : 0|32@1- (1,0) [0|10] "" Vector__XXX
+ SG_ Float_15 : 32|32@1- (1,0) [-15|15] "" Vector__XXX
+
+BO_ 14 SignedInts1: 8 Tester
+ SG_ S2 : 0|2@1- (1,0) [0|0] "" Vector__XXX
+ SG_ S3 : 2|3@1- (1,0) [0|0] "" Vector__XXX
+ SG_ S4 : 5|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ S5 : 9|5@1- (1,0) [0|0] "" Vector__XXX
+ SG_ S7 : 14|7@1- (1,0) [0|0] "" Vector__XXX
+ SG_ S8 : 21|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ S9 : 29|9@1- (1,0) [0|0] "" Vector__XXX
+ SG_ S13 : 38|13@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 15 SignedInts2: 8 Tester
+ SG_ S15 : 0|15@1- (1,0) [0|0] "" Vector__XXX
+ SG_ S16 : 15|16@1- (1,0) [0|0] "" Vector__XXX
+ SG_ S17 : 31|17@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 16 SignedInts3: 8 Tester
+ SG_ S23 : 0|23@1- (1,0) [0|0] "" Vector__XXX
+ SG_ S25 : 23|25@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 17 SignedInts4: 8 Tester
+ SG_ S31 : 0|31@1- (1,0) [0|0] "" Vector__XXX
+ SG_ S29 : 31|29@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 18 UnsignedInts1: 8 Tester
+ SG_ U2 : 0|2@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ U3 : 2|3@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ U4 : 5|4@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ U5 : 9|5@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ U7 : 14|7@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ U9 : 21|9@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ U13 : 30|13@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ U21 : 43|21@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 2147483667 BigEndianIntegers: 8 Tester
+ SG_ BInt32 : 39|32@0- (1,0) [0|0] "" Vector__XXX
+ SG_ BUint32 : 7|32@0+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 2147483668 LittleEndianIntegers: 8 Node32Ints
+ SG_ LInt32 : 32|32@1- (1,0) [0|0] "" Vector__XXX
+ SG_ LUInt32 : 0|32@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 21 LimitsTest: 8 Vector__XXX
+ SG_ Limits20 : 0|8@1- (1,0) [-20|20] "" Vector__XXX
+
+BO_ 22 CommonSignals: 8 Vector__XXX
+ SG_ NewSignal0 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ NewSignal1 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 23 OneByteMultiplex: 1 Tester
+ SG_ FourWayMultiplexer M : 6|2@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Way1 m0 : 0|6@1+ (0.25,0) [0|7] "bar" Vector__XXX
+ SG_ Way2 m1 : 0|6@1+ (0.25,0) [0|7] "bar" Vector__XXX
+ SG_ Way3 m2 : 0|6@1+ (0.25,0) [0|7] "bar" Vector__XXX
+ SG_ Way4 m3 : 0|6@1+ (0.25,0) [0|7] "bar" Vector__XXX
+
+BO_ 500 JoyData: 8 JoyStick
+ SG_ JoyX : 0|8@1- (1,0) [-100|100] "" Vector__XXX
+ SG_ JoyY : 8|8@1- (1,0) [-100|100] "" Vector__XXX
+ SG_ JoyZ : 16|8@1- (1,0) [-100|100] "" Vector__XXX
+ SG_ JoyR : 24|8@1- (1,0) [-100|100] "" Vector__XXX
+ SG_ JoyPOV m1 : 48|15@1+ (1,0) [0|360] "" Vector__XXX
+ SG_ JoyBtn1 : 32|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn2 : 33|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn3 : 34|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn4 : 35|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn5 : 36|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn6 : 37|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn7 : 38|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn8 : 39|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn9 : 40|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn10 : 41|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn11 : 42|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn12 : 43|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn13 : 44|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn14 : 45|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn15 : 46|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyBtn16 : 47|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ JoyPOVEna M : 63|1@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 24 NewMessage0: 8 Vector__XXX
+
+
+EV_ AVariable: 0 [0|4] "" 0 3 DUMMY_NODE_VECTOR3  SimulationSender,ReceiveNode,HelpSimulator;
+
+EV_ AnotherVariable: 0 [-100|100] "Meter" 50 2 DUMMY_NODE_VECTOR3  SimulationSender,HelpSimulator;
+
+EV_ AThirdVariable: 0 [-100|100] "Volt" 100 1 DUMMY_NODE_VECTOR3  SimulationSender,ReceiveNode;
+
+CM_ "A Comment
+";
+CM_ BU_ TestNode "Another Test Node";
+CM_ BU_ SimulationSender "Signal generating node";
+CM_ BU_ ReceiveNode "A Sample
+Node";
+CM_ BU_ HelpSimulator "Another Sample Node";
+CM_ BU_ Tester "";
+CM_ BU_ JoyStick "Database for Joytest app";
+CM_ BO_ 153 "Yet another comment";
+CM_ BO_ 103 "A comment...";
+CM_ BO_ 102 "Triangle and so on";
+CM_ SG_ 101 Val128 " Value / 128";
+CM_ SG_ 101 Val64 " Value / 64";
+CM_ SG_ 101 Val32 " Value / 32";
+CM_ SG_ 101 Val16 " Value / 16";
+CM_ SG_ 101 Val8 " Value / 8";
+CM_ SG_ 101 Val4 "Value / 4";
+CM_ SG_ 101 Val2 "Value / 2
+";
+CM_ SG_ 101 Val1 "Value / 1";
+CM_ BO_ 100 "Contains Sinus and
+Cosinus.";
+CM_ BO_ 1 "Four bits ";
+CM_ BO_ 2147483655 "extended message";
+CM_ BO_ 2147483656 "extended message";
+CM_ BO_ 14 "";
+CM_ SG_ 23 Way1 "Sensor1";
+CM_ SG_ 23 Way2 "Sensor2";
+CM_ SG_ 23 Way3 "Sensor3";
+CM_ SG_ 23 Way4 "Sensor4";
+CM_ EV_ AVariable "Comment
+";
+CM_ EV_ AnotherVariable "The use of this variable is ...";
+CM_ EV_ AThirdVariable "Number 3.. 
+";
+BA_DEF_  "OneAttribute" INT -100 100;
+BA_DEF_ BO_  "A Message Attribute" STRING ;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclic","spontaneous";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 2 50000;
+BA_DEF_ BO_  "GenMsgAutoGenSnd" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgAutoGenDsp" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigAutoGenSnd" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigAutoGenDsp" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigEnvVarType" ENUM  "int","float","undef";
+BA_DEF_ SG_  "GenSigEVName" STRING ;
+BA_DEF_ BU_  "GenNodAutoGenSnd" ENUM  "No","Yes";
+BA_DEF_ BU_  "GenNodAutoGenDsp" ENUM  "No","Yes";
+BA_DEF_  "GenEnvVarEndingDsp" STRING ;
+BA_DEF_  "GenEnvVarEndingSnd" STRING ;
+BA_DEF_  "GenEnvVarPrefix" STRING ;
+BA_DEF_DEF_  "OneAttribute" 20;
+BA_DEF_DEF_  "A Message Attribute" "TheProperty";
+BA_DEF_DEF_  "GenMsgSendType" "spontaneous";
+BA_DEF_DEF_  "GenMsgCycleTime" 100;
+BA_DEF_DEF_  "GenMsgAutoGenSnd" "Yes";
+BA_DEF_DEF_  "GenMsgAutoGenDsp" "Yes";
+BA_DEF_DEF_  "GenSigAutoGenSnd" "";
+BA_DEF_DEF_  "GenSigAutoGenDsp" "";
+BA_DEF_DEF_  "GenSigEnvVarType" "undef";
+BA_DEF_DEF_  "GenSigEVName" "";
+BA_DEF_DEF_  "GenNodAutoGenSnd" "Yes";
+BA_DEF_DEF_  "GenNodAutoGenDsp" "Yes";
+BA_DEF_DEF_  "GenEnvVarEndingDsp" "Dsp";
+BA_DEF_DEF_  "GenEnvVarEndingSnd" "Snd";
+BA_DEF_DEF_  "GenEnvVarPrefix" "Env";
+BA_ "A Message Attribute" BO_ 153 "TheProperty";
+VAL_ 100 ModeSwitch 1 "Cosinus2_active" 0 "Sinus2_active" ;
+VAL_ 100 SinState 2 "Positive" 1 "Negative" 0 "Zero" ;
+VAL_ 1 uint4 0 "zero" 1 "one" 2 "two" 3 "three" 4 "four" 5 "five" 6 "six" 7 "seven" 8 "eight" 9 "nine" 10 "ten" 11 "eleven" 12 "twelwe" 13 "thirteen" 14 "fourteen" 15 "fifteen" ;
+VAL_ 2147483658 U4at12state 0 "zero" 1 "ten" 2 "twenty" 3 "thirty" 4 "forty" 5 "fifty" 6 "sixty" 7 "seventy" ;
+VAL_ 500 JoyPOV 0 "N" 45 "NE" 90 "E" 135 "SE" 180 "S" 225 "SW" 270 "W" 315 "NW" ;
+VAL_ 500 JoyPOVEna 0 "Off" 1 "On" ;
+VAL_ AnotherVariable 3 "Value4" 2 "Value3" 1 "Value2" 0 "Value1" ;
+SIG_VALTYPE_ 103 Cosinus_float : 1;
+SIG_VALTYPE_ 103 Sinus_float : 1;
+SIG_VALTYPE_ 2 FloatDivBy4 : 1;
+SIG_VALTYPE_ 4 SingleSig : 1;
+SIG_VALTYPE_ 5 DoubleSignal : 2;
+SIG_VALTYPE_ 6 IntelSingle : 1;
+SIG_VALTYPE_ 6 MotorolaSingle : 1;
+SIG_VALTYPE_ 13 Float_10 : 1;
+SIG_VALTYPE_ 13 Float_15 : 1;

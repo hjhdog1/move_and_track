@@ -1,0 +1,608 @@
+<html>
+  <head>
+   
+    <title>Kvaser CanKing 2000</title>
+    <link href="stylesheet.css" rel="stylesheet" type="text/css" media="all" />
+    <style type="text/css">
+    </style>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <style>
+      #slider, #slider2, #slider3 
+      { 
+        margin: 10px; 
+        
+        width: 565px; 
+      }	
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">   
+    <link href="css/slider.css" rel="stylesheet" media="screen">
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="raphael.2.1.0.min.js"></script>
+    <script src="justgage.1.0.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-slider.js"></script>
+    
+    <script type="text/javascript">
+    
+    
+      // globals ----------------------------------      
+      var canread_timer;      
+      var is_bus_on          = false;
+      var rcvd               = 0;
+      var txed               = 0;
+      //var remote_device      = "kv-06348-000121";
+      //var remote_device      = "10.0.3.32";
+      var remote_device      = "192.168.1.28";
+      var kvaser_session_id  = 0;
+      var global_hnd         = 0;
+      var global_poll_time   = 500;
+      var session_timeout    = 2000;// in seconds
+      var gauge1;
+     
+     // callback idents:
+     var initilaizelib_reply = 0;
+     var opench_reply        = 1;
+     var read_reply          = 2;
+     var write_reply         = 3;
+     var buson_reply         = 4;
+     var busparam_reply      = 5;
+     var drivertype_reply    = 6;
+     var busoff_reply        = 7;
+     var close_reply         = 8;
+     var unloadlib_reply     = 7;
+     
+      /*
+      // -------------------------------------------------------------------------
+      function readCookie(cookie_name) {
+        
+        var tmpcookie=getCookie(cookie_name);
+        
+        if (tmpcookie != null && tmpcookie != "") {
+          console.log("Read cookie(" + cookie_name + "): "+ tmpcookie);
+          return tmpcookie;
+        }
+        return null;
+      }
+     */
+       
+      // -----------------------------------------------------------------------------
+      function min(x, y) {
+        if (x<y) return x;
+        else return y;
+      }
+      // -------------------------------------------------------------------------
+      function readCookie(c_name) {
+        var c_value = document.cookie;
+        var c_start = c_value.indexOf(" " + c_name + "=");
+        
+        if (c_start == -1) {
+          c_start = c_value.indexOf(c_name + "=");
+        }
+        if (c_start == -1) {
+          c_value = null;
+        }
+        else {
+          c_start = c_value.indexOf("=", c_start) + 1;
+          var c_end = c_value.indexOf(";", c_start);
+          if (c_end == -1) {
+            c_end = c_value.length;
+          }
+          c_value = unescape(c_value.substring(c_start,c_end));
+        }
+        //return c_value;
+        if (c_value != null && c_value != "") {
+          console.log("Read cookie(" + c_name + "): "+ c_value);
+          return c_value;
+        }
+        else return null;
+      }
+
+      // -------------------------------------------------------------------------
+      function setCookie(c_name,value,exdays) {
+        var exdate=new Date();
+        exdate.setDate(exdate.getDate() + exdays);
+        var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+        document.cookie=c_name + "=" + c_value;
+      }
+     
+     
+      // -------------------------------------------------------------------------
+      // -------------------------------------------------------------------------
+      function canUnloadLibrary() {
+        var func = "canUnloadLibrary";
+        console.log(func);
+        var url =  "http://" + remote_device + ":8080/"+kvaser_session_id+"/"+func;            
+        $.getJSON(url + "?callback=?", {ident: unloadlib_reply}, function() {});                   
+      };
+      // -------------------------------------------------------------------------
+      function canClose() {
+        var func = "canClose";
+        console.log(func);
+        var url =  "http://" + remote_device + ":8080/"+kvaser_session_id+"/"+func;            
+        $.getJSON(url + "?callback=?", {ident: close_reply, hnd:global_hnd}, function() {});             
+      };      
+      // -------------------------------------------------------------------------
+      function canOpenChannel() {
+        var func = "canOpenChannel";
+        console.log(func);
+        var url =  "http://" + remote_device + ":8080/"+kvaser_session_id+"/"+func;            
+        $.getJSON(url + "?callback=?", {ident: opench_reply, channel:0, flags:8}, function() {});           
+      };
+      // -------------------------------------------------------------------------
+      function canInitializeLibrary() {
+        var func = "canInitializeLibrary";
+        console.log(func);
+        var url =  "http://" + remote_device + ":8080/"+func;              
+        $.getJSON(url + "?callback=?", {jsonp:"true", password:"mr.kvaser", ident:initilaizelib_reply, timeout: session_timeout}, function() {});
+      };
+     
+      // -------------------------------------------------------------------------
+      function initialize() {        
+        console.log("Initialize()");
+        
+        console.log("Trying to recover...");
+        
+        var oldsession = readCookie('session');
+        kvaser_session_id = oldsession;        
+        
+        var oldhnd = readCookie('hnd');
+        global_hnd = oldhnd;       
+                
+        if (global_hnd != -1) {
+          canClose();
+          global_hnd = 0;
+          canUnloadLibrary();
+        }
+                
+        kvaser_session_id = "";
+        
+        canInitializeLibrary();
+      };
+    
+      // -------------------------------------------------------------------------
+      // called when document is loaded.......
+      // -------------------------------------------------------------------------
+      $(document).ready(function() {
+          
+          // int canlib stuff          
+          //initialize();
+      });
+    
+      // -----------------------------------------------------------------------------    
+      function canWrite(id, value) {
+      
+        // declare format function
+        if (!String.prototype.format) {
+          String.prototype.format = function() {
+            var args = arguments;
+            return this.replace(/{(\d+)}/g, function(match, number) { 
+              return typeof args[number] != 'undefined'
+                ? args[number]
+                : match
+              ;
+            });
+          };
+        }
+        
+        var func    = "canWrite";
+        var url     =  "http://" + remote_device + ":8080/"+kvaser_session_id+"/"+func;    
+        console.log(func);
+        var canid   = id;  
+        var candlc  = 2;//$("input#candlc").val();  
+        var canflag = 0;//$("input#canflag").val();  
+        var byte0   = 0;  
+        var byte1   = value;          
+        var canmsg  = "{0},{1}".format(byte0, byte1);
+
+        $.getJSON(url + "?callback=?", 
+          {
+            id:canid,
+            dlc: candlc,
+            flag: canflag,
+            msg: canmsg, 
+            ident: write_reply, 
+            hnd:global_hnd
+          }, 
+          function() {}); 
+          console.log("TX: "+ url +"(id:" + id + " data: " + value + ")");        
+        txed++; 
+        $("#txtot").html(txed);        
+      };
+
+    
+    // -----------------------------------------------------------------------------
+      function setBusparams() {
+          var func = "canSetBusParams";
+          console.log(func);
+          var url =  "http://" + remote_device + ":8080/"+kvaser_session_id+"/"+func;    
+          var bitrate_val = $("select#bitrate_sel").val()
+          $.getJSON(url + "?callback=?", {freq:bitrate_val, ident: busparam_reply, hnd:global_hnd}, function() {});     
+      };
+
+      // -----------------------------------------------------------------------------
+      // NOTE: the callback that is called when canRead() is finished calls canRead() again until 
+      // it returns -2 (nomsg)
+      // 
+      function canRead() {
+          var func = "canRead";
+          console.log(func);
+          var url =  "http://" + remote_device + ":8080/"+kvaser_session_id+"/"+func;    
+          $.getJSON(url + "?callback=?", {ident: read_reply, hnd:global_hnd, max: 200}, function() {});     
+      };
+
+      // -----------------------------------------------------------------------------
+      function setDriverType() {
+          var func = "canSetBusOutputControl";
+          console.log(func);
+          var url =  "http://" + remote_device + ":8080/"+kvaser_session_id+"/"+func;              
+          var drivermode = $($('.drivertype:checked').val()).selector;
+          $.getJSON(url + "?callback=?", {drivertype:drivermode, ident: drivertype_reply, hnd:global_hnd}, function() {});     
+      };
+
+            // -----------------------------------------------------------------------------
+      function canBusOn() {
+          var func = "canBusOn";
+          console.log(func);
+          var url =  "http://" + remote_device + ":8080/"+kvaser_session_id+"/"+func;              
+          //var drivermode = $($('.drivertype:checked').val()).selector;
+          $.getJSON(url + "?callback=?", {ident: buson_reply, hnd:global_hnd}, function() {});     
+      };
+      
+      // -----------------------------------------------------------------------------
+      function canBusOff() {
+          var func = "canBusOff";
+          console.log(func);
+          var url =  "http://" + remote_device + ":8080/"+kvaser_session_id+"/"+func;              
+          //var drivermode = $($('.drivertype:checked').val()).selector;
+          $.getJSON(url + "?callback=?", {ident: busoff_reply, hnd:global_hnd}, function() {});     
+      };      
+
+      // -----------------------------------------------------------------------------
+      // this is called whenever we get a json-resonse from the device
+      // -----------------------------------------------------------------------------
+      function canlib_callback(x)
+      {
+        var i = 0;
+        var j = 0;
+        
+        // =====================================================================
+        if (x.ident == read_reply /* canRead() */) {        
+          if (x.stat == 0) {
+            if (typeof x.msgs != 'undefined') {
+              for(i in x.msgs) {
+                var trace_text
+                
+                //console.log(JSON.stringify(x));
+                if (x.msgs[i].flag & 0x0020) {
+                  trace_text = "Errorframe<br>";
+                }
+                else {
+                  trace_text = "RX: <span class=\"time\">" + x.msgs[i].time + "</span> "+ 
+                                   "<span class=\"msgid\">" + x.msgs[i].id + "</span> " + //x.msgs[i].dlc +
+                                   "<span class=\"flag\">" + x.msgs[i].flag.toString(16) + "</span>"+             
+                                   " <span class=\"data\">[";
+                  for (j=0;j<min(x.msgs[i].dlc,8); j++) {
+                    trace_text += x.msgs[i].msg[j] +" ";
+                  } 
+                  trace_text += "] </span>" + "<br>";
+                  //$("#can-trace").prepend(trace_text);
+                  //$("#can-trace").append(trace_text);               
+              
+                  if (x.msgs[i].dlc) gauge1.refresh(x.msgs[i].msg[0]);
+                  if (x.msgs[i].dlc > 1) gauge2.refresh(x.msgs[i].msg[1]);
+                  if (x.msgs[i].dlc > 2) gauge3.refresh(x.msgs[i].msg[2]);
+                  //rcvd++;
+                  //$("#rxtot").html(rcvd);
+                }
+                $("#can-trace").prepend(trace_text);
+                rcvd++;
+                $("#rxtot").html(rcvd);
+              }
+              canRead();
+            }
+          }
+          else if (x.stat == -2 /* nomsg */) {
+            //console.log("done");
+          }
+          else {
+            //console.log("stat:" + x.stat);            
+          }  
+        }
+        // =====================================================================
+        else if (x.ident == initilaizelib_reply) {
+          if (x.stat == 0) {                    
+            kvaser_session_id = x.session;
+            setCookie("session", kvaser_session_id, 1);
+          }
+          else {          
+            console.log("   " + JSON.stringify(x));
+          }
+        }
+        // =====================================================================
+        else if (x.ident == opench_reply /* canOpenChannel() */) {          
+          if (x.hnd >= 0) {
+            global_hnd = x.hnd;
+            setCookie("hnd",global_hnd,1);
+            setDriverType();
+          }
+          else {
+            console.log("canOpenChannel() FAILED: " + JSON.stringify(x));
+          }
+        }
+        // =====================================================================
+        else if (x.ident == drivertype_reply) {
+          if (x.stat == 0) {
+            setBusparams();
+          }
+          else console.log(JSON.stringify(x));
+        }
+        // =====================================================================
+        else if (x.ident == busparam_reply) {
+          if (x.stat == 0) {
+            canBusOn();
+          }
+          else console.log(JSON.stringify(x));
+        }        
+        // =====================================================================
+        else if (x.ident == buson_reply) {
+          if (x.stat == 0) {
+            // start timer:
+            //canread_timer = setInterval("canRead();", global_poll_time);
+          }
+          else console.log(JSON.stringify(x));
+        }
+        // =====================================================================
+        else if (x.ident == busoff_reply) {
+          
+          if (x.stat == 0) {            
+            canClose();
+          }
+          else console.log(JSON.stringify(x));          
+        }  
+        // =====================================================================
+        else if (x.ident == close_reply) {
+          if (x.stat == 0) {                      
+            global_hnd = -1;
+          }
+          else console.log(JSON.stringify(x));          
+        }             
+        // =====================================================================
+        else if (x.ident == write_reply) {
+          console.log(JSON.stringify(x));
+        }        
+        // =====================================================================
+        else if (x.ident == unloadlib_reply) {
+          if (x.stat != 0) {                      
+            //console.log(JSON.stringify(x));
+          }
+        }              
+        // =====================================================================
+        else {
+          console.log(JSON.stringify(x));
+        }
+        //console.log(JSON.stringify(x));
+      } 
+
+      // ------------------------------------------------------------------------
+      
+      
+      // -----------------------------------------------------------------------------
+      function clear_trace() {
+        $("#can-trace").empty();
+      }
+
+      // -----------------------------------------------------------------------------
+      function OnOffBus() {
+        var func;
+        
+        if (!is_bus_on) {
+          //func = "canBusOn";
+          is_bus_on = true;
+          clear_trace();
+          $("#onoffbus").html("Go Off Bus");
+          rcvd = 0;
+          txed = 0;
+          $("#txtot").html(txed);
+          $("#rxtot").html(rcvd);
+          
+          // qqq do we have to wait for replys?
+          canOpenChannel(); // get handle
+          /*
+          setDriverType();
+          setBusparams();
+          canBusOn();
+          */
+          // start calling canRead() periodically...
+          //canread_timer = setInterval("canRead();", global_poll_time);
+        }
+        else {
+          //func = "canBusOff";
+          is_bus_on = false;
+          
+          // stop calling canRead() periodically
+          clearInterval(canread_timer);
+          $("#onoffbus").html("Go On Bus");
+          
+          canBusOff();
+          //canClose();
+        }
+        
+        //var url =  "http://" + remote_device + ":8080/"+func;    
+        //var url =  "http://" + remote_device + ":8080/"+kvaser_session_id+"/"+func;    
+        //$.getJSON(url + "?callback=?", {ident: 1, hnd:global_hnd}, function() {});     
+      }
+    </script>
+  </head>
+  
+  
+  
+  
+  
+  <!-- ##################################################################### -->
+  <!-- ##################################################################### -->
+  <body> 
+<!--   
+  <button id="send" onclick="canUnloadLibrary();"  class="btn btn-primary">Unloadlib</button>
+  
+  <button id="cookie" onclick="checkCookie('session');"  class="btn btn-primary">canRead</button> 
+-->
+  <div class="container">
+    <div class="hero-unit">      
+      <div class="page-header">
+        <h1>Kvaser CanKing 2000<small>&nbsp;Your online CAN monitor...</small></h1>
+      </div>
+      
+    </div>
+    <!-- <div class="alert alert-info">
+    Go on bus!<a class="close" data-dismiss="alert" href="#">&times;</a>
+    </div>  -->
+    <div class="row">
+      <div class="well well-small  span5">
+        <div id="device">
+        <label class="select">
+          <select id="device_sel">
+            <option name="device_sel" class="device_sel" selected>kv-06348-000121</option>
+            <option name="device_sel" class="device_sel"         >kv-06348-000041</option>
+          </select>
+          Select device to work with.
+        </label>
+        <button id="init" onclick="initialize();"  class="btn btn-primary">Init</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="well well-small span6">
+          RX Messages:<div id="rxtot"></div>TX Messages:<div id="txtot"></div>
+        </div>
+      </div>
+    </div> <!-- row -->
+    <div class="row">
+    
+      <div class="well well-small  span5">
+        <div id="bitrate">
+        <select id="bitrate_sel">
+          <option name="bitrate" class="bitrate" value="-1">1 MBit/s</option>
+          <option name="bitrate" class="bitrate" value="-2">500 kBit/s</option>
+          <option name="bitrate" class="bitrate" value="-3">250 kBit/s</option>
+          <option name="bitrate" class="bitrate" value="-4" selected>125 kBit/s</option>
+          <option name="bitrate" class="bitrate" value="-5">100 kBit/s</option>
+          <option name="bitrate" class="bitrate" value="-6">62 kBit/s</option>
+          <option name="bitrate" class="bitrate" value="-7">50 kBit/s</option>  
+        </select>
+        </div>
+        <div id="drivertype">
+        <label class="radio"><input type="radio" checked class="drivertype" name="drivertype" value="4" >Normal</label>
+         <label class="radio"><input type="radio"         class="drivertype" name="drivertype" value="1">Silent</label>
+        </div>
+        <div id="can-control"><button id="onoffbus" onclick="OnOffBus();"  class="btn btn-primary">Go On Bus</button></div>
+        <br>
+      </div>
+      <!-- 
+      <div class="span6 well well-small">
+        <input type="text" id="canid" value=666><span class="help-inline">CAN Id</span>
+        <input type="text" id="candlc" value=8><span class="help-inline">dlc</span>
+        <input type="text" id="canflag" value=0><span class="help-inline">flags</span>
+        <div class="well well-small">
+        <input type="text" id="byte0" value=01 class="input-mini"><span class="help-inline">Byte 0</span>
+        <input type="text" id="byte1" class="input-mini" value=02><span class="help-inline">Byte 1</span>
+        <input type="text" id="byte2" class="input-mini" value=03><span class="help-inline">Byte 2</span>
+        <input type="text" id="byte3" class="input-mini" value=04><span class="help-inline">Byte 3</span>
+        <p>
+        <input type="text" id="byte4" class="input-mini" value=05><span class="help-inline">Byte 4</span>
+        <input type="text" id="byte5" class="input-mini" value=06><span class="help-inline">Byte 5</span>
+        <input type="text" id="byte6" class="input-mini" value=07><span class="help-inline">Byte 6</span>
+        <input type="text" id="byte7" class="input-mini" value=08><span class="help-inline">Byte 7</span>
+        </p>
+        </div>
+        <div id="can-control"><button id="send" onclick="canWrite();"  class="btn btn-primary">Send</button></div>
+      < /div>-->
+    
+      <div class="well well-small  span6">
+        <div id="slider" data-slider-min="-127" data-slider-max="127"> <div id="s1"></div></div><br><br><br><br>
+        <div id="slider2" data-slider-min="-127" data-slider-max="127"><div id="s2"></div></div><br><br><br><br>
+        <div id="slider3" data-slider-min="-127" data-slider-max="127"><div id="s3"></div></div>
+      </div>
+    </div>      
+    
+  
+    <script>    
+      $('#slider').slider()
+        .on('slide', 
+          function(ev) 
+          { 
+            var canid = 258;
+            //console.log(ev.target.id);
+            
+            if (ev.target.id == "slider2") {
+              //$("#s2").html(ev.value);
+              canid = 259;
+            }
+            else if (ev.target.id == "slider3") {
+              //$("#s3").html(ev.value);
+              canid = 260;
+            }
+            else {
+              //$("#s1").html(ev.value);
+              canid = 258;
+            }
+
+            canWrite(canid, ev.value);            
+          }
+        );
+        $('#slider2').slider()
+                .on('slide', 
+          function(ev) 
+          { 
+            var canid = 258;
+            //console.log(ev.target.id);
+            
+            if (ev.target.id == "slider2") {
+              //$("#s2").html(ev.value);
+              canid = 259;
+            }
+            else if (ev.target.id == "slider3") {
+              //$("#s3").html(ev.value);
+              canid = 260;
+            }
+            else {
+              //$("#s1").html(ev.value);
+              canid = 258;
+            }
+
+            canWrite(canid, ev.value);            
+          }
+        );
+        $('#slider3').slider()
+                .on('slide', 
+          function(ev) 
+          { 
+            var canid = 258;
+            //console.log(ev.target.id);
+            
+            if (ev.target.id == "slider2") {
+              //$("#s2").html(ev.value);
+              canid = 259;
+            }
+            else if (ev.target.id == "slider3") {
+              //$("#s3").html(ev.value);
+              canid = 260;
+            }
+            else {
+              //$("#s1").html(ev.value);
+              canid = 258;
+            }
+
+            canWrite(canid, ev.value);            
+          }
+        );
+    </script>
+    
+    <div class="row">
+      <br><br><br><br><br>&nbsp;
+    </div>
+    
+  </body>
+</html>

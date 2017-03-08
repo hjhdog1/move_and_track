@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+  <PreferenceCategory
+    android:summary="Connection information"
+    android:title="Connection values" >
+    <EditTextPreference
+      android:key="Url"
+      android:summary="http://device:8080"
+      android:hint="http://device:8080"
+      android:title="Device to connect to"
+      android:dialogTitle="Url of device"
+      android:singleLine="true"
+    />
+    
+    <EditTextPreference
+      android:key="AccessPassword"
+      android:summary="****"
+      android:title="Device access password"
+      android:dialogTitle="Access password"
+      android:inputType="textPassword"
+    />
+    
+    <EditTextPreference
+      android:key="SessionTimeout"
+      android:summary="Session Timeout"
+      android:title="Session timeout"
+      android:dialogTitle="Seconds (max 86399)"
+     android:inputType="number"
+     android:maxLength="8"
+    />
+    
+    <EditTextPreference
+      android:key="SessionId"
+      android:summary="Known session Id"
+      android:title="Current session id"
+      android:dialogTitle="Set session id"
+      android:singleLine="true"
+    />
+  </PreferenceCategory>
+  
+  <PreferenceCategory
+    android:summary="CAN information"
+    android:title="CAN parameters" >
+    
+    <EditTextPreference
+      android:key="CanHandle"
+      android:summary="Known CAN handle"
+      android:title="Current CAN handle"
+      android:dialogTitle="Set CAN handle"
+      android:inputType="number"
+    />
+    
+    <ListPreference 
+        android:key="BitRate"
+        android:entries="@array/can_bitrate_entries" 
+        android:title="CAN Bitrate"  
+        android:entryValues="@array/can_bitrate_values" 
+        android:summary="Bitrate used in canSetBusParams" 
+        android:defaultValue="-4" />
+  	
+    <ListPreference 
+        android:key="driverType"
+        android:entries="@array/can_driver_type_entries" 
+        android:title="CAN Driver Type"  
+        android:entryValues="@array/can_driver_type_values" 
+        android:summary="Driver Type used in canSetBusOutputControl" 
+        android:defaultValue="4" />
+    
+	<EditTextPreference
+     android:key="ReadBurstSize"
+     android:title="Size of Read bursts"
+     android:summary="Size of Read bursts"
+     android:dialogTitle="Number of Messages (Max 999)"
+     android:hint="50"
+     android:inputType="number"
+     android:maxLength="3" />
+ 	
+ 	<EditTextPreference
+     android:key="ReadDelay"
+     android:title="Delay between Read"
+     android:summary="Delay between Read"
+     android:dialogTitle="Delay in ms (Min 50)"
+     android:hint="500"
+     android:inputType="number"/>
+ 	
+  </PreferenceCategory>
+
+  <PreferenceCategory
+    android:summary="Meter Settings"
+    android:title="Meter Alpha" >
+ 
+  	<EditTextPreference
+     android:key="AlphaId"
+     android:title="CAN Id"
+     android:summary="CAN Id"
+     android:dialogTitle="Id for Meter Alpha" 
+     android:defaultValue="258"
+     android:inputType="number"/>
+
+    <ListPreference 
+        android:key="AlphaByte"
+        android:entries="@array/prop_byte_entries" 
+        android:title="CAN Data Byte"  
+        android:entryValues="@array/prop_byte_values" 
+        android:summary="CAN Data Byte"
+        android:dialogTitle="Data Byte for Meter Alpha"
+        android:defaultValue="1" />
+
+  	</PreferenceCategory>
+  	
+  <PreferenceCategory
+    android:summary="Meter Settings"
+    android:title="Meter Beta" >
+ 
+  	<EditTextPreference
+     android:key="BetaId"
+     android:title="CAN Id"
+     android:summary="CAN Id"
+     android:dialogTitle="Id for Meter Beta" 
+     android:defaultValue="259"
+     android:inputType="number"/>
+
+    <ListPreference 
+        android:key="BetaByte"
+        android:entries="@array/prop_byte_entries" 
+        android:title="CAN Data Byte"  
+        android:entryValues="@array/prop_byte_values" 
+        android:summary="CAN Data Byte"
+        android:dialogTitle="Data Byte for Meter Beta"
+        android:defaultValue="1" />
+
+  	</PreferenceCategory>
+ 
+  <PreferenceCategory
+    android:summary="Meter Settings"
+    android:title="Meter Gamma" >
+ 
+  	<EditTextPreference
+     android:key="GammaId"
+     android:title="CAN Id"
+     android:summary="CAN Id"
+     android:dialogTitle="Id for Meter Gamma" 
+     android:defaultValue="260"
+     android:inputType="number"/>
+
+    <ListPreference 
+        android:key="GammaByte"
+        android:entries="@array/prop_byte_entries" 
+        android:title="CAN Data Byte"  
+        android:entryValues="@array/prop_byte_values" 
+        android:summary="CAN Data Byte"
+        android:dialogTitle="Data Byte for Meter Gamma"
+        android:defaultValue="1" />
+
+  	</PreferenceCategory>
+  
+
+</PreferenceScreen>

@@ -1,0 +1,55 @@
+VERSION "HIPBNYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY/4/%%%/4/'%**4YYY///"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+
+BS_:
+
+BU_:
+
+
+BO_ 517 Engine: 8 Vector__XXX
+ SG_ seqno : 0|3@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ rpm : 35|13@1+ (1,10000) [0|0] "" Vector__XXX
+ SG_ xfactor : 3|32@1- (0.03,351.45) [0|0] "" Vector__XXX
+ SG_ temp : 48|10@1- (0.5,0) [0|0] "" Vector__XXX
+
+BO_ 0 Convert: 4 Vector__XXX
+ SG_ int_intel : 0|32@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ int_motorola : 7|32@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ real_intel : 0|32@1- (1,0) [0|0] "" Vector__XXX
+ SG_ real_motorola : 7|32@0- (1,0) [0|0] "" Vector__XXX
+
+BO_ 2270940437 Wave: 8 Vector__XXX
+ SG_ wave : 0|32@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 700 OscData: 8 Vector__XXX
+ SG_ time : 0|32@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ voltage : 32|32@1- (1,0) [0|0] "" Vector__XXX
+
+
+SIG_VALTYPE_ 517 xfactor : 1;
+SIG_VALTYPE_ 0 real_intel : 1;
+SIG_VALTYPE_ 0 real_motorola : 1;
+SIG_VALTYPE_ 2270940437 wave : 1;
+SIG_VALTYPE_ 700 voltage : 1;

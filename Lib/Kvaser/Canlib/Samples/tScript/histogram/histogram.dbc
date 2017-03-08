@@ -1,0 +1,46 @@
+VERSION "HIPBNYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY/4/%%%/4/'%**4YYY///"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+
+BS_:
+
+BU_:
+
+
+BO_ 501 ECM_001: 8 Vector__XXX
+ SG_ EngineSpeed : 0|32@1+ (1,0) [0|6000] "rpm" Vector__XXX
+
+BO_ 402 LIM_002: 8 Vector__XXX
+ SG_ Load : 0|32@1- (1,0) [0|100] "metric ton" Vector__XXX
+
+BO_ 503 ECM_003: 8 Vector__XXX
+ SG_ EngineTemp : 0|32@1- (1,0) [-60|200] "Celsius" Vector__XXX
+
+BO_ 504 ECM_004: 8 Vector__XXX
+ SG_ Fuel : 0|32@1- (1,0) [0|300] "l/100 km" Vector__XXX
+
+
+SIG_VALTYPE_ 402 Load : 1;
+SIG_VALTYPE_ 503 EngineTemp : 1;
+SIG_VALTYPE_ 504 Fuel : 1;

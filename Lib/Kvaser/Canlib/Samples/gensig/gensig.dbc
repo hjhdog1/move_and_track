@@ -1,0 +1,113 @@
+VERSION "HIPBNYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY/4/%%%/4/'%**4YYY///"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+
+BS_:
+
+BU_: Vector__XXX SimulationSender ReceiveNode HilfsSimulator
+
+
+BO_ 153 ReceiveMessage: 0 HilfsSimulator
+
+BO_ 103 Float: 8 SimulationSender
+ SG_ Cosinus_float : 32|32@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Sinus_float : 0|32@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 102 Ramp: 8 SimulationSender
+ SG_ Dreieck : 16|16@1- (1,0) [-1000|1000] "" Vector__XXX
+ SG_ Rampe : 0|16@1+ (1,0) [0|1000] "" Vector__XXX
+
+BO_ 101 Digital: 8 SimulationSender
+ SG_ Takt128 : 56|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Takt64 : 48|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Takt32 : 40|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Takt16 : 32|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Takt8 : 24|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Takt4 : 16|8@1+ (1,0) [0|255] ""  ReceiveNode
+ SG_ Takt2 : 8|8@1+ (1,0) [0|255] ""  ReceiveNode,HilfsSimulator
+ SG_ Takt1 : 0|8@1+ (1,0) [0|255] ""  ReceiveNode
+
+BO_ 100 TrigData: 8 SimulationSender
+ SG_ Cosinus2 m1 : 56|8@1+ (1,0) [0|100] ""  HilfsSimulator
+ SG_ Sinus2 m0 : 56|8@1+ (1,0) [0|200] ""  HilfsSimulator
+ SG_ ModeSwitch M : 48|8@1+ (1,0) [0|0] ""  SimulationSender,ReceiveNode,HilfsSimulator
+ SG_ Cosinus : 32|16@1- (1,0) [-100|100] ""  ReceiveNode,HilfsSimulator
+ SG_ Sinus : 16|16@1- (1,0) [-100|100] "Volt"  ReceiveNode
+ SG_ SinState : 0|2@1+ (1,0) [0|0] ""  ReceiveNode
+
+
+EV_ NochEineVariable: 0 [0|4] "" 0 3 DUMMY_NODE_VECTOR3  SimulationSender,ReceiveNode,HilfsSimulator;
+
+EV_ NochEineTolleVariable: 0 [-100|100] "Meter" 50 2 DUMMY_NODE_VECTOR3  SimulationSender,HilfsSimulator;
+
+EV_ EineVariable: 0 [-100|100] "Volt" 100 1 DUMMY_NODE_VECTOR3  SimulationSender,ReceiveNode;
+
+CM_ "Das ist eine CANdb für
+mein geniales Simulationsprogramm
+";
+CM_ BU_ SimulationSender "Das ist der eigentliche 
+Signalgenerator";
+CM_ BU_ ReceiveNode "Ein Empfangs Knoten
+(Damit es wenigstens einen gibt)";
+CM_ BU_ HilfsSimulator "Falls ein Simulator nicht reicht";
+CM_ BO_ 153 "Dann haben wir noch einen Kommentar";
+CM_ BO_ 103 "Da haben wir nochmal sin() und cos()
+als float-Werte";
+CM_ BO_ 102 "Dreiecke und so weiter";
+CM_ SG_ 101 Takt128 " Takt / 128";
+CM_ SG_ 101 Takt64 " Takt / 64";
+CM_ SG_ 101 Takt32 " Takt / 32";
+CM_ SG_ 101 Takt16 " Takt / 16";
+CM_ SG_ 101 Takt8 "Achtel Takt";
+CM_ SG_ 101 Takt4 "Viertel Takt";
+CM_ SG_ 101 Takt2 "Halber Takt
+";
+CM_ SG_ 101 Takt1 "Haupt-Takt";
+CM_ BO_ 100 "Diese Nachricht enthält die Sinus und Cosinus Funktion
+und sonst nichts.";
+CM_ EV_ NochEineVariable "Keine Ahnung was wir mit Variablen
+alles machen können
+";
+CM_ EV_ NochEineTolleVariable "Was soll diese Variable ?";
+CM_ EV_ EineVariable "Da haben wir also eine Variable
+bla bla";
+BA_DEF_  "EinAttribut" INT -100 100;
+BA_DEF_ BO_  "Ein Message Attribut" STRING ;
+BA_DEF_DEF_  "EinAttribut" 20;
+BA_DEF_DEF_  "Ein Message Attribut" "Zeichenkette";
+BA_ "Ein Message Attribut" BO_ 153 "Eine Zechenkette";
+VAL_ 100 ModeSwitch 1 "Cosinus2_aktiv" 0 "Sinus2_aktiv" ;
+VAL_ 100 SinState 2 "Positiv" 1 "Negativ" 0 "Zero" ;
+VAL_ NochEineVariable 3 "Wert4" 2 "Wert3" 1 "Wert2" 0 "Wert1" ;
+CAT_DEF_ 9 Kategorie 1;
+CAT_DEF_ 8 NochEineKategorie 2;
+CAT_DEF_ 7 KatTest 99;
+CAT_ BU_ SimulationSender 7;
+CAT_ BU_ ReceiveNode 9;
+CAT_ BU_ HilfsSimulator 8;
+CAT_ BO_ 153 9;
+CAT_ BO_ 102 7;
+CAT_ BO_ 101 7;
+CAT_ BO_ 100 8;
+SIG_VALTYPE_ 103 Cosinus_float : 1;
+SIG_VALTYPE_ 103 Sinus_float : 1;

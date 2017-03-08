@@ -1,0 +1,52 @@
+/*
+**                        Copyright 1997 by KVASER AB
+**            P.O Box 4076 SE-51104 KINNAHULT, SWEDEN Tel. +46 320 15287
+**
+** This software is furnished under a license and may be used and copied
+** only in accordance with the terms of such license.
+**
+*/
+#include <windows.h>
+#include "main.h"
+
+
+GenericMenu MENU
+BEGIN
+	POPUP "&File"
+	BEGIN
+		MENUITEM "&Test", IDM_TEST
+		MENUITEM "E&xit", IDM_EXIT
+    END
+
+	POPUP "&Help"
+	BEGIN
+		MENUITEM "About...", IDM_ABOUT
+	END
+
+END
+
+
+TestBox DIALOG 10, 17, 273, 177
+STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU
+CAPTION "Test"
+FONT 8, "MS Sans Serif"
+{
+ DEFPUSHBUTTON "Close", IDOK, 114, 159, 32, 14, WS_GROUP
+ AUTORADIOBUTTON "125K", IDC_125K, 194, 106, 29, 12
+ AUTORADIOBUTTON "250K", IDC_250K, 194, 119, 31, 12
+ AUTORADIOBUTTON "500K", IDC_500K, 229, 106, 31, 12
+ AUTORADIOBUTTON "1M", IDC_1000K, 229, 119, 27, 12
+ GROUPBOX "Speed", IDC_SPEEDBOX1, 190, 98, 77, 37, BS_GROUPBOX
+ LISTBOX IDC_MESSAGES, 5, 5, 263, 95, LBS_NOTIFY | WS_BORDER | WS_VSCROLL | WS_HSCROLL
+ PUSHBUTTON "Init #1", IDC_INIT1, 7, 101, 26, 16, WS_GROUP
+ PUSHBUTTON "Init #2", IDC_INIT2, 38, 101, 26, 16, WS_GROUP
+ PUSHBUTTON "Start", IDC_START, 69, 101, 26, 16, WS_GROUP
+}
+
+AboutBox DIALOG 22, 17, 138, 40
+STYLE DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "About This Program"
+{
+ CTEXT "Simple Demo Program For CANLIB", -1, 5, 5, 127, 8
+ DEFPUSHBUTTON "OK", IDOK, 45, 21, 43, 14, WS_GROUP
+}

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Welcome to Kvaser\nCAN REST Demo!</string>
+    <string name="app_name">CanRestDemo</string>
+    <string name="log_title">Try Some Continuous Reading.</string>
+    <string name="log_header">Console (long click to erase):</string>
+    
+    <string name="menu_settings">Settings…</string>
+    <string name="menu_raw_rest">Raw REST Control…</string>
+    <string name="menu_read_log">Continuous CAN Read…</string>
+    <string name="menu_write">Send CAN Messages…</string>
+    <string name="menu_prop">Prop Dashboard…</string>
+    
+    <string-array name="can_bitrate_entries">
+		<item>1 Mbit/s</item>
+		<item>500 kbit/s</item>
+		<item>250 kbit/s</item>
+		<item>125 kbit/s</item>
+		<item>100 kbit/s</item>
+		<item>83 kbit/s</item>
+		<item>62 kbit/s</item>
+		<item>50 kbit/s</item>
+		<item>10 kbit/s</item>
+	</string-array>
+	<string-array name="can_bitrate_values">
+		<item>-1</item>
+		<item>-2</item>
+		<item>-3</item>
+		<item>-4</item>
+		<item>-5</item>
+		<item>-8</item>
+		<item>-6</item>
+		<item>-7</item>
+		<item>-9</item>
+	</string-array>
+	
+	<string-array name="can_driver_type_entries">
+		<item>Normal mode</item>
+		<item>Silent mode</item>
+	</string-array>
+	<string-array name="can_driver_type_values">
+		<item>4</item>
+		<item>1</item>
+	</string-array>
+	
+    <string-array name="prop_byte_entries">
+		<item>Byte 0 (D0)</item>
+		<item>Byte 1 (D1)</item>
+		<item>Byte 2 (D2)</item>
+		<item>Byte 3 (D3)</item>
+		<item>Byte 4 (D4)</item>
+		<item>Byte 5 (D5)</item>
+		<item>Byte 6 (D6)</item>
+		<item>Byte 7 (D7)</item>
+	</string-array>
+	<string-array name="prop_byte_values">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>4</item>
+		<item>5</item>
+		<item>6</item>
+		<item>7</item>
+	</string-array>
+		
+	
+	
+	
+</resources>

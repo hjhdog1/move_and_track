@@ -1,0 +1,6 @@
+USEUNIT("singsample.c");
+USELIB("..\..\Lib\Borland\sing32.lib");
+//---------------------------------------------------------------------------
+This file is used by the project manager only and should be treated like the project file
+
+main

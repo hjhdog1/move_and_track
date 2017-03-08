@@ -1,0 +1,1663 @@
+***********************************************************************************************************
+The J1699-3 software performs some tests in a different order than the SAE J1699-3 document specifies. 
+In these cases, the SAE J1699-3 Task Force has determined that this variation in order of these 
+specific tests will not impact the test results. At the present time, there is no intent to change 
+the software, but the issue is noted in SourceForge (#1485866). 
+
+The sections where there is a variation in the testing order are: 5.5.x, 5.6.x, 5.7.2, 5.10.x, 5.11.2, 
+5.12.x, 5.14.x, 5.16.2, 5.17.x, 5.18.2, 6.5.x, 7.5.x, 8.5.x, 9.5.x, 10.12.x.
+***********************************************************************************************************
+
+
+-- Version 13
+
+
+Revision 13.7.0
+
+
+ClearCodes.c
+    issue 1839915 - Add new check to insure that all KOEO responses to ClearCodes are positive.
+
+InitProtocolList.c
+    issue 1868852 - Revise protocol initialization order for tests 9.9, 9.17 and 9.21.
+
+J1699.h
+    issue 1868842 - Add new elements to OBD_DATA for SID $A support check if support SID $3 or $7.
+    issue 1868848 - Increase SID $1 Data Size to handle new PIDs.
+
+LogUserPrompt.c
+    Add NEWLINEs to PROMPT to improve readability on the screen.
+
+SidRequest.c
+    issue 1886666 - Log SID NAKs in hex.
+
+SidResetResponseData.c
+    issue 1868852 - Reset new elements to OBD_DATA for determining SID 3,7 and A support.
+
+SidSaveResponseData.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+    issue 1868848 - Add size checks for new PIDs.
+    issue 1868852 - Save new elements to OBD_DATA for determining SID 3,7 and A support.
+
+TestToVerifyInUseCounters.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+    issue 1868847 - Change Permanent Code sampling rate to match other sampling rates.
+    issue 1886677 - Change SID $A response check to allow for partial failure.
+
+TestToVerifyPerformanceCounters.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+    issue 1826402 - Check for change rather than increment between tests 11.5 and 11.11.
+    issue 1826406 - Check for change rather than increment between tests 10.9 and 11.5.
+
+TestWithNoFaultAfter3DriveCycles.c
+    issue 1845012 - Fix MIL off error.
+
+VerifyControlSupportAndData.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+
+VerifyDiagnosticSupportAndData.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+    issue 1868848 - Add Required PID and range checks for new PIDs.
+
+VerifyDTCPendingData.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+    issue 1841134 - Change SID $7 checks to 15765 only.
+
+VerifyDTCStoredData.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+    issue 1841134 - Change SID $3 checks to 15765 only.
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+    issue 1868854 - Require support of SID $2 PID $05 or $67.
+
+VerifyGroupControlSupport.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+
+VerifyGroupDiagnosticSupport.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+
+VerifyGroupFreezeFrameSupport.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+
+VerifyGroupMonitorTestSupport.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+
+VerifyGroupVehicleInformationSupport.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+
+VerifyLinkActive.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+
+VerifyMilData.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+
+VerifyMonitorTestSupportAndResult.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+    issue 1826409 - Change diesel bit check.
+
+VerifyPermanentCodeSupport.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+    issue 1868842 - Check SID $A support only if support SID $3 or $7.
+    issue 1886677 - Change SID $A support indicator to allow for partial failure.
+
+VerifyReservedServices.c
+    issue 1877727 - Report test FAILURE on NAK.
+
+VerifyReverseGroupDiagnosticSupport.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+
+VerifyReverseOrderSupport.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+
+VerifyVehicleInformationSupport.c
+    issue 1848650 - Add ECU ID to FAILUREs and WARNINGs.
+    issue 1826409 - Change diesel bit check.
+
+
+
+
+
+Revision 13.6.0
+
+
+InitProtocolList.c
+    issue 1809598 - Add new protocol orders for Permanent Code drive cycle.
+
+J1699.c
+    issue 1809598 - Add new variable gService0ASupported for Permanent Code verification.
+
+J1699.h
+    issue 1809598 - Add new members SidASize and SidA to OBD_DATA structure for Permanent Code verification.
+
+SidRequest.c
+    issue 1839916 - Comment out ERROR_RETURN on byte pad error to allow test to continue.
+
+SidResetResponseData.c
+    issue 1809598 - Add reset of SidA data.
+    issue 1827576 - Add handling of Reserved Service responses.
+    
+SidSaveResponseData.c
+    issue 1797283 - Fix save content of SID1,6,8 and 9 group message.
+    issue 1809598 - Add saving of SidA data.
+    issue 1827576 - Add handling of Reserved Service responses.
+
+TestToVerifyInUseCounters.c
+    issue 1806519 - Don't allow user to continue after DetermineProtocol fails.
+    issue 1809598 - Add SidA request in drive cycle, if in test 9.
+
+TestToVerifyPerformanceCounters.c
+    issue 1806520 - Allow Dynamic test to continue if SID 9 INF8 or B not supported.
+
+TestToVerifyPermanentCodes.c
+    issue 1809598 - Permanent Code test.
+
+TestWithConfirmedDTC.c
+    issue 1806519 - Don't allow user to continue after DetermineProtocol fails.
+
+TestWithFaultRepaired.c
+    issue 1806519 - Don't allow user to continue after DetermineProtocol fails.
+    issue 1809598 - Add Permanent Code test.
+
+TestWithNoDTC.c
+    issue 1806519 - Don't allow user to continue after DetermineProtocol fails.
+    issue 1809598 - Add Permanent Code test.
+    issue 1827576 - Add Reserved Services test.
+
+TestWithNoFaultAfter3DriveCycles.c
+    issue 1806519 - Don't allow user to continue after DetermineProtocol fails.
+    issue 1809598 - Add Permanent Code test.
+
+TestWithPendingDTC.c
+    issue 1806519 - Don't allow user to continue after DetermineProtocol fails.
+
+VerifyLinkActive.c
+    issue 1719664 - Partial fix.
+
+VerifyPrmanentCodeSupport.c
+    issue 1809598 - Permanent Code Drive Cycle test.
+
+VerifyReservedServices.c
+    issue 1827576 - Reserved Services test.
+
+
+
+
+
+Revision 13.3.6
+
+
+SidSaveResponseData.c
+    issue 1775515 - Fix save content of SID2 group message.
+
+TestToVerifyInUseCounters.c
+    issue 1797991 - Fix INFB response incorrectly identified as INF8 (false FAILURE).
+    issue 1797974 - Fix INFB NODI check (incorrectly fails diesel vehicles with NODI of $10).
+
+TestToVerifyPerformanceCounters.c
+    issue ??????? - Corrected typo on Test 11.2 screen EGS listed as EGR.
+
+
+
+Revision 13.3.5
+
+
+j1699.h
+    issue 1775519 - Add defines for INF8 and INFB offsets in IPT Array.
+
+SidSaveResponseData.c
+    issue 1775515 - Save entire content of SID2 group message.
+
+TestToVerifyPerformanceCounters.c
+    issue 1775519 - Fix INF8 and B condition counter checks.
+    issue 1791667 - Add NOx aftertreatment evaluation.
+
+VerifyDiagnosticSupportAndData.c
+    issue 1639039 - Fix Oxygen Sensor Current transformation.
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1775515 - Don't do group request if no FF DTC.
+
+VerifyVehicleInformationSupprtAndData.c
+    issue 1774337 - Incorrect acronym/textname should be WARNING not FAILURE.
+    issue 1775510 - Add NULL terminator to ECU Name for printing to file.
+    issue 1781463 - Fix INF8/B to ignition type check.
+    issue 1781464 - Fix INF8/B to SID1 PID1 check.
+    issue 1794160 - Add consistency check between ECU Acronym and Textname.
+
+
+
+Revision 13.3.4
+
+
+ConnectProtocol.c
+    issue 1741114 - Clarify ISO K&L line initialization warning.
+
+j1699.c
+    issue 1749183 - Fix false Static Test fail.
+    issue 1707661 - Add Model Year prompt to Dynamic Tests for support of additional IPT data checks.
+
+j1699.h
+    issue 1707661 - Add support for additional IPT data in SID $09 INF $08 and $0B.
+    issue 1707660 - Add support for SID $09 INF $0A.
+    issue 1707659 - Add support for SID $09 INF $0B.
+
+SidResetResponseData.c
+    issue 1719664 - Clear PID support data to improve group response check.
+
+TestToVerifyInUseCounters.c
+    issue 1707661 - Add support for additional IPT data in SID $09 INF $08 and $0B.c
+
+TestToVerifyPerformanceCounters.c
+    issue 1707661 - Add support for additional IPT data in SID $09 INF $08 and $0B.c
+
+VerifyDiagnosticSupportAndData.c
+    issue 1639039 - Fix Oxygen Sensor Current transformation.
+    issue 1707657 - Add check of SID $01 PID $01 Data Bit 3 to determine gas/diesel support.
+
+VerifyGroupControlSupprt.c
+    issue 1719664 - Add group response size check.
+
+VerifyGroupFreezeFrameSupprt.c
+    issue 1719664 - Add group response size check.
+
+VerifyGroupMonitorTestSupprt.c
+    issue 1719664 - Add group response size check.
+
+VerifyGroupVehicleInformationSupprt.c
+    issue 1719664 - Add group response size check.
+
+VerifyMonitorTestSupportAndResults.c
+    issue 1760417 - Expand Mifire Range to A1-B1.
+
+VerifyVehicleInformationSupprtAndData.c
+    issue 1707662 - Add check for multiple CVNs and CALIDs per ECU.
+    issue 1707661 - Add support for additional IPT data in SID $09 INF $08 and $0B.
+    issue 1707660 - Add support for SID $09 INF $0A.
+    issue 1707659 - Add support for SID $09 INF $0B.
+    issue 1707658 - Add support for 40 byte SID $09 INF $08.
+    issue 1707657 - Add check of SID $01 PID $01 Data Bit 3 to determine gas/diesel support.
+    issue 1749181 - Fix VIN year check.
+
+
+
+Revision 13.3.3
+
+
+TestToVerifyPerformanceCounters.c
+    issue 1760571 - Allow dynamic test to continue if VerifyMonitorTestSupportAndResults fails.
+
+j1699.c
+    issue 1749183 - All test pass, but log file shows failures detected at end.
+
+
+
+Revision 13.3.2
+
+
+j1699.c
+    issue 1723793 - If Static Tests fail, prompt user if they would like to run Dynamic Tests.
+
+VerifyDiagnosticSupportAndData.c
+    issue 1648849 - Fix EGR range check for diesel vehicles.
+
+VerifyMonitorTestSupportAndResults.c
+    issue 1723792 - Fix PID hi/lo value tests for ISO15765.
+
+
+
+Revision 13.3.1
+
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1718693 - Fix incorrect failure of ECUs which don't have a DTC and don't respond to PID request.
+
+
+
+Revision 13.3.0
+
+
+DetermineProtocol.c
+    issue 1690097 - Add Auto-Continue on failure detection. 
+
+j1699.c
+    issue 1113230 - Add variable gOBDTestFailed and better use of gOBDFailureBypassed for improved fail detection in tests 10 & 11 (partial fix).
+    issue 1699502 - Add variable gIgnoreUnsupported to allow request for SID $2 PID $02 before PID-Supported PIDs.
+    issue 1690097 - Add Auto-Continue on failure detection. 
+
+j1699.h
+    issue 1113230 - Add extern for variable gOBDTestFailed.
+    issue 1699502 - Add extern for variable gIgnoreUnsupported.
+    issue 1690097 - Add defines and prototypes needed for Auto-Continue on failure detection. 
+
+LogMsg.c
+    issue 1690097 - Add functions and make changes to ErrorReturn needed for Auto-Continue on failure detection. 
+
+LogUserPrompt.c
+    issue 1690097 - Add Auto-Continue on failure detection. 
+
+SidSaveResponseData.c
+    issue 1699502 - Add check of gIgnoreUnsupported to allow request of SID $2 PID $02 before PID-Supported PIDs without warning.
+
+TestToVerifyInUseCounters.c
+    issue 1656451 - Fix clipping of 29 bit IDs.
+    issue 1690097 - Add Auto-Continue on failure detection. 
+    issue 1113230 - Improved fail detection (partial fix).
+
+TestToVerifyPerformanceCounters.c
+    issue 1656451 - Fix clipping of 29 bit IDs.
+    issue 1690097 - Add Auto-Continue on failure detection. 
+    issue 1113230 - Improved fail detection (partial fix).
+
+TestWithConfirmedDTC.c
+    issue 1690097 - Add Auto-Continue on failure detection. 
+
+TestWithFaultRepaired.c
+    issue 1690097 - Add Auto-Continue on failure detection. 
+
+TestWithNoDtc.c
+    issue 1690097 - Add Auto-Continue on failure detection. 
+
+TestWithNoFaultAfter3DriveCycles.c
+    issue 1690098 - Include option to clear codes while engine running in user prompt for Test 9.6.
+    issue 1690097 - Add Auto-Continue on failure detection. 
+
+TestWithPendingDTC.c
+    issue 1690097 - Add Auto-Continue on failure detection. 
+
+VerifyDiagnosticSupportAndData.c
+    issue 1648849 - Fix EGR range check for diesel vehicles.
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1699502 - Allow for dynamic defintion of SID $2 PID Supported PIDs.
+    issue 1707664 - Revise mandatory PIDs for SID $2 to include either $11, $45, or $49.
+    issue 1707670 - Allow required PIDs to be distrubuted over several ECUs.
+
+VerifyGroupFreezeFrameSupport.c
+    issue 1699502 - Allow no response to SidRequest for dynamic defintion of SID $2 PID Supported PIDs.
+
+VerifyMonitorTestSupportAndResults.c
+    issue 1690043 - Fix MID $00-$10 TID $01-$04 test.
+    issue 1691330 - Fix failure description for SID $6 MID $B2.
+    issue 1699507 - Remove test for SID $6 MID $41 for O2 Heater (SID $1 PID $1 Data C Bit 6).
+    issue 1707672 - Fix check for MID $A2 SDTID $0B and $0C.
+    issue 1706781 - Allow required MIDs to be per vehicle rather than per ECU.
+
+
+
+Revision 13.2.0
+
+
+ClearCodes.c
+    issue 1647494 - remove functionality added for SF#1445181.
+
+j1699.c
+    issue 1666388 - Add TestSubsection for greater test phase/subsection resolution.
+
+j1699.h
+    issue 1647494 - Remove gNumOfECUsSupportingSID4 added for SF#1445181.
+    issue 1666388 - Add extern for Sid1Pid1 and TestSubsection.
+
+SidRequest.c
+    issue 1666380 - Don't allow return without reseting gERFlags.
+
+SidSaveResponseData.c
+    issue 1113230 - Improve catching of failures after ERROR_RETURN.
+
+TestWithNoDtc.c
+    issue 1666388 - Add TestSubsection for greater test phase/subsection resolution.
+
+VerifyDiagnosticSupportAndData.c
+    issue 1666386 - Support new required SID 01 PIDs.
+    issue 1647945 - New range check for SID 01 PID 44 for diesels.
+    issue 1639039 - Treat PIDs $34-$3B Oxygen Sensor Current as signed value.
+
+VerifyDtcPendingData.c
+    issue 1113230 - Improve catching of failures after ERROR_RETURN.
+
+VerifyDtcStoredData.c
+    issue 1113230 - Improve catching of failures after ERROR_RETURN.
+
+VerifyMILData.c
+    issue 1647494 - remove functionality added for SF#1445181.
+    issue 1666384 - Don't display MIL status for ECUs which don't support SID 01 PID 01.
+
+VerifyMonitorTestSupportAndResults.c
+    issue 1666388 - Support new SID 06 MID evaluations.
+
+
+
+Revision 13.1.3
+
+
+ClearCodes.c
+    issue 1113230 - replace ERROR_RETURN with return (FAIL).
+    issue 1445181 - Save gNumOfECUsSupportingSID4 for MIL/DTC check in Test 5.4.
+
+j1699.h
+    issue 1113230 - Add ER_DONT_CLEAR_ERROR_COUNT for greater ERROR_RETURN flexibility.
+    issue 1445181 - Add gNumOfECUsSupportingSID4 for MIL/DTC check in Test 5.4.
+
+logmsg.c
+    issue 1113230 - Add ER_DONT_CLEAR_ERROR_COUNT for greater ERROR_RETURN flexibility.
+
+SidRequest.c
+    issue 1113230 - Improve catching of failures after ERROR_RETURN.
+    issue 1072073 - Fix ISO14230 handling of multiple $78 responses.
+    issue 1565407 - Fix ISO15765 handling of multiple $78 responses.
+
+VerifyControlSupportAndData.c
+    issue 1113230 - Improve catching of failures after ERROR_RETURN.
+
+VerifyDiagnosticSupportAndData.c
+    issue 1113230 - Improve catching of failures after ERROR_RETURN.
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1113230 - Improve catching of failures after ERROR_RETURN.
+
+VerifyMILData.c
+    issue 1445181 - Check MIL/DTC count against responding ECUs.
+
+VerifyMonitorTestSupportAndResults.c
+    issue 1113230 - Improve catching of failures after ERROR_RETURN.
+
+VerifyReverseOrderSupport.c
+    issue 1113230 - Improve catching of failures after ERROR_RETURN.
+
+VerifyVehicleInformationSupportAndData.c
+    issue 1113230 - Improve catching of failures after ERROR_RETURN.
+
+
+
+Revision 13.1.2
+
+
+ConnectProtocol.c
+    issue 1554400 - add configuration of j2534 W4 to ISO14230.
+
+InitProtocolList.c
+    issue 1600808 - fix Protocol order to match specification.
+
+j1699.h
+    issue 1567928 - change ErrorFlags function prototype to allow saving previous flag settings.
+
+LogMsg.c
+    issue 1567928 - change ErrorFlags function to save previous flag settings.
+
+SidRequest.c
+    issue 1567928 - prevent late responses from being lost by eliminating user prompt.
+
+VerifyDiagnosticSupportAndData.c
+    issue 1594253 - disregard Range Check for Equivalence Ratio (PID $44) when scaling is used.
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1599946 - stop empty Freeze Frames from bypassing check to have a matching stored DTC.
+
+
+
+Revision 13.1.1
+
+
+ConnectProtocol.c
+    issue 1554400 - finish fix by moving configuration of j2534 W4 to 40ms to proper order.
+
+SidRequest.c
+    issue 1514709 - allow saving of SID 5 response data to check for 15765 responses.
+    issue 1567928 - diagnostic solution (but not fix) for missed late responses.
+    issue 1565407 - don't count 0x78 as negative response
+
+SidSaveResponseData.c
+    issue 1514709 - save SID 5 response data to check for 15765 responses.
+
+TestToVerifyInUseCounters.c
+    issue 1563763 - 30 second IDLE can be done at anytime during 10.11 test.
+
+VerifyControlSupportAndData.c
+    issue 1567930 - Reset gIgnoreNoResponse to FALSE after SidRequest call.
+
+VerifyDiagnosticSupportAndData.c
+    issue 1567930 - Reset gIgnoreNoResponse to FALSE after SidRequest call.
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1567930 - Reset gIgnoreNoResponse to FALSE after SidRequest call.
+
+VerifyLinkActive.c
+    issue 1567928 - diagnostic solution (but not fix) for missed late responses.
+
+VerifyMonitorTestSupportAndResults.c
+    issue 1567930 - Reset gIgnoreNoResponse to FALSE after SidRequest call.
+
+VerifyO2TestResults.c
+    issue 1514709 - use SID 5 data to check for 15765 responses.
+
+VerifyVehileInformationSupportAndData.c
+    issue 1567930 - Reset gIgnoreNoResponse to FALSE after SidRequest call.
+
+
+Revision 13.1.0
+
+SidSaveResponseData.c
+    issue 1554398 - save PID $4F response data.
+
+VerifyDiagnosticSupportAndData.c
+    issue 1554398 - use the scaling in PID $4F for PIDs $0B,$24-28, $34-38 and $44.
+
+ConnectProtocol.c
+    issue 1554400 - configure j2534 W4 to 40ms to prevent missed response in ISO9141.
+
+SidSaveResponseData.c
+    issue 1514708 - Save SID 4 data to allow for check of positive and negative responses.
+
+SidRequest.c
+    issue 1514708 - Increment responding ECU count for negative responses in 15765 to allow for check of positve and negative responses to clear codes.
+
+ClearCodes.c
+    issue 1514708 - Fix check of response to allow determination of mixed reponse type (positve and negative).
+	
+TestToVerifyInUseCounters.c
+    issue 1544010 - Move initialization of Test10_9_Sid9Inf8 array here, making test 10.9 the source for initial data.
+
+TestToVerifyPerformanceCounters.c.
+    issue 1544010 - Remove Test11_1_Sid9Inf8 array and replace with Test10_9_Sid9Inf8 as the source for initial data.
+
+
+Revision 13.0.7
+
+ConnectProtocol.c
+    issue 1534143 - Tester Present for 29 bit CAN does not set the CAN_29BIT_ID flag.
+
+J1699.c
+    issue 1531786 - Static log file lost when DOS window closed in Test 10 (when prompted for user to enter VIN).
+
+TestToVerifyPerformanceCounters.c
+    issue 1529902 - In Test 11.2, ECUs that don't support I/M Readiness bits show "Complete" instead of "Not Supported".
+
+VerifyDiagnosticSupportAndData.c
+    issue 1514705 - Make PID 0x13 and 0x1D mutually exclusive for all vehicles
+    issue 1514706 - Open up the ranges for PIDs 0x45, 0x47, and 0x48 to 0%-100%.
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1529898 - Clarify the text for missing PIDs.
+    issue 1445185 - Software does not test PID support on a per ECU basis (Tests 5.11.1, 6.5.2, 7.5.2, 8.5.2, 9.5.2).
+
+VerifyReverseGroupDiagnosticSupport.c
+    issue 1529900 - Test 5.18.3 - Eliminate PID supported PIDs from 'group request' with regular PIDs.
+    issue 1531790 - Test 5.18.3 - Change from "first 6 PIDs" to "last 6 supported PIDs in reverse order".
+
+
+Revision 13.0.6
+
+SidRequest.c
+    issue 1506743 - allow testing to continue if DetermineProtocol fails due to padding error
+
+SidSaveResponseData.c
+    issue 1506745 - SID3/SID7 size error reported reported on ISO14230
+
+VerifyControlSupportAndData.c
+    issue 1493818 - Test 5.7 fails if vehicle does not support Sid8. Test should terminate and flag as warning
+
+VerifyGroupFreezeFrameSupport.c
+    issue 1493817 - Test 6.5 fails with "Sid2 Pid group response / individual response mismatch" when no FF DTC is set
+
+VerifyVehicleInformationSupportAndData.c
+    issue 1506744 - Test 5.17: Sid9 Inf8 logic incorrect.
+
+
+Revision 13.0.5
+
+ConnectProtocol.c
+    issue 1445199 - if ISO9141 K & L Line initialization fails, warn and try K-Line only
+    issue 1478462 - stop tester present msg using Ioctl (clear periodic msgs and clear tx buffer)
+
+DetermineProtocol.c
+    issue 1478462 - add delay to allow modules to end diagnostic state before next determine protocol
+
+LogMsg.c
+    issue 1490971 - SID9 Inf 8 - All 8 messages returned by non-CAN vehicles are not being written to the log file
+
+SidSaveResponseData.c
+    issue 1480052 - SID 8 TID data not saved
+    issue 1483932 - verify Sid7 response size
+    issue 1483931 - verify Sid3 response size
+
+TestToVerifyInUseCounters.c
+    issue 1347617 - add CALIDs to dynamic log file
+
+VerifyControlSupportAndData.c
+    issue 1445194 - no requirement to test next unsupported TID in 5.7, 5.11
+    issue 1485059 - No PID supported PID should be all 0 (Sids 2, 6, 8, 9)
+
+VerifyDTCPendingData.c
+    issue 1483932 - verify Sid7 response size
+
+VerifyDTCStoredData.c
+    issue 1483931 - verify Sid3 response size
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1485059 - No PID supported PID should be all 0 (Sids 2, 6, 8, 9)
+
+VerifyGroupFreezeFrameSupport.c
+    issue 1240914 - compare first 3 supported pid group request with individual request
+
+VerifyMILData.c
+    issue 1445193 - if no DTC and PID 1 not supported, then no failure if PID 4 is supported
+
+VerifyMonitorTestSupportAndResults.c
+    issue 1485059 - No PID supported PID should be all 0 (Sids 2, 6, 8, 9)
+
+VerifyReverseGroupDiagnosticSupport.c
+    issue 1445188 - reverse pid supported pid group request (0xE0-0xC0, 0xA0-0x00)
+
+VerifyVehicleInformationSupportAndData.c
+    issue 1485059 - No PID supported PID should be all 0 (Sids 2, 6, 8, 9)
+    issue 1347617 - add CALIDs to dynamic log file
+    issue 1487643 - CALID format check not correct in 5.17.2 and 10.2.4
+
+
+Revision 13.0.4
+
+SidRequest.c
+    issue 1470154 - only fail ISO15765 pad error once
+
+TestToVerifyPerformanceCounters.c
+    issue 1471887 - order of precedence incorrect in Test 11, in-use performance counter bits
+
+TestWithConfirmedDtc.c
+    issue 1470154 - update wording in prompt 7.1.2 to delay until code set and MIL on
+
+VerifyDiagnosticSupportAndData.c
+    issue 1470155 - extend PID $46 to 85C.
+    issue 1457846 - open range for PID $45 for diesel vehicles
+    issue 1457844 - eliminate misfire check for diesel vehicles in section 10
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1465995 - Only compare FF DTCs if pending FF DTCs are non-zero
+    issue 1465996 - Unexpected reset of data for SID0" reported when Service 2 is tested 
+    iaaue 1445195 - Software makes group request but there is no requirement (5.11)
+
+Revision 13.0.3
+
+DetermineProtocol.c
+    issue 1445177 - prompt user if VBATT is out of range.
+    issue 1457850 - always search for 29bit target address
+    issue 1457839 - only filter on SRC byte of CAN 29 bit ID determination
+
+J1699.c
+    issue 1445180 - warning if O/S is Windows 95/98/ME
+
+J1699.h
+    issue 1445176 - tester present rate is 2 seconds
+
+SidRequest.c
+    issue 1457855 - set 29bit flag in ISO15765 29bit mode
+    issue 1457847 - log ECU ID on PAD error
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1445136 - compare FF DTCs from test 6.5.1 with FF DTCs from test 7.5.1
+
+VerifyVehicleInformationSupportAndData.c
+    issue 1457852 - errors with SID 9 should not abort remaining ECUs
+
+
+
+Revision 13.0.2
+
+J1699.c
+    issue 1381782 - remove engineering mode
+
+J1699.h
+    issue 1381782 - remove engineering mode
+
+LogPrint.c
+    issue 1381782 - remove engineering mode
+
+VerifyDiagnosticSupportAndData.c
+    issue 1347606 - Test 5.10, Pids 21, 30, 31, 4D, 4E only checked if Sid 4 is successful
+
+VerifyReverseOrderSupport.c
+    issue 1445137 - flush keyboard buffer prior to start of reverse order support test
+
+VerifyVehicleInformationSupportAndData.c
+    issue 1439752 - Stepping through Sid 9 Inf 4 data may cause cause software to incorrectly report large number of errors
+
+
+
+Revision 13.00.01
+
+ConnectProtocol.c
+    issue 1435625 - Filter size error for J1850
+
+DetermineProtocol.c
+    issue 1426343 - Disconnect CAN protocol on 2534 error during 29-bit check.
+
+DisconnectProtocol.c
+    issue 1426350 - Stop filters with IOCtrl on disconnect
+
+IsDTCStored.c
+    issue 1433643 - Test 6.3 logs "Failure" for no OBD response
+
+IsDTCPending.c
+    issue 1433643 - Test 6.3 logs "Failure" for no OBD response
+
+SidRequest.c
+    issue 1433643 - Test 6.3 logs "Failure" for no OBD response
+    issue 1433640 - ISO15765 padding error detection
+
+TestToVerifyInUseCounters.c
+    issue 1433642 - Allow Test 10.12 and 10.13 if 10.11 fails
+
+VerifyDiagnosticSupportAndData.c
+    issue 1433638 - changed BARO PID (0x33) test range
+
+VerifyVehicleInformationSupportAndData.c
+    issue 1169958 - Service 9 Inf 4
+
+
+Revision 13.00.00
+J1699.h
+    issue 1356691 - Update to J2534 API v4.04
+
+J1699.c
+    issue 1356691 - Update to J2534 API v4.04
+
+ConnectProtocol.c
+    issue 1356691 - Update to J2534 API v4.04
+
+DetermineProtocol.c
+    issue 1356691 - Update to J2534 API v4.04
+
+DisconnectProtocol.c
+    issue 1356691 - Update to J2534 API v4.04
+
+FindJ2534Interface.c
+    issue 1356691 - Update to J2534 API v4.04
+
+SidRequest.c
+    issue 1356691 - Update to J2534 API v4.04
+    issue 1356688 - bad checksum in ISO9141 not flagged as error
+
+TestToVerifyInUseCounters.c
+    issue 1408266 - drive vehicle at >= 25 MPH for 300 seconds
+
+TestToVerifyPerformanceCounters.c
+    issue 1408468 - IGNCNTR, OBDCOND must increment be at least 1 since 10.9
+
+-- Version 12
+
+Revision 12.0.12
+
+CheckMILLight.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+FindJ2534Interface.c
+    issue 1333607 - Allow more than 8 J2534 devices.
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+J1699.c
+    Update version number.
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+    issue 1381923 - function to flush the keyboard input not working
+
+Log2534Error.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+LogUserPrompt.c
+    issue 1381787 - Remove leading spaces.
+    issue 1381923 - function to flush the keyboard input not working
+
+SidRequest.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+SidResetResponseData.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+SidSaveResponseData.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+StopTest.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+TestToVerifyInUseCounters.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+    issue 1298888 - Always print timer values to log.
+    issue 1298892 - Make Idle and Speed timers be consistent (i.e., stop when limit hit).
+    issue 1381923 - function to flush the keyboard input not working
+
+TestToVerifyPerformanceCounters.c
+    issue 1371810 - Test 11.2 reports fail if user chooses not to monitor.
+    issue 1371814 - Test 11.5 OBDCOND only needs to >= Test 10.9.
+    issue 1381923 - function to flush the keyboard input not working
+
+TestWithConfirmedDtc.c
+    issue 1381923 - function to flush the keyboard input not working
+
+TestWithFaultRepaired.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+    issue 1381923 - function to flush the keyboard input not working
+
+TestWithNoFaultAfter3DriveCycles.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+TestWithPendingDtc.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+    issue 1381923 - function to flush the keyboard input not working
+
+VerifyDTCPendingData.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+    issue 1381785 - Incorrect logic for pending amd stored DTC checks.
+
+VerifyDCTStoredData.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+    issue 1381785 - Incorrect logic for pending amd stored DTC checks.
+
+VerifyDiagnosticBurstSupport.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+VerifyFreezeFrameSupportAndData.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+VerifyGroupControlSupport.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+VerifyGroupDiagnosticSupport.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+    issue 1240917 - Eliminate group PID request and data compare.
+
+VerifyGroupFreezeFrameSupport.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+    issue 1240916 - Data from group PID supported PID requests is not compared if DTC exists.
+
+VerifyGroupMonitorTestSupport.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+VerifyLinkActive.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+VerifyMonitorTestSupportAndResults.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+VerifyO2TestResults.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+VerifyReverseGroupDiagnosticSupport.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+VerifyReverseOrderSupport.c
+    issue 1381923 - function to flush the keyboard input not working
+
+VerifyVehicleInformationSupportAndData.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+
+Revision 12.0.11
+
+CheckMILLight.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+ClearCodes.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+ConnectProtocol.c
+    issue 1333608 - Pad ISO 15765 Tester Present messages to a full frame.
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+DetermineProtocol.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+FindJ2534Interface.c
+    issue 1333607 - Allow more than 8 J2534 devices.
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+J1699.c
+    Update version number.
+    issue 1347618 - Don't buffer stdout.
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+J1699.h
+    issue 1333607 - Allow more than 8 J2534 devices.
+
+Log2534Error.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+LogUserPrompt.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+SidResetResponseData.c
+    issue 1298912 - On ISO 15765, check that unsupported "PID Supported PIDs" don't respond.
+
+SidSaveResponseData.c
+    issue 1298912 - On ISO 15765, check that unsupported "PID Supported PIDs" don't respond.
+
+TestToVerifyInUseCounters.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+TestToVerifyPerformanceCounters.c
+    issue 1298895 - Allow user to choose to fail Test 11.2 (if they feel they will never complete it).
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+TestWithConfirmedDtc.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+TestWithNoDtc.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+VerifyControlSupportAndData.c
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+VerifyDiagnosticSupportAndData.c
+    issue 1113230 - Partial fix for ERROR_RETURN macro.
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+    issue 1298899 - Chnage PID 0x31 in Table 242 from 16 to 50.
+
+VerifyMILData.c
+    issue 1280837 - Only one ECU needs to have MIL lit and > 0 DTCs.
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+VerifyReverseOrderSupport.c
+    issue 1298912 - On ISO 15765, check that unsupported "PID Supported PIDs" don't respond.
+    issue 1298907 - Partial fix for standardizing ERROR/Warning/PROMPT tags.
+
+
+Revision 12.0.10
+
+TestToVerifyInUseCounters.c
+    issue 1250302 - End of test 10 resports fail even though all individual tests passed.
+    
+TestToVerifyPerformanceCounters.c
+    issue 1250302 - End of test 10 resports fail even though all individual tests passed.
+
+
+Revision 12.0.9
+
+J1699.h    
+    issue 1230026 - Rewrote ERROR_RETURN macro to call ErrorReturn() function.
+
+SidSaveResponseData.c
+    issue 1244564 - Variable PID size determination incorrect.
+                    Using wrong byte from response data.
+
+TestToVerifyInUseCounters.c
+    issue 1230026 - Disable user prompt during dynamic test.
+    
+TestToVerifyPerformanceCounters.c
+    issue 1240920 - SID 9 INF 8 initial data from test 11.1
+    issue 1241945 - Fixed IM Readiness bug in test 11.2
+    issue 1244565 - Test 11.1, if VerifyLinkActive() fails,
+                    DisconnectProtocol() before ConnectProtocol ().
+    issue 1240919 - Changed "Test 11.2 SKIPPED" to "Test 11.2 PASSED"
+    issue 1230026 - Disable user prompt during dynamic test.
+
+    
+Revision 12.0.8
+
+J1699.c
+    issue 1230020 - flush the input stream before scanf ("%d", ...) 
+                    in case user enters non-numeric.
+
+
+Revision 12.0.7
+
+TestToVerifyPerformanceCounters.c
+    issue 1224333 - Check SID $09 INF $08 data before re-running test 11.2
+
+
+Revision 12.0.6
+
+J1699.h
+    issue 1217743 - Added STATUS type of 'ABORT'
+
+J1699.c
+    issue 1217743 - Handle dynamic test result of 'ABORT'
+    
+SidRequest.c
+    issue 1220819 - On $78 response, do not extend response time for Sid $09 Inf $06
+            
+StopTest.c
+    issue 1217743 - Handle exit type of 'ABORT'
+
+TestWithFaultRepaired.c
+    issue 1220816 - removed duplicate line from log file ("**** Test 8.3 ****")
+    
+TestToVerifyInUseCounters.c
+    issue 1220817 - Changed prompt from "Enter name for log file" to "Enter VIN"
+    
+TestToVerifyPerformanceCounters.c
+    issue 1217743 - process ESC key press as ABORT 
+    issue 1218168 - test 11.2, continue until Sid $09 Inf $08 meets same conditions as test 11.5 (if supported)
+    
+VerifyDiagnosticSupportAndData.c
+    issue 1075279 - increased PID $46 upper limit to 65 deg C.
+            
+Revision 12.0.5
+
+ConnectProtocol.c
+    issue #1210103 - only start periodic message once, otherwise log error
+    
+J1699.c
+    issue #1210105 - Create LogVersionInformation() function.
+    gVIN changed to 18 bytes.
+
+SidRequest.c
+    issue #1203210 - track which ECUs have a response pending and adjust extended time    
+    
+TestToVerifyInUseCounters.c
+    issue #1210105 - LogVersionInformation() at start of vin file.
+
+TestToVerifyPerformanceCounters.c
+    issue #1210103 - don't start periodic message before prompt
+    issue #1213732 - fixed logic for CAT & O2 monitoring increment in test 11.5
+    
+VerifyVehicleInformationSupportAndData.c
+    issue #1210125 - check for exactly 16 bytes in GetSid9Inf8Data ()
+    gVIN contains VIN starting at offset zero (instead of 3).
+    issue #1213727 - ReadVIN() returns FAIL if VIN not supported.
+                     VerifyVINFormat returns FAIL if invalid.
+    
+Revision 12.0.4
+
+VerifyFreezeFrameSupportAndData.c
+    issue #1207895
+    Initialize data
+    
+    
+Revision 12.0.3
+
+J1699.h
+    Added global veriables & function definitions;
+
+ClearCodes.c
+    issue #1188303
+
+ConnectProtocol.c
+    Removed 5 seconds delay before connecting to ISO9141 & ISO14230
+    Created functions: StartPeriodicMsg(), StopPeriodicMsg() to encapuslate the
+    PassThruStartPeriodicMsg(...) and PassThruStopPeriodicMsg (...) calls.
+
+DetermineProtocol.c
+    IDOBDProtocol() : add 5 second delay after DisconnectProtcol (ISO9141 & ISO14230 only) 
+    
+J1699.c
+    If test 10 fails, prompt user to continue with test 11.
+    Added Test Passed message after Static and Dynamic tests.
+
+SidSaveResponseData.c
+    issue #1169982
+
+TestToVerifyInUseCounters.c
+    Disable tester present during test 10.11
+
+TestToVerifyPerformanceCounters.c    
+    StartPeriodicMsg () prior to user prompt in 11.2
+    StopPeriodicMsg () after user prompt in 11.2  (issue #1194532)
+    DisconnectProtocol () prior to ConnectProtocol() in 11.6
+
+TestWithConfirmedDtc.c
+    issue #1188306
+    issue #1188309
+    
+TestWithFaultRepaired.c
+    issue #1188306
+    issue #1188309
+    
+TestWithNoFaultAfter3DriveCycles.c
+    issue #1188306
+    issue #1188309
+    
+TestWithPendingDtc.c
+    issue #1188306
+    issue #1188309
+
+VerifyDiagnosticAndSupport.c
+    PID $30 - check WARM_UPS > 0 when engine off
+
+VerifyDiagnosticSupportAndData.c
+    issue #1169982 - PID $06 - $09 size checking
+    
+VerifyFreezeFrameSupportAndData.c
+    issue #1188309
+
+VerifyMonitorTestSupportAndResults.c
+    issue #1194447 - skip PID supported PIDs
+
+VerifyReverseOrderSupport.c
+    issue #1169982 - PID $06 - $09 size checking
+    
+VerifyVehicleInformationSupportAndData.c
+    issue #1194447 - skip INF supported INFs
+
+        
+Revision 12.0.2
+
+J1699.c .h
+    New global variables and functions
+    Print SAE J1699 version to log file.
+
+LogMsg.c
+    If gSuspendLogOutput is set, then buffer write log msg to gszLogMsgCopy buffer.    
+    
+SidRequest.c
+    Clear gszLogMsgCopy
+
+StopTest.c
+    Added exit message.
+
+VerifyDiagnosticSupportAndData.c
+    Skip PIDs $20, $40, $60, $80, $A0, $C0, $E0.  (issue #1179279)
+    
+    Only check PIDs $0A, $0B when engine running (issue #1178684)
+
+TestToVerifyPerformanceCounters.c    
+    Set gSuspendLogOutput during test 11.2.
+    Log msg only if the message changed from previous message.
+    
+    'Channel in use' error (issue #1182313)
+
+VerifyDiagnosticBurstSupport.c
+    Burst test - Issue #1085947
+
+VerifyFreezeFrameSupportAndData.c
+    (issue #1178564)    
+    
+VerifyMonitorTestSupportAndResults.c
+    Init ulMidSupport flag before loop - Issue 1178556    
+    
+VerifyReverseGroupDiagnosticSupport.c
+    Comparison should be SidReq.NumIds != 0
+
+VerifyReverseOrderSupport.c
+    issue #1178688    
+
+Revision 12.0.1
+
+J1699.c
+    Check user responses as case-insensitive.
+
+TestToVerifyInUseCounters.c
+    set gOBDDTCHistorical = FALSE after ClearCodes ()
+
+TestToVerifyPerformanceCounters.c
+    Rewriten to support the new test 11.
+    
+VerifyControlSupportAndData.c
+    Response allowed from J1850 & ISO9141
+
+VerifyDiagnosticSupportAndData.c    
+    Save Sid1Pid1 per ECU for check against PID $41
+    Cleaned up global flags: 
+            
+VerifyVehicleInformationSupportAndData.c    
+    function RequestSID9SupportData() : Response allowed from J1850 & ISO9141
+
+Revision 12.0.00
+
+DetermineProtocol.c
+    Added GetEcuId () function
+
+InitProtocolList.c
+    Initialize HeaderSize field in gOBDList struct
+
+LogPrint.c
+    Added ScreenPrint() function to replace printf() in certain cases.
+    ScreenPrint() can suspend screen output using a global flag.
+
+J1699.c
+    Create temp log file to hold messages and responses prior to opening actual log file(s).
+    Copy temp log file to actual log file(s).
+    Added ctrl-C event handler.
+    Modify main() for test 10 support.
+    Declare new global functions and variables.
+    
+ScreenOutput.c (.h)
+    New functionality for screen manipulation for tests 10 and 11.
+    Basic screen functions:    clrscr(), get_cursor_pos(), gotoxy(), setrgb().
+    Dynamic display functions: init_screen(), update_screen_dec(), 
+                               update_screen_hex(), update_screen_text().
+
+StopTest.c
+    Close and delete temp log file.
+
+SidRequest.c
+    Support issue # 1101722. ISO 15765 service 4
+    extended response time to 30 seconds for $78
+
+SidResetResponseData.c
+    Use HeaderSize from gOBDList.
+
+SidSaveResponseData.c
+    Use HeaderSize from gOBDList.
+    SID 1 PIDs $06-$09 removed test for number of data bytes
+
+StopTest.c
+    Close and delete temp file
+
+TestToVerifyInUseCounters.c
+    Rewriten to support the new test 10.
+
+TestToVerifyPerformanceCounters.c
+    Began work on test 11. Not yet implemented.
+
+TestWithConfirmedDtc.c
+    Flush STDIN stream before before starting test 7.2
+    User prompt "Is MIL Light ON?" defaults to 'N'
+    
+TestWithFaultRepaired.c
+    Flush STDIN stream before "wait for pending DTC to clear" loop
+    User prompt "Is MIL Light ON?" defaults to 'N'
+
+TestWithPendingDtc.c
+    Flush STDIN stream before "wait for pending DTC" loop
+
+VerifyDiagnosticSupportAndData.c
+    Support issue # 1083265. Diesel engine ignore PID $11
+    Added functions: IsSid1PidSupported(), GetSid1SupportedPids(), VerifyIM_Ready().
+    Modified VerifyDiagnosticSupportAndData() to request PID $13 or $1D to check 
+        data size of PIDs $06-$09.
+    Added checks for gOBDEngineWarm flag set (during test 10).
+    Request each PID once and check across all ECUs.
+
+VerifyGroupDiagnosticSupport.c
+    Support issue #1166063. If ECU supports PIDs then request them.
+
+VerifyVehicleInformationSupportAndData.c
+    Support issue # 1068864. SID8INF8 (NODI) must equal $10    
+    Added function IsSid9InfSupported(), ReadVIN(), 
+    Added function GetSid9Inf8Data() to copy SID 9 INF 8 data to struct.
+    Modify function VerifyVINFormat(). Don't verify year if user didn't enter model year.
+    Broke out function RequestSID9SupportData().
+    Request each PID once and check across all ECUs.
+
+J1699.h
+    Added HeaderSize field to PROTOCOL_LIST struct
+    Create SID9INF8 struct.
+    Declare new global function and variables.
+
+
+Revision 11.4.06
+
+J1699.c
+    Updated version level to Revision 11.4.06
+
+J1699.h
+    VerifyEcuId () global function.
+
+VerifyO2TestResults.c
+    O2 sensor #2
+    
+DetermineProtocol.c
+    Added following functions: SaveConnectInfo (), VerifyConnectInfo (), VerifyEcuId ()
+    Added gFirstConnectFlag and gInitialConnect struct.
+
+SidSaveResponseData.c
+    If not determining protocol, check all ECU IDs against initial ECU list.
+
+VerifyMILData.c
+    If ECU supports PID 4 then must also support PID 1.
+
+VerifyMonitorTestSupportAndResults.c
+    Check for MID 6 data present.
+
+VerifyDiagnosticSupportAndData.c
+    Check for SID1 PID data present.
+
+VerifyFreezeFrameSupportAndData.c
+    Check for SID2 PID data present.
+
+VerifyVehicleInformationSupportAndData.c
+    Check for SID9 INF data present.
+
+
+Revision 11.4.05
+
+J1699.c
+    Updated version level to Revision 11.4.05
+    
+LogMsg.c
+    Log ISO9141/ISO14230 checksum
+    
+ConnectProtocol.c
+    For protocol ISO15765:
+    changed 11-bit CAN Mask to $07F8 and pattern to $07E8 
+    to prevent non-OBD II messages from passing through the filter.
+
+TestWithNoFaultAfter3CriveCycles.c
+    Moved statement LogPrint ("*** Test 9.6 ***\n");
+    to beginning of 9.6 test. 
+
+VerifyControlSupportAndData.c
+    Changed warning message from "No response to Sid8 request"
+    to "No positive response to Sid8 request"
+
+SidRequest.c
+    ProcessISO15765 () - index into Rx->data off by 1, fixed.
+                         SID $09 logged error as SID $04, fixed.
+
+
+Revision 11.4.4; Update per test feedback
+
+J1699.c
+    Updated version level to Revision 11.4.04
+    
+VerifyMILData.c
+    Update to evaluation ECU responses such they at least
+    one ECU responds but not more than user specified number.
+    
+VerifyGroupDiagnosticSupport.c
+    Update for test case 5.6.4 to only note the response
+    opposed to interpret.
+    
+VerifyReverseGroupDiagnosticSupport.c    
+    Update for test case 5.18.2 to only note the response
+    opposed to interpret.
+
+Revision 11.4.3; Update per J1699 V11.7
+
+J1699.c
+    Updated version level to Revision 11.4.03
+    
+DetermineProtocol.c
+    Logic correct to ID discovery method when attached as RAW CAN.  Previously
+    transmitted message did not include the PCI byte as part of the M$01 P$00
+    message.
+
+
+Revision 11.4.1; Update per J1699 V11.7
+
+J1699.c
+    Updated version level to Revision 11.4.01
+
+VerifyDTCPendingData.c
+
+    Mode $03 / $07; Table B ISO15765 if SID $03 / #07 not supported then ECU
+    shall not respond.
+
+VerifyDTCStoredData.c
+    Mode $03 / $07; Table B ISO15765 if SID $03 / #07 not supported then ECU
+    shall not respond.
+
+VerifyDiagnosticSupportAndData.c
+    Mode 1 PID 30 Test Limit is set at 0.  Must increment to < 2 per spec 11.7.
+    
+    Mode 1 PID 13 / 1D update per spec 11.7. Verify only one PID supported for
+    spark ignition.
+
+    Mode 1 PID 13 / 1D update per spec 11.7. PIDs must accept value >0 for diesel engines.
+    Commented out evaluation logic for number of sensors since acceptance can be 
+    0 or more.
+    
+    Minimum supported PID's now evaluated for Hybrid vehicles.  Previously if 
+    Hybrid vehicle indicated then minimum PID support was not evaluated.
+    
+    M$01 P$01 Evaluate Data B, BIT 5
+    M$01 P$01 Evaluate Data B, BIT 6
+    Updated error message to correctly indicate error condition.  Previously
+    message indicated monitor 'was complete'.  Correct message is to indicate
+    monitor 'must be' complete.
+    
+    
+VerifyFreezeFrameSupportAndData.c    
+
+    Minimum supported PID's now evaluated for Hybrid vehicles.  Previously if 
+    Hybrid vehicle indicated then minimum PID support was not evaluated.
+    
+    Update logic to account for FF support with pending fault.  Section 6.4.1
+    outlines evaluation criteria if FF supported for pending code.
+
+VerifyMonitorTestSupportAndResults.c
+
+    'TC# 5.14.5 - Unexpected response from ECU!' - In the event of an error
+    updated logic to allow user to continue with test.  Prior to this update
+    routine errored out without option to continue.
+
+VerifyVehicleInformationSupportAndData.c
+
+    Mode 9 Odd Vid's 1,3,5,7 should be ignored for ISO15765.  Per V11.7 spec.
+    
+    Updated evaluation criteria for CVN count. Mode 9 Operator Prompt 2 must be
+    at least equal to or less than the number of CVN's.
+
+-- Version 10
+Revision 10.2.6 
+Michael Drew / Miura TTC:
+	VerifyCALIDFormat:
+		Pointer problems with
+		Added function prototype.
+		Corrected pointer/int problems.
+
+Michael Drew:
+	VerifyMonitorTestSupportAndResults.c
+		Not propery doing proper comparison when signed values 
+		returned.
+		
+David Smyczynski:
+	VerifyVehicleInformationSupportAndData.c  -
+		Identified and correct a logic error with one of the larger
+		scope variables.  
+
+Revision 10.2.5 
+Michael Drew
+Applied patch to correct VerifyVINFormat
+(Supplied by Nissan)
+ 
+Michael Drew:
+Added wait to burst test for possible responses to periodic
+messages. This race condition was reproduceable by Subaru on
+ISO9141 and ISO14230 using the RS232 link to the CarDAQ. 
+
+Revision 10.2.4 
+
+Michael Drew [SF#761778]
+Changed Max allowable MAF value to 2.0 g/sec.
+
+The printing of TxMsgs was broken because ExtraDataIndex is
+not set on messages that J1699 sends to the J2534 interface.
+
+Breakup of J1699.c into one function per file to ease
+development.
+
+
+Michael Drew [SF#761778]
+Length not correct on mode $08 requests.  Special case for CAN removed.
+
+David Smyczynski [SF#760692]
+Removed determination for user entered model year for validation check.
+Removed determination for model year, based on Mode 9 info type 2 response.
+For '04 the response may not have been set nor identified in the previous
+check.
+
+Michael Drew [Enhancement]
+Timestamps now printed as unsigned longs. (No more negative timestamps!)
+Message contents displayed up to but not including ExtraDataIndex
+(no checksums).
+
+Revision 10.2.2 2003/06/20 16:41:00 dmag
+Added back the Copyright and GPL
+
+Michael Drew [Bug Fix]
+Fixed a bug in DetermineProtocol (needed disconnect before reset)
+Fixed a bug in VerifyDiagnosticBurstSupport (Missing return)
+Fixed multiline string problem.
+
+Revision 10.2.1 2003/06/11 18:35:00 kws
+Bug fixes and cosmetic changes
+
+Revision 10.0.1 2003/05/20/03 14:24:00 kws
+Bug fixes from the 9.03 release
+
+-- Version 9
+
+Revision 9.0.3 2003/04/03 08:03:00 kws
+Latest J1699-3 source code
+
+Revision 9.0.0 2003/02/25 13:12:00 kws
+
+-- Version 8
+
+Revision 1.5  2003/01/16 16:27:16  kws
+More revision 8 changes from the Jan. 10th meeting.
+
+Revision 1.4  2003/01/13 16:22:11  kws
+More revision 8A changes.
+
+Revision 1.3  2003/01/02 18:07:27  kws
+Added response code $78 handling for all protocols.  Added definitions for
+readability.
+
+-- Version 7
+
+Revision 1.2  2002/11/06 13:06:47  kws
+Release of code to match revision 7.0 of document.
+
+Revision 1.1  2002/11/05 19:49:51  kws
+Initial revision
+
+-- Versions 6 and before
+
+Revision 1.43  2002/09/03 14:33:11  kws
+Fixed user prompts.
+
+Revision 1.42  2002/08/29 14:24:51  kws
+Added support for ISO15765 SID9 segmented response processing.
+
+Revision 1.41  2002/08/27 19:16:59  kws
+Add check of support for SID1 PID1 before verifying MIL status / data.
+
+Revision 1.40  2002/08/26 17:28:22  kws
+Added date / time to beginning of log file.
+
+Revision 1.39  2002/08/26 16:49:57  kws
+Changed beginning of Tests 2, 3 and 4 to determine the protocol before
+checking the pending / stored codes.  Added NAK response processing to
+older protocols to avoid premature timeouts.
+
+Revision 1.38  2002/08/23 14:50:02  kws
+Removed MIL light check in Test 5.1.
+
+Revision 1.37  2002/08/21 20:16:03  kws
+Modified to ignore length bits in header of ISO14230 responses.
+Added logic to deal with non-ISO15765 vehicles with multiple modules where
+one (or more) of the modules may not respond to SID3 and/or SID7 requests.
+
+Revision 1.36  2002/08/21 16:35:26  kws
+Fix logic on ERROR_RETURN macro.  Increase request delay for 
+ISO9141/KWP2000.
+
+Revision 1.35  2002/08/20 12:20:34  kws
+Increased the write timeout to 500msec.
+
+Revision 1.34  2002/08/19 15:56:18  kws
+Fixed turning off of gIgnoreNoResponse flag.
+
+Revision 1.33  2002/08/19 15:53:43  kws
+Added ignore of no response when checking for a pending DTC.
+
+Revision 1.32  2002/08/16 20:38:42  kws
+Updated version string.
+
+Revision 1.31  2002/08/16 13:12:19  kws
+Updated text protocol descriptions.  Added global ignore of protocol errors
+(where possible) for engineering tests.  Started other changes per Draft
+Version 6 of document.
+
+Revision 1.29  2002/08/05 18:45:34  kws
+Fixed processing of Mode 9 support data for ISO15765.
+
+Revision 1.28  2002/07/26 16:28:51  kws
+Update version information.
+
+Revision 1.27  2002/07/25 16:48:14  kws
+Added support for ISO15765 no DTC case for SID3 and SID7 response processing.
+Fixed SID2 verification to not request PID2 if not supported.
+
+Revision 1.26  2002/07/24 15:27:00  kws
+Fixed initialization of log start time.  Fixed assignment of OS2Bit variable.
+Added flush of STDIN before all user input to avoid accidental skipping of
+steps.
+
+Revision 1.25  2002/07/23 13:31:32  kws
+Fix CAN_29BIT_ID in InitFlags.
+
+Revision 1.24  2002/07/22 19:12:22  kws
+Added CAN_29BIT_ID flag to initialization flags for ISO15765 protocol.
+
+Revision 1.23  2002/07/22 16:40:11  kws
+Added check to detection of multiple protocols to see if base protocol
+is the same.
+
+Revision 1.22  2002/07/19 19:32:23  kws
+Fix processin of SID3 for ISO15765 (ignore # of DTCs byte).
+Change user prompts for better looking log files.
+
+Revision 1.21  2002/07/17 18:21:23  kws
+Fixed checking of CAN_29BIT_ID flag.
+
+Revision 1.20  2002/07/17 14:06:21  kws
+Change ISO15765 11-bit mask and pattern to 0x7C0 so that we properly see the
+request (0x7DF) and response (0x7Ex).
+
+Revision 1.19  2002/07/15 16:45:20  kws
+Increased size of DeviceList and LibraryList arrays.
+
+Revision 1.18  2002/07/15 12:53:37  kws
+Added ClearCodes to the end of all tests.  Changed battery voltage check
+to 11-18VDC.  Fixed the va_end bug.  Added test 1.18 for tester present.
+
+Revision 1.17  2002/07/12 12:11:30  kws
+Added upper voltage limit of 20VDC.
+
+Revision 1.16  2002/07/10 16:25:15  kws
+Fixed formatting and typos.  Changed SI7 response to a fixed data size.
+Added JOBD types.
+
+Revision 1.15  2002/07/09 19:29:19  kws
+Fixed typo in header.
+
+Revision 1.14  2002/07/09 19:10:13  kws
+Added setup of 29-bit ISO15765 flow control filters.
+
+Revision 1.13  2002/07/09 13:45:34  kws
+Made SID7 an optional response from all but ISO15765.
+
+Revision 1.12  2002/07/08 14:55:21  kws
+Added check for ASCII part number and required SID6 support for ISO15765.
+
+Revision 1.11  2002/07/08 11:31:27  kws
+Added Test 1.17.  Added routines to poll the DTC status.
+
+Revision 1.10  2002/07/03 21:03:16  kws
+Fixed typo.
+
+Revision 1.9  2002/07/02 13:46:09  kws
+Fixed check of Sid9 Inf5.
+
+Revision 1.8  2002/06/28 16:23:46  kws
+Changed FIVE_BAUD_INIT to not fail test when the keywords are not 
+available.
+
+Revision 1.7  2002/06/21 14:59:35  kws
+Changed log timer to start at zero.
+Added DisconnectProtocol to DetermineProtocol if already connected.
+
+Revision 1.6  2002/06/18 19:58:46  kws
+Made the response to SID 8 request optional (i.e. not a failure).
+
+Revision 1.5  2002/06/18 19:51:49  kws
+Changed SID 9 INFOTYPE 5 number of items to be equal to SID 9 INFOTYPE 3
+number of items divided by four (4).
+
+Revision 1.4  2002/06/18 19:40:17  kws
+Fixed ISO14230 message filter to just check for MSB so that we recieve both
+the request and response(s).
+
+Revision 1.3  2002/06/17 17:32:23  kws
+Fixed the scaling of percentage values (0-255 = 0-100%).
+Added the 'P'/'C'/'B'/'U' prefixes to the DTC printout.
+
+Revision 1.2  2002/06/05 20:12:38  kws
+Changed FindJ2534Interface to look at all eight possible devices.  Added the
+StartDiagnostic message to the FAST_INIT.
+
+Revision 1.1  2002/05/23 19:31:14  kws
+Initial revision
+
+Revision 1.19  2002/05/22 12:57:38  kws
+*** empty log message ***

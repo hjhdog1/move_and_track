@@ -1,0 +1,42 @@
+REDISTRIBUTABLE FILES IN CANLIB SDK
+===================================
+
+The following files included in the CANLIB SDK may be redistributed
+with your application, provided they are only used together with
+genuine Kvaser hardware.
+
+
+canlib32.dll
+  API for CAN applications.
+
+canlib32NET.dll
+canlibCLSNET.dll
+  API for CAN applications in the .NET environment.
+
+sing32.dll
+  API for emulating Softing's CAN API.
+
+vcand32.dll
+  API for emulating Vector Informatik's CAN API.
+
+j1587lib.dll
+  J1587 API DLL (for Kvaser Linx)
+
+kv121032.dll
+  RP1210A/B API DLL
+
+kvj2534.dll
+kvj2534c.dll
+kvj2534i.dll
+  SAE J2534 API DLL
+
+linlib.dll
+  API for LIN applications.
+
+
+You may use and distribute the source code found in the SAMPLES
+directory in your own applications without restrictions.
+
+
+Please contact our support if you would like to redistribute any file
+not found in this list.

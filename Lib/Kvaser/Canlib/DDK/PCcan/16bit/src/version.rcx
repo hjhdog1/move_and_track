@@ -1,0 +1,40 @@
+/*
+**                         Copyright 1998 by KVASER AB
+**                   P.O Box 4076 SE-51104 KINNAHULT, SWEDEN
+**             E-mail: staff@kvaser.se   WWW: http://www.kvaser.se
+**
+** This software is furnished under a license and may be used and copied
+** only in accordance with the terms of such license.
+**
+** $Header$
+** $Revision$   $NoKeywords:$
+**
+** $$CAUTION$$
+**
+*/
+#include <ver.h>
+
+1 VERSIONINFO
+FILEVERSION     $$MAJOR$$,$$MINOR_N$$,$$BUILD_N$$,0
+FILEOS          VOS_DOS_WINDOWS16
+FILETYPE        VFT_DLL
+{
+ BLOCK "StringFileInfo"
+ {
+  BLOCK "040904B0" /* LANG_ENGLISH/SUBLANG_ENGLISH_US, Unicode CP */
+  {
+   VALUE "CompanyName",     "KVASER AB, Kinnahult, SWEDEN\000"
+   VALUE "FileDescription", "PCcan 16-bit driver for Windows 95\000"
+   VALUE "FileVersion",     "V$$MAJOR$$.$$MINOR$$.$$BUILD$$"
+   VALUE "InternalName",    "CANLIB.DLL\000"
+   VALUE "LegalCopyright",  "Copyright KVASER AB 1992-1998\000"
+   VALUE "OrginalFilename", "CANLIB.DLL\000"
+   VALUE "ProductName",     "$$PRODNAME$$"
+   VALUE "ProductVersion",  "$$PRODVER$$"
+  }
+ }
+ BLOCK "VarFileInfo"
+ {
+   VALUE "Translation", 0x0409, 0x04B0
+ }
+}

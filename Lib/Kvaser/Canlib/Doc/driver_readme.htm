@@ -1,0 +1,697 @@
+<html>
+
+<head>
+<title>Kvaser CAN drivers</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<style>
+<!--
+h1           { font-family: Verdana, Arial, Helvetica, sans-serif }
+h2           { font-family: Verdana, Arial, Helvetica, sans-serif }
+h3           { font-family: Verdana, Arial, Helvetica, sans-serif }
+h4           { font-family: Verdana, Arial, Helvetica, sans-serif }
+h5           { font-family: Verdana, Arial, Helvetica, sans-serif }
+body         { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt }
+table        { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt }
+
+a            { font-family: Verdana, Arial, Helvetica, sans-serif; font-style: normal; color: #0000CC; text-decoration: none; }
+a:VISITED    { font-family: Verdana, Arial, Helvetica, sans-serif; font-style: normal; color: #800080; }
+a:HOVER      { font-family: Verdana, Arial, Helvetica, sans-serif; font-style: normal; color: #CC3333; text-decoration:underline; }
+a:ACTIVE     { font-family: Verdana, Arial, Helvetica, sans-serif; font-style: normal; color: #999999; }
+
+-->
+</style>
+</head>
+
+<body>
+
+<h1 align="center">Kvaser CAN Drivers</h1>
+
+<p align="center"><i>Date:&nbsp;Sun Sep 28 21:41:25 2014</i><br>
+<i>Version:&nbsp;canlib&nbsp;5.7</i></p>
+
+<hr size="1" color="#0000FF">
+
+<h4>Table of contents</h4>
+
+<table border="0">
+  <tr>
+    <td><b>1</b></td>
+    <td><b>&nbsp;</b></td>
+    <td><a href="#1_Welcome"><b>Welcome</b></a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><b>2</b></td>
+    <td></td>
+    <td><a href="#2_SupportedSystems"><b>Supported systems</b></a></td>
+  </tr>
+  <tr>
+    <td>2.1</td>
+    <td></td>
+    <td><a href="#21_Supported_OS">Supported operating systems</a></td>
+  </tr>
+  <tr>
+    <td>2.2</td>
+    <td></td>
+    <td><a href="#22_Supported_hw">Supported hardware</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><b>3</b></td>
+    <td></td>
+    <td><a href="#3_Whats_new"><b>What's new in this release</b></a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><b>4</b></td>
+    <td></td>
+    <td><a href="#4_DriverInstallation"><b>Driver installation</b></a></td>
+  </tr>
+  <tr>
+    <td>4.1</td>
+    <td></td>
+    <td><a href="#41_firsttime">First-time driver installation</a></td>
+  </tr>
+  <tr>
+    <td>4.2</td>
+    <td></td>
+    <td><a href="#42_update">Updating an existing driver installation</a></td>
+  </tr>
+  <tr>
+    <td>4.3</td>
+    <td></td>
+    <td><a href="#43_remove">Removing the drivers</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><b>5</b></td>
+    <td></td>
+    <td><a href="#5_hardware"><b>Hardware installation</b></a></td>
+  </tr>
+  <tr>
+    <td>5.1</td>
+    <td></td>
+    <td><a href="#52_pcican">PCIcan, PCIcanx, PCIcan II, PCIcanx II (PCI bus)</a></td>
+  </tr>
+  <tr>
+    <td>5.2</td>
+    <td></td>
+    <td><a href="#52a_pciexp">PCIEcan (PCI Express)</a></td>
+  </tr>
+  <tr>
+    <td>5.3</td>
+    <td></td>
+    <td><a href="#53_usb">BlackBird, Eagle, Leaf, Memorator, Memorator Professional,
+    USBcan II, USBcan Light (USB)</a></td>
+  </tr>
+  <tr>
+    <td>5.4</td>
+    <td></td>
+    <td><a href="54_pc104">PC104+ (PCI bus)</a></td>
+  </tr>
+  <tr>
+    <td>5.5</td>
+    <td></td>
+    <td><a href="#55_minipcie">Mini PCI Express (PCI Express)</a></td>
+  </tr>
+  <tr>
+    <td>5.6</td>
+    <td></td>
+    <td><a href="#56_ethercan">Ethercan Light (Ethernet)</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><b>6</b></td>
+    <td></td>
+    <td><a href="#6_postinstall"><b>Installation verification &amp; troubleshooting</b></a></td>
+  </tr>
+  <tr>
+    <td>6.1</td>
+    <td></td>
+    <td><a href="#61_postinstall">Post-installation tasks</a></td>
+  </tr>
+  <tr>
+    <td>6.2</td>
+    <td></td>
+    <td><a href="#62_verify">Installation verification</a></td>
+  </tr>
+  <tr>
+    <td>6.3</td>
+    <td></td>
+    <td><a href="#63_troubleshooting">Installation troubleshooting</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><b>7</b></td>
+    <td></td>
+    <td><a href="#7_advanced"><b>Advanced topics</b></a></td>
+  </tr>
+  <tr>
+    <td>7.1</td>
+    <td></td>
+    <td><a href="#71_vector">Driver compatibility with products from Vector Informatik, GmbH</a></td>
+  </tr>
+    <td>7.2</td>
+    <td></td>
+    <td><a href="#73_silentmode">Running the installation in silent mode</a></td>
+  </tr>
+  <tr>
+    <td>7.3</td>
+    <td></td>
+    <td><a href="#74_codesigning">Code signing</a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><b>8</b></td>
+    <td></td>
+    <td><a href="#8_support"><b>Support, more information, etc.</b></a></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<hr size="1" color="#0000FF">
+
+<h4><a name="1_Welcome"></a>1 - Welcome</h4>
+
+<p>Thank you for choosing to use Kvaser hardware. This document will give you a
+quick overview of the installation procedure. A more detailed description
+complete with screenshots is available on <a href="http://www.kvaser.com"
+target="_blank">www.kvaser.com</a>.</p>
+
+<hr size="1" color="#0000FF">
+<h4><a name="2_SupportedSystems"></a>2 - Supported systems</h4>
+
+<p>The driver installation packages and device firmware updates are available on
+our web site and on the Kvaser CD which you got together with the hardware when
+you purchased it.</p>
+
+<p>&nbsp;</p>
+
+<h4><a name="21_Supported_OS"></a>2.1 Supported operating systems</h4>
+
+<p>For a full list of supported operating systems, see
+the <a href="relnotes_canlib.txt" target="_blank">release notes</a>.
+</p>
+
+<p>&nbsp;</p>
+
+<h4><a name="22_Supported_hw"></a>2.2 Supported hardware</h4>
+
+<p>For a full list of which hardware types this release supports, see
+the <a href="relnotes_canlib.txt" target="_blank"> release notes</a>.
+</p>
+
+<p>The <a href="relnotes_canlib.txt" target="_blank"> release notes</a> also
+contains a Device support table that lists the required firmware versions for
+all supported devices.</p>
+
+<p><b>Note</b>: We recommend that you update the firmware when you install or
+update the drivers. <a href="#61_postinstall">See section 6.1 below</a>.
+</p>
+
+<hr size="1" color="#0000FF">
+<h4><a name="3_Whats_new"></a>3 - What's new in this release?
+</h4>
+
+<p>The <a href="relnotes_canlib.txt" target="_blank"> release notes</a> describes in detail all changes in this and earlier
+releases.
+</p>
+
+<p>&nbsp;
+</p>
+
+<hr size="1" color="#0000FF">
+<h4><a name="4_DriverInstallation"></a>4 - Driver installation
+</h4>
+
+<p>We recommend that you install the drivers first, and then install the
+hardware.
+</p>
+
+
+<p>If you are upgrading the drivers, we recommend that you remove all Kvaser
+hardware before installing the update. In that way you can be sure that no
+applications are using the hardware and that no files are locked during the
+installation. The installation will work just fine even if you don't remove the
+hardware, but you might have to reboot before the new drivers are actually used.
+</p>
+
+<p>If you are upgrading the drivers, you should under any circumstances <b>close
+all applications that use the CAN (or LIN) bus</b> before starting the upgrade.
+</p>
+
+<p>
+&nbsp;
+</p>
+
+<h4>
+<a name="41_firsttime"></a>4.1 - First-time driver installation
+</h4>
+
+<h5>Windows 8, Windows 7 and Windows Vista</h5>
+
+<ol>
+  <li>When you start the installation program, Windows will ask for the password
+    of an account with administrative rights, or, if you are already logged into
+    an account with such rights, you will be presented with a &quot;consent
+    dialog&quot; that asks you for permission to continue.</li>
+
+  <li>Run the installation program. It will copy the driver files to your hard
+    disk and register them with Windows.</li>
+
+  <li>The first time you install new Kvaser hardware of a particular type,
+    Windows will display the "Found New Hardware Wizard". Since all the required
+    driver files are already installed on your computer, all you need to do is
+    to click the Next and OK buttons to complete the wizard. Windows will search
+    for the driver files and will discover them automatically. You don't need
+    the driver CD at this stage.</ol>
+
+<b>Note</b>: Windows will ask you if you want to look on Windows Update for
+ updated drivers. We recommend that you answer &quot;No, not this time&quot; -
+ it will save you time.</li>
+
+
+<h5>Windows 2000/XP/2003</h5>
+
+<ol>
+  <li>Be sure you are logged into the Administrator account, or another account
+    with administrator privileges.</li>
+
+  <li>Run the installation program. It will copy the driver files to your hard
+    disk and register them with Windows.</li>
+
+  <li>The first time you install new Kvaser hardware of a particular type,
+    Windows will display the "Found New Hardware Wizard". Since all the required
+    driver files are already installed on your computer, all you need to do is
+    to click the Next and OK buttons to complete the wizard. Windows will search
+    for the driver files and will discover them automatically. You don't need
+    the driver CD at this stage.</ol>
+
+<b>Note</b>: Windows XP Service Pack 2 (and later) will ask you if you want to
+    look on Windows Update for updated drivers. We recommend that you answer
+    &quot;No, not this time&quot; - it will save you time.</li>
+
+
+<p>&nbsp;</p>
+
+<h4><a name="42_update"></a>4.2 - Updating an existing driver installation</h4>
+
+<p>If your current driver version is <b>3.4 or later</b> you can simply re-run
+the installation program. All Kvaser drivers will be updated.</p>
+
+<p>If your current driver version is older than 3.4, you need to manually
+uninstall the drivers, reboot your machine, and then follow the above
+instructions for a first-time installation.</p>
+
+<p>To find out which version you are currently using, start Kvaser Hardware from
+the Control Panel, and select the "About" tab.</p>
+
+<p>&nbsp;</p>
+
+
+<h4><a name="43_remove"></a>4.3 - Removing the drivers</h4>
+
+<p>
+To remove the installed drivers, simply uninstall them using the Control Panel&nbsp;
+(&quot;Add/Remove software&quot; in Windows XP).
+</p>
+<p>
+<b>Note:</b> If you want to reinstall the drivers, a restart may be needed in
+some cases between the uninstallation and the reinstallation. If the
+reinstallation fails, try to restart the computer and then run the
+installation again.
+</p>
+
+<hr size="1" color="#0000FF">
+
+<h4>
+<a name="5_hardware"></a>5 - Hardware installation
+</h4>
+
+<p>
+&nbsp;
+</p>
+
+<h4>
+<a name="52_pcican"></a>5.1 - Hardware installation, PCIcan, PCIcanx, PCIcan II and PCIcanx II
+</h4>
+
+<ol>
+  <li>If your computer is running you need to shut it down and <b>turn the power
+    off</b> before you try to install the card.</li>
+  <li>Install the card in a free PCI slot. <b> Be sure it is firmly seated</b>.&nbsp;</li>
+  <li>Start the computer.</li>
+</ol>
+
+<p><b><font color="#FF0000">Caution</font></b>: the PCIcan, PCIcanx, PCIcan II and PCIcanx II
+boards contain devices sensitive to ESD. Be sure to follow common-sense ESD guidelines,
+e.g. wear a wrist strap, and avoid touching the electronic components on the board.
+</p>
+
+<p><b>Note</b>: the interrupts (IRQs), memory addresses and I/O port addresses are
+assigned by the computer's BIOS. There are no switches or other means to
+change the settings of the boards. Usually the BIOS will handle the resource
+assignment to everyone's satisfaction; if not, then some BIOSes allows you to
+change the settings in the setup. It might also help to move the card to another
+PCI slot. Problems are rare, however.
+</p>
+
+<p>&nbsp;
+</p>
+
+<h4><a name="52a_pciexp"></a>5.2 - Hardware installation, PCIEcan (PCI Express)
+</h4>
+
+<ol>
+  <li>If your computer is running you need to shut it down and <b>turn the power
+    off</b> before you try to install the card.</li>
+  <li>Install the card in a free PCI Express slot. <b> Be sure it is firmly seated</b>.&nbsp;</li>
+  <li>Start the computer.</li>
+</ol>
+
+<p><b><font color="#FF0000">Caution</font></b>: the PCIEcan board contain devices sensitive to ESD. Be sure to follow common-sense ESD guidelines,
+e.g. wear a wrist strap, and avoid touching the electronic components on the board.
+</p>
+
+<p>The board is designed for a 1x slot but you can use it in wider slots as
+well.
+</p>
+
+<p><b>Note</b>: the interrupts (IRQs), memory addresses and I/O port addresses
+are assigned by the computer's BIOS. There are no switches or other means to
+change the settings of the boards. Usually the BIOS will handle the resource
+assignment to everyone's satisfaction; if not, then some BIOSes allows you to
+change the settings in the setup. It might also help to move the card to another
+PCI slot. Problems are rare, however.
+</p>
+
+<p>&nbsp;
+</p>
+
+<h4>
+<a name="53_usb"></a>5.3 - Hardware installation for all Kvaser USB devices.
+</h4>
+
+<p>Insert the USB plug in a free USB connector on your computer or in a USB hub
+connected to your computer.
+</p>
+
+<p>&nbsp;
+</p>
+
+<h4>
+<a name="54_pc104"></a>5.4 - Hardware installation, PC104+
+</h4>
+
+<ol>
+  <li>If your computer is running you need to shut it down and <b>turn the power
+    off</b> before you try to install the card.</li>
+  <li>Install the card in a free PC/104+ slot. <b> Be sure it is firmly seated</b>.&nbsp;</li>
+  <li>Start the computer.</li>
+</ol>
+
+<p><b><font color="#FF0000">Caution</font></b>: the PC104+ boards contain devices
+sensitive to ESD. Be sure to follow common-sense ESD guidelines, e.g. wear a
+wrist strap, and avoid touching the electronic components on the board.
+</p>
+
+<p>&nbsp;
+</p>
+
+<h4><a name="55_minipcie"></a>5.5 - Hardware installation, Mini PCI Express
+</h4>
+
+<ol>
+  <li>If your computer is running you need to shut it down and <b>turn the power
+    off</b> before you try to install the card.</li>
+  <li>Install the card in a free Mini PCI Express slot. <b> Be sure it is firmly seated</b>.&nbsp;</li>
+  <li>Start the computer.</li>
+</ol>
+
+<p><b><font color="#FF0000">Caution</font></b>: the Mini PCI Express board contain devices sensitive to ESD. Be sure to follow common-sense ESD guidelines,
+e.g. wear a wrist strap, and avoid touching the electronic components on the board.
+</p>
+
+<p>&nbsp;
+</p>
+
+<h4><a name="56_ethercan"></a>5.6 - Hardware installation, Ethercan Light
+</h4>
+
+<ol>
+  <li>Connect the ethernet cable from the Ethercan to a network interface preferably with dhcp. (A factory reset device will use autoip.)</li>
+  <li>If Power over Ethernet (PoE) is not available, the device must be powered from the CAN connector.</li>
+  <li>The device will flash the LAN LED slowly when it is ready for connection.</li>
+</ol>
+
+<p><b>Note</b>: For further information about configuration and usage of the device, see the Ethercan Light user guide.
+</p>
+
+<p>&nbsp;
+</p>
+
+<hr size="1" color="#0000FF">
+
+<h4>
+<a name="6_postinstall"></a>6 - Installation verification & troubleshooting
+</h4>
+
+<h4>
+<a name="61_postinstall"></a>6.1 - Post-installation tasks
+</h4>
+
+<p><b><font color="#FF0000">Important</font></b> - after a successful driver
+installation, we recommend that you use the <b>Kvaser Hardware</b> application (see
+below under Installation verification) to check the firmware revision of the
+device. You should then check the Kvaser CD and our web site for firmware
+updates. We try to ensure that all devices are shipped with the latest revision
+of the firmware, but there might be updates available anyway, especially if you
+have purchased the device through one of our qualified resellers.</p>
+
+<p>&nbsp;</p>
+
+<h4><a name="62_verify"></a>6.2 - Installation verification
+</h4>
+
+<p> Working devices should be listed together with a
+little green icon under "Can Devices (KVASER)" in the Device Manager.
+</p>
+
+<p>In the Control Panel, open the <b>Kvaser Hardware</b> application. The driver is
+working and communicating with the device if the firmware revision can be read.
+</p>
+
+<p><b>Note</b>: An Ethercan Light device will not be listed in the Device Manager before a connection to the device has been established. 
+</p>
+
+<p>&nbsp;
+</p>
+
+<h4>
+<a name="63_troubleshooting"></a>6.3 - Installation troubleshooting
+</h4>
+
+<ul>
+<li><p>For USB devices, there's a problem in Windows XP which is described in detail in Microsoft KB article Q314634. Essentially the USB port
+has been put to sleep by the OS and will not detect an USB device that is plugged in. If your USB hardware isn't discovered by Windows
+XP, go to <a href="http://support.microsoft.com" target="_blank"> support.microsoft.com</a> and search for this KB article.
+</p></li>
+
+<li><p>Windows will display the "Found New Hardware Wizard" the first time
+you plug in a USB device in a USB port where a device of this type hasn't
+been used before. This is a design feature
+in Windows.  If the "Found New Hardware Wizard" is displayed, just
+click the Next and OK buttons and let Windows search for the drivers.
+It will find them automatically.
+</p></li>
+
+<li><p>If a device is marked with a yellow question mark in the Device Manager,
+try to right click at it and select
+Uninstall. Then physically remove the device and reinsert it, or reboot the
+computer. The
+"Found New Hardware Wizard" should then be displayed. As described
+above, just click the Next and OK buttons and let Windows reinstall
+the drivers automatically.
+</p></li>
+
+<li><p>If the installation still seems to be faulty, check the <b> Control
+Panel | Kvaser Hardware | Diagnostics tab</b>. Look for error messages.
+(These are clearly labeled as such.)
+</p></li>
+
+<li><p>You should also
+check the <b> Control Panel | Administrative Tools | Event Log</b>.
+Errors from the driver routines are found in the System log.
+The Source column tells you which driver produced the error. See the table
+of supported hardware in the beginning of this document for a list of the
+driver names for Kvaser hardware.
+</p></li>
+
+<li><p>Many installation problems are solved by a reboot followed by a
+  reinstallation of the driver package.
+</p></li>
+
+<li><p>Many of our devices have LEDs that can tell you something about the health of
+the device. For example, a Kvaser Leaf or PCIcan II that flashes quickly (around
+one flash per second) with the green LED typically has a firmware configuration
+problem. The LED flashing is described in detail in the hardware manual of the
+device in question.
+</p></li>
+
+<li><p>There are a number of scripts installed together with the drivers that
+  can be useful when solving some more awkward problems. Go to the directory
+  where you installed the drivers (typically c:\Program Files\Kvaser\Drivers)
+  and read the file 00readme-scripts.txt.
+</p></li>
+
+</ul>
+
+<p>
+&nbsp;
+</p>
+
+<hr size="1" color="#0000FF">
+
+<h4><a name="7_advanced"></a>7 - Advanced topics
+</h4>
+
+<p>&nbsp;
+</p>
+
+<h4>
+<a name="71_vector"></a>7.1 - Driver compatibility with products from Vector Informatik, GmbH
+</h4>
+
+<p>
+Starting with CANLIB 3.4, our drivers are fully compatible with CANalyzer, CANoe and other products from Vector Informatik, Germany.
+You will need at least version 4.1 plus service packs of CANalyzer/CANoe.
+</p>
+
+<p>
+You can install CANLIB 3.4 or later on a machine that has CAN hardware from Vector (e.g. CANcardX,
+CANcardXL) installed already; no
+conflicts will arise, no files are replaced, and the interfaces will happily work in parallel.
+</p>
+
+<p>&nbsp;
+</p>
+
+
+<h4><a name="73_silentmode"></a>7.2 - Running the installation in silent mode
+</h4>
+
+<p>You can run the installation packages in silent mode, meaning that no user
+interaction is required. (Please note that user action still is needed when
+inserting the hardware). To do this, use the <b>/S</b> switch when starting the
+installation, e.g.
+</p>
+
+<p>kvaser_drivers_setup.exe /S
+</p>
+
+<p> The installer may exit with an exit code:
+
+<table border="0" bgcolor="#FFFFCC" cellpadding="2">
+  <tr>
+    <td><b>Code</b></td>
+    <td><b>Meaning</b></td>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>Normal execution (no error)
+    </td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Installation aborted by user (cancel button)
+    </td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Installation aborted by script
+    </td>
+  </tr>
+  <tr>
+    <td>100</td>
+    <td>The virtual CAN driver, and/or the network enumerator driver, failed to
+      start. You should restart the computer and run the installation again.</td>
+  </tr>
+</table>
+
+</p>
+
+<p><b>Note</b>: You will still get popup messages <b>from Windows</b> when the
+drivers are installed. This is by design - newer versions of Windows warn the
+user that privileged code is about to be installed. To avoid this you can do
+either of:
+<ul>
+<li>Install Kvaser's certificate in the machine's Trusted Publisher store.</li>
+<li>Deploy Kvaser's certificate automatically in a Windows domain using a GPO.</li>
+<li>Click the <i>Always trust software from Kvaser AB</i> button.</li>
+</ul>
+<p>
+<p>
+These three things will give the same result, namely the installation
+of Kvaser's certificate in the Trusted Publisher store. The popup
+message will then not be showed.
+</p>
+
+<p>&nbsp;
+</p>
+
+<h4><a name="74_codesigning"></a>7.4 - Code signing
+</h4>
+
+<p>Starting with CANLIB 4.0, all drivers and other executable files are
+digitally signed by Kvaser using an Authenticode&trade; certificate. This certificate
+is recognized by Windows Server 2003, Windows XP x64, Windows Vista, and later
+versions of Windows. It is ignored by older Windows versions, including Windows
+XP and Windows 2000.
+</p>
+
+<hr size="1" color="#0000FF">
+
+<h4><a name="8_support"></a>8 - Support</h4>
+
+<p>If you have any problems you might want to have a look at our web site, <a href="http://www.kvaser.com" target="_blank">www.kvaser.com</a>.
+You can find more detailed installation information there, answers to frequently
+asked questions, and so on. </p>
+
+<p>If our web site doesn't help, then by all means don't hesitate to contact us,
+or your friendly Kvaser reseller.&nbsp; You will find the contact information on
+our web site.</p>
+
+<p>Hardware manuals are available in Adobe PDF format on the Kvaser CD,
+and on our web site (see the Support section.)</p>
+
+<p>&nbsp;</p>
+
+</body>
+</html>

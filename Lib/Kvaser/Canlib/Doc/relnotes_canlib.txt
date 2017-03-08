@@ -1,0 +1,830 @@
+#########################################################################
+Release Notes for CANLIB V5.7  
+#########################################################################
+
+These release notes apply to both CANLIB SDK and the Windows drivers.
+
+
+Supported operating systems
+========================================================================
+The following OSes are supported by current version of CANLIB:
+- Windows XP, 32-bit
+- Windows XP, 64-bit (x64 architecture)
+- Windows Server 2003
+- Windows Vista, 32-bit and 64-bit, x64 architecture
+- Windows Server 2008, 32-bit and 64-bit, x64 architecture
+- Windows 7, 32-bit and 64-bit, x64 architecture
+- Windows 8, 32-bit and 64-bit, x64 architecture
+- Windows 8.1, 32-bit and 64-bit, x64 architecture
+
+If you are using Windows 2000, you should install CANLIB 4.5a
+which is the last release that supports Windows 2000.
+
+If you are using an older version of Windows, you need to install an earlier
+version of CANLIB which can be downloaded from www.kvaser.com.
+
+
+Device support table
+========================================================================
+                                                   Required
+Device                           Driver            Firmware
+------------------------------------------------------------
+Kvaser LAPcan                    kcanx.sys         1.40 or later
+Kvaser LAPcan II                 kcanx.sys         4.20 or later
+Kvaser PCIcan                    kcanh.sys         N/A
+Kvaser PCIcanx                   kcanh.sys         N/A
+Kvaser PCIEcan                   kcanh.sys         N/A
+Kvaser BlackBird (all types)     kcanl/kcanlr.sys  1.9 or later
+Kvaser BlackBird v2 (all types)  kcany/kcanyr.sys  2.1 or later
+Kvaser Ethercan Light HS         kcanyr.sys        2.1 or later
+Kvaser Leaf (all types)          kcanl.sys         1.1 or later
+Kvaser Leaf v2 (all types)       kcanl.sys         3.0 or later
+Kvaser Eagle                     kcany.sys         1.6 or later
+Kvaser Memorator                 kcane.sys         2.5 or later
+Kvaser Memorator Professional    kcanl.sys         2.0 or later
+Kvaser Memorator Light           kcanl.sys         2.0 or later
+Kvaser Memorator R SemiPro       kcanl.sys         2.6 or later
+Kvaser Mini PCI Express HS       kcanl.sys         3.0 or later
+Kvaser Mini PCI Express 2xHS     kcanl.sys         3.0 or later
+Kvaser USBcan II                 kcane.sys         2.4 or later
+Kvaser USBcan Rugged             kcane.sys         2.4 or later
+Kvaser USBcan Professional       kcanl.sys         1.8 or later
+Kvaser USBcan Light 2xHS         kcanl.sys         3.0 or later
+Kvaser PCIcan II                 kcans.sys         2.4 or later
+Kvaser PCIcanx II                kcans.sys         3.0 or later
+Kvaser PC104+                    kcans.sys         3.0 or later
+Kvaser PCI104                    kcans.sys         3.0 or later
+Kvaser Virtual CAN bus           kcanv.sys         N/A
+
+It is always recommended to use latest released firmware, available from
+www.kvaser.com.
+
+
+SDK Installation
+========================================================================
+
+Note that the CANLIB SDK should not be installed on top of an already
+installed, older edition of CANLIB SDK. You should install into a new
+directory, or uninstall the old version.
+
+In contrast, the driver package may be installed over an old
+installation of the drivers.
+
+NOTE! If the Kvaser Eagle is reported as a "Kvaser Eagle Prototype",
+you need to uninstall the old driver package and then reinstall the
+new one.
+
+
+New Features and Fixed Problems in V5.7   (28-SEP-2014)
+===========================================================================
+
+* Excluded driver for COTI (CANopen Testing Interface).
+
+* Added support for canIOCTL_TX_INTERVAL in kcany driver.
+
+* Minimized timeout when the device responds that command is not supported 
+  in kcany driver.
+
+
+New Features and Fixed Problems in V5.6   (25-JUN-2014)
+===========================================================================
+
+* Fixed a problem where firmware update utility would refuse to run for very old 
+  firmware versions of Kvaser Eagle and Blackbird v2.
+
+* Fixed bug in .NET wrapper fw40\canlibCLSNET, member function
+  kvSetNotifyCallback updated.
+
+
+New Features and Fixed Problems in V5.5   (18-JUN-2014)
+===========================================================================
+
+* "Kvaser Remote Device Configuration" is built using a newer version of Delphi.
+
+* Fixed a problem where firmware update could randomly fail for Kvaser Eagle,
+  Ethercan Light and Blackbird v2.
+
+
+New Features and Fixed Problems in V5.4   (07-APR-2014)
+===========================================================================
+
+* Fixed problem in the flash updating program for Kvaser Leaf, Memorator Pro,
+  Eagle, and others. Reprogramming is now much faster.
+
+* Fixed problem that caused Kvaser TRX to hang.
+
+
+New Features and Fixed Problems in V5.3   (20-MAR-2014)
+===========================================================================
+
+* Support for Kvaser USBcan Light 2xHS (00714-7)
+
+* Support for Kvaser Mini PCI Express 2xHS (00743-7)
+
+* Support for Kvaser Ethercan Light HS (00713-0)
+  
+* Support for Kvaser Leaf Light HS v2 OEM (00735-2)
+
+* Added  "Ethercan" as a new product family in the Kvaser Remote Device
+  Configuration XML Format.
+
+* Added samples for the REST API (Android and javascript).
+
+* SDK (t): The included t compiler has version 3.2.
+     - Enhanced error messages are generated in certain cases,
+     - Declaration of several environmental variables of same type
+       in one line is allowed,
+     - Redeclaration of functions after their definition is now allowed.
+
+* SDK (.NET): Improved Intellisense help for .NET wrapper
+     - Fixed keeping reference to the notify callback delegate in .NET
+       canlib wrapper.
+
+* TRX: Project uses relative paths to source files. 
+     - GUI improvements.
+     - Updated autocomplete logic.
+     - Added more settings to preferences.
+     - Check for unsaved files. 
+
+* Python samples: Added new samples in Samples\Python
+     - RESTAPI sample (REST\rest.py)
+     - Canlib wrapper sample (canlib.py)
+
+* The following 64-bit dll:s are now installed in the driver
+  installation folder. (Uses 32-bit registry view for remote devices.)
+     - irisdll.dll, irisflash.dll, kvrlib.dll and libxml2.dll.
+
+* kvrlib.dll: Corrected kvrConfigOpen when cardnumber is above 10.
+
+* Blackbird and Ethercan configuration: Renamed IrisNetworkSetup.exe
+  to remoteselect.exe and RadioSetParam.exe to remoteconfig.exe. Also
+  updated GUI.
+
+* Blackbird configuration: Fixed a bug where setting Pairwise
+  Encryption different from Group Encryption would fail in Kvaser Remote
+  Device Configuration. This would happen in some "WPA mixed mode"
+  configurations.
+
+* Blackbird and Ethercan: Allow firmware update and configuration of remote
+  devices (earlier software only allowed for this if the device was connected
+  via USB)
+
+* Improved firmware download speed for devices using driver kcany or kcanyr
+  (needs updated firmware).
+
+* Remote devices will reconnect properly after being configured or
+  power cycled.
+
+* Stability improvements in Network Enumeration Service.
+
+* Kvaser Hardware: "Minimize to Tray" is removed as it caused confusion
+  sometimes.
+
+* Reboot is no longer required when installing drivers after a complete uninstall.
+
+
+New Features and Fixed Problems in V5.2   (24-SEP-2013)
+===========================================================================
+
+* Kvaser TRX, a lightweight IDE for developing t programs for Kvaser Eagle,
+  is now included in the SDK.
+
+* The key used to sign the drivers has been updated.
+
+* Finalized support for USBcan Pro HS/K-Line, Mini PCI Express and BlackBird v2
+
+* Added new setting in registry,
+  HKLM\SYSTEM\CurrentControlSet\Services\KvEnumSrv\
+  Parameters\DriveThreadConnectionTimeout. This, together with already
+  existing registry keys, makes it possible to increase the timeout
+  before a remote device is removed from Kvaser Hardware. For example, to
+  set the delay to 3 min, set the following values:
+
+    DriverThreadConnectionTimeout: 180000
+    HeartbeatTimeout: 180000
+    ConnectionDownTimeout: 150000
+    ConnectionRestartRetries: 8 (Retries will be made with 20s intervals)
+
+* SDK (t): The included t compiler has version 3.1.
+     - Fixed problem with user generated encryption keys which caused
+       improper decryption of txe code in Eagle.
+     - Corrected sending of extended messages when using database in t programs.
+     - Fixed compiler crash when include depth was too high.
+     - Fixed a bug with debug printouts from t programs when restarting a device
+       with an open handle.
+     - Added sample saveCan.t which saves CAN messages to SD-card using the
+       built-in serialization.
+
+* RadioSetParam: Corrected display of hostname for BlackBird. Also corrected
+  update handling of hostname in BlackBird.
+
+* RadioSetParam: Corrected display of Signal Strength greater than -20.
+
+New Features and Fixed Problems in V5.1 (Release 21-MAY-2013)
+======================================================================
+
+* Device driver for Eagle can now query script status using
+  the new API kvScriptStatus().
+
+* The driver uninstaller will now remove J2534 registry keys.
+
+* Minor updates to documentation.
+
+
+New Features and Fixed Problems in V5.0 (Release 04-MAR-2013)
+======================================================================
+
+* t: The included t compiler has version 3.0, see "The Kvaser t Programming
+       Language" for details.
+     * Errorcode canERR_SCRIPT_WRONG_VERSION is now returned when a script
+       compiled with wrong version of compiler is loaded.
+
+* Added tentative support for USBcan Pro HS/K-Line, MiniPCIe and Blackbird v2
+
+* Minor updates in Kvaser BlackBird Help files
+
+* Fixed GUI representation of active key in WEP.
+
+* canHWTYPE_BAGEL is now deprecated, use canHWTYPE_EAGLE instead.
+
+* Device drivers kcana.sys, kcanc.sys, kcand.sys and kcanp.sys are no
+longer included because the corresponding hardware is obsolete. This
+affects PCcan (ISA bus) and USBcan (the first version from ca. year 2002,
+P/N 00135-0 and 00134-3). Use CANLIB 4.9 for these devices.
+
+* Installer (kvaser_drivers_setup.exe) can now exit with code 100, this means that
+  "The virtual CAN driver, and/or the network enumerator driver, failed to
+   start. You should restart the computer and run the installation again."
+  The usage for this is in silent mode where you e.g. do the following in a script:
+    [c:\] type run_installer.bat
+    @echo off
+    kvaser_drivers_setup.exe /S
+    echo 'kvaser_drivers_setup.exe /S' returned %ERRORLEVEL%
+
+* Changes and corrections to J2534:
+    * J2534 "raw CAN" traffic now runs more than three times as fast as earlier releases.
+
+    * Fixed issue where the J2534 was not properly registered during
+      installation under 64-bit Windows.
+
+    * Fixed an issue where running two instances of J2534 could result in an
+      unhandled exception.
+
+    * J2534 will now accept opening virtual channels (under ISO11898 and
+      ISO15765) when the registry key HKLM\PassThruSupport.04.04\Kvaser
+      CAN\canOPEN_ACCEPT_VIRTUAL is set to non-zero.
+
+    * J2534_ERR_DEVICE_NOT_CONNECTED will now be returned if the device is
+      removed during use under ISO11898 or ISO15765.
+
+    * J2534 fixed bug related to periodic messages, dll could crash when
+      stopping periodic message. (Expanded the critical section inorder to
+      protect data and pointer)
+
+* Updated .NET CLS with missing defines for canIOCTL_xxx and canCHANNELDATA_xxx.
+
+* Updated .NET CLS v1.1 to match functionality of .NET CLS v4.0.
+
+* Added vs2005 NET samples.
+
+
+New Features and Fixed Problems in V4.10 (Release 22-JAN-2013)
+======================================================================
+
+* Version 4.10 was released only to an OEM customer.
+
+* kvrLib:
+  * Fixed bug in kvrWlanGetSecurityText, when passing security_string_size greater than 256.
+  * Default hostname no longer includes '_'.
+  * Old devices needs to be reconfigured with new hostname.
+  * XML version stamp corrected to 4.3
+
+* SDK:
+  * canlibCLSNET.dll for Framework 4.0 - Updated with more functions
+  * Added .NET CLS compliant wrappers for kvrlib and kvaDbLib and kvmlib.
+  * Added .NET samples Cs_kvrConnect, Cs_kvrConfig and DBdump.
+  * Added information on DLL dependencies in Kvaser CANLIB documentation.
+
+* t:
+  * The included t compiler has version 2.1, see "The Kvaser t Programming Language" for details.
+  * Local static variables are now correctly initialized.
+  * Added histogram sample that record data into histogram.
+  * Improved syntax check and error handling in compiler.
+  * Tutil now reports all script errors in listen mode.
+  * Added support to read Customer Data and included a sample.
+
+* Support added for Customer Data in Eagle.
+
+* Improved printout in Kvaser Customer Data Utility
+
+* Added canIOCTL_TX_INTERVAL (for supported interfaces) to force delays
+  between successive transmits on the CAN bus.
+
+* Implemented canIOCTL_GET_TXACK
+
+* Added canIOCTL_SET_USB_THROTTLE_SCALED and canIOCTL_GET_USB_THROTTLE_SCALED
+
+* Added sanity check to kcans to prevent BSOD on failing hardware in production
+
+* Added canCHANNELDATA_REMOTE_MAC and canCHANNELDATA_REMOTE_HOST_NAME to read
+  MAC address and host name of remote capable devices.
+
+
+
+New Features and Fixed Problems in V4.9 (Release 07-SEP-2012)
+======================================================================
+
+* kvrlib: Fixed read-out problem when access password length was 28-31
+  characters.
+
+* canCHANNELDATA_DEVNAME_ASCII will now return a value for all USB
+  connected devices that supports it.
+
+* Fixed Object Buffer(Auto Transmit) function for Kvaser Eagle, needs
+  Kvaser Eagle firmware v1.4.
+
+* Added CAN traffic encryption configuration to Kvaser Network
+  Device Selector
+
+* kvrlib: Fixed reporting of mac in kvrWlanGetScanResults for ssid
+  longer than 18 characters
+
+* Improved restart device procedure after writing parameters from
+  Kvaser Wireless Configuration on slow machines.
+
+* Several bug fixes in the RP1210 driver.
+
+* kvReadDeviceCustomerData() can now handle USBcan Professional too.
+
+* Various documentation corrections.
+
+* kvrlib: Added functions kvrHostName() and kvrNetworkGetHostName()
+
+* Added support for HostName to Kvaser Network Device Selector
+  and Kvaser Wireless Configuration
+
+
+
+New Features and Fixed Problems in V4.8 (Release 25-MAY-2012)
+======================================================================
+
+* Improved the uninstall behaviour of the Kvaser Network Enumerator
+  Service.
+
+* Memory leak for remote devices plugged.
+
+* CANlib now supports 64 channels.
+
+* Changes and corrections to kvrlib:
+
+    * The device configuration uses XML format version 4.2, see
+      "Specification of the Kvaser BlackBird XML Format" for details.
+
+    * MTU setting via XML configuration file enabled.
+
+    * Corrected rx/tx rate reporting in kvrNetworkGetConnectionStatus().
+
+    * Added _ERR_ENCRYPTION_PWD as remote device status code.
+
+    * Added support for configuration profiles in future products.
+
+    * Added APIs kvrDiscoveryClearDevicesAtExit, kvrConfigInfoGet.
+
+    * Kvaser Wireless Configuration and Kvaser Network Device Selector now
+      uses kvrlib internally.
+
+* canGetChannelData/REMOTE_OPERATIONAL_MODE returns _NONE for non-remote
+  devices.
+
+* Added Kvaser Customer Data Utility.
+
+* Improved arithmetic precision when reading FP values from .dbc files.
+
+* Various improvements and bug fixes in the RP1210 and J2534 libraries.
+
+* Various documentation improvements.
+
+
+New Features and Fixed Problems in V4.7 (Release 26-JAN-2012)
+======================================================================
+
+* Added possibility to read operational mode (infrastructure/adhoc) for
+  remote capable devices.
+
+* The driver now requires firmware version 1.2 or later for Kvaser Eagle.
+  Older firmware will not work except for upgrading the firmware.
+
+* Fixed that the service could under a certain circumstance leave an inactive
+  remote driver loaded.
+
+* Several changes and corrections to kvrlib:
+
+    * The device configuration uses XML format version 4.1, see
+      "Specification of the Kvaser BlackBird XML Format" for details.
+
+    * Hostname is no longer printed as an XML comment.
+
+    * Device access password is only saved in protected and private mode.
+
+    * Device access password can contain xml entities.
+
+    * Maximum SSID length increased from 31 to 32 characters.
+
+    * Added kvrServiceState_INSTALLING that informs that a driver is being
+      installed.
+
+* The driver installer now includes the J2534-1 DLLs that were
+  previously distributed with the SDK only. There is also an option of
+  registering the J2534 driver at installation time.
+
+* The driver installer now groups the software in four sections, one
+  of which (the one containing the driver files) is mandatory and the
+  other are optional. We recommend that you use the default choices when
+  installing the drivers.
+
+* The driver installer supports a command-line switch /DISABLE=section[,section]
+  which can be used to turn off installation of optional sections.
+  Currently the following sections are defined: GUI, STARTMENU, J2534. You can
+  also specify ALL to disable installation of all optional sections.
+
+* kvaDbLib: added APIs kvaDbAddNode, kvaDbDeleteNode,
+  kvaDbSetNodeName, kvaDbSetNodeComment, kvaDbAddReceiveNodeToSignal,
+  kvaDbRemoveReceiveNodeFromSignal
+
+
+
+
+
+New Features and Fixed Problems in V4.6a (Release 20-OCT-2011)
+======================================================================
+
+* kvaDbLib: fixed bug introduced in 4.6 where all extended identifiers
+in the database were unreadable.
+
+* Several changes and corrections to kvrlib:
+
+    * The device configuration uses XML format version 3.0, see
+      "Specification of the Kvaser BlackBird XML Format" for details.
+
+    * Corrected active WEP key numbering from 0-3 to 1-4 in XML.
+
+    * The device access password is no longer encrypted in the XML file.
+
+    * All WEP keys are now accessible from the API.
+
+    * Use entitys like &lt; to encode and decode XML file.
+
+    * Improved textual description of kvrERR_PASSWORD.
+
+    * Duplicated devices not allowed in the list of configured devices.
+
+    * Fixed multiple kvrGetErrorText() bugs.
+
+    * Removed canUninitializeLibrary() from kvrConfigOpen().
+
+* setparam_oem.exe: Added firmware version check. Fixed a bug where version
+number was checked on wrong device.
+
+* Kvaser Wireless Configuration: Set the correct key length for WEP64
+and WEP128.
+
+
+New Features and Fixed Problems in V4.6 (Release 16-SEP-2011)
+======================================================================
+
+* Support for Kvaser Eagle (00567-9)
+
+* Support for Kvaser BlackBird SemiPro HS with OBDII connector (00629-4).
+
+* kvScriptRequestText() and kvScriptGetText() replaced
+  kvDeviceMessagesSubscription() and kvDeviceMessagesRead().
+
+* Max number of connected devices in service is now 32.
+
+* Added kvScriptUnload().
+
+* SDK: The included t compiler has version 2.0, see "The Kvaser t Programming
+  Language" for details.
+
+* J2534 driver: Implemented "Mixed mode" as per J2534-2.
+
+* J2534 driver: Fixed problem where messages with extended identifiers were not
+  correctly reported.
+
+* J2534 driver: Sometimes, when stopping a periodic CAN transmission, a corrupt
+  message would be written to a buffer causing further transmission to stop.
+
+* J2534 driver: Fixed bug where segmented messages could only be sent if they
+  matched the first flow control filter.
+
+* J2534 driver: Fixed bug where transmission of both standard and extended ids
+  were possible although only one of them were selected.
+
+* J2534 driver: It's no longer possible to send segmented periodic messages,
+  which the standard prohibits.
+
+* J2534 driver: Fixed crash when too long periodic messages were sent.
+
+* J2534 driver: Fixed bug where the reception of an iso15765 message with fewer
+  data bytes than 8 caused the ISO15765_PADDDING_ERROR to be reported in a
+  separate message. Now it's set in the received message instead.
+
+* kvrlib: Changed size of kvrDeviceInfo struct in kvrlib.h.
+
+* kvrlib: Added CAN traffic encryption if requested by remote device (Kvaser
+  BlackBird). This is configured in the device via XML settings and the password
+  is also set in kvrlib via kvrDiscoverySetEncryptionKey().
+
+* kvrlib: The device configuration uses XML format version 2.0, see
+  "Specification of the Kvaser BlackBird XML Format" for details.
+
+* kvrlib: Renamed kvrAddressType_[ALL|BROADCAST|STORED] to
+  kvrAddressTypeFlag_XXX.
+
+* kvrlib: Added functions for handling the service; kvrServiceQuery(),
+  kvrServiceStart(), kvrServiceStop().
+
+
+New Features and Fixed Problems in V4.5a (Release 05-JUL-2011)
+======================================================================
+
+* Fixed problem with installer that caused the kvenumsrv service
+install to fail randomly.
+
+* New APIs kvScriptUnload, kvFileGetName and kvFileGetCount.
+
+* kvrlib: Improved documentation of APIs kvrDiscoveryStart and
+kvrDeviceInfo.
+
+* kvrlib: Fixed various problems when doing consecutive device
+discoverys.
+
+* kvrlib: Fixed bug where the kvenumsrv hang in state "STARTING".
+
+* kvrlib: Fixed problem where kvrDiscoveryClose returned
+kvrERR_NOT_IMPLEMENTED.
+
+* kvrlib: Fixed problem where kvrDiscoverySetAddresses crashed if
+called twice.
+
+* kvrlib: kvrUnloadLibrary now cleans up better.
+
+
+New Features and Fixed Problems in V4.5 (Release 02-MAY-2011)
+======================================================================
+
+* Added new ioctls for diagnostics of remote devices;
+  canIOCTL_GET_BUS_TYPE, canIOCTL_GET_CHANNEL_QUALITY,
+  canIOCTL_GET_ROUNDTRIP_TIME and
+  canIOCTL_GET_TIME_SINCE_LAST_SEEN.
+  These are also availible in canGetChanneldata();
+  canCHANNELDATA_BUS_TYPE, canCHANNELDATA_CHANNEL_QUALITY,
+  canCHANNELDATA_ROUNDTRIP_TIME and
+  canCHANNELDATA_TIME_SINCE_LAST_SEEN
+
+* Added ioctl and canGetChannelData() to read device name from a remote
+  device; canIOCTL_GET_DEVNAME_ASCII and canCHANNELDATA_DEVNAME_ASCII.
+
+* Added functions for active ping; kvPingRequest() and kvPingGetLatest().
+
+* Added support for remote BlackBird in 64 bit executables.
+
+* Added support for extended BlackBird connection status (i.e. wrong password)
+  in Kvaser Hardware.
+
+* Fixed problem where installed DLLs and other system files got an overly
+  restrictive ACL, thus preventing unprivileged users to use the CAN
+  drivers. This happened when running the installation package on a machine
+  where the drivers were already installed, without uninstalling them first.
+
+* Added WM__CANLIB style notification on buson/off change, when the
+  physical channel is taken on/off bus.
+
+* SDK: Documentation facelift.
+
+* Support libraries for Microsoft .NET framework didn't make it into this
+  release but we expect to make them available on the web site later
+  in May 2011.
+
+
+New Features and Fixed Problems in V4.4 (Release 20-JAN-2011)
+======================================================================
+
+* Added support for 00581-5 Kvaser Memorator Professional CB
+
+* Added two new ioctls, canIOCTL_SET_ERROR_FRAMES_REPORTING and
+  canIOCTL_SET_LOCAL_TXECHO.
+
+* "Resource filtering" for lapcan is no longer the default.
+  This facilitates installation on e.g. Dell E6410 laptops where the
+  driver wouldn't find free I/O space or other resources.
+
+* Improvements in the driver for COTI (CANopen Testing Interface).
+
+
+
+Fixed Problems in V4.3a (Release 2-MAR-2011)
+======================================================================
+
+* Fixed problem where installed DLLs and other system files got an
+  overly restrictive ACL, thus preventing unprivileged users to use the
+  CAN drivers. This happened when running the installation package on a
+  machine where the drivers were already installed, without uninstalling
+  them first.
+
+
+New Features and Fixed Problems in V4.3 (Release 25-NOV-2010)
+======================================================================
+
+* Tentative support for Kvaser Eagle. Details may still change.
+
+* Support for Kvaser Memorator R SemiPro and Kvaser USBcan R.
+
+* A library for reading CANdb files is included. See the sample code
+  in Samples\candb. API documentation is in the CANLIB help file.
+
+* A driver for COTI (CANopen Testing Interface) is included.
+  See http://www.can-cia.de/index.php?id=conformance for more information.
+
+* 64-bit versions of linlib.dll and j1587lib.dll are included.
+
+* Users of Dell Latitude 6410 laptops together with LAPcan might need to
+  run PcmciaIrqRouteToPciController.reg and lapcan_resource_filter.js.
+
+* Fixed a bug where canReadSpecific would leave a "ghost message" in the
+  queue. Further calls to canRead would return canERR_NOMSG but when
+  reading the queue level, 1 would be returned.
+
+* canlibCLSNET.dll: when using canIoCtl to get the EAN number, the DLL
+  now returns an unsigned 64-bit integer that contains the EAN,
+  BCD-coded in a hex string. Earlier version always returned an error
+  code.
+
+* filo_setparam_userdata.exe: Fixed hex number parsing bug for
+  the -data argument.
+
+* kcanl.sys: Fixed missing "break" that would cause the autotransmit
+  buffers to misbehave if the user parameters were read.
+
+
+
+New Features and Fixed Problems in V4.2 (Release 15-OCT-2009)
+======================================================================
+
+* This driver version is needed to use Kvaser Memorator Light.
+
+* linlib.dll now exports the linGetCanHandle, linSetupIllegalMessage
+  and linSetupLIN APIs properly (without "name mangling")
+
+
+
+New Features and Fixed Problems in V4.1a (Release 1-JUN-2009)
+======================================================================
+
+* IMPORTANT for Kvaser Blackbird setup program: In this release
+  changes were made that will require at least firmware 1.9.950. Older
+  Blackbird firmware will not work. Also note that old configurations
+  can not be read into the setup program. You must recreate the
+  configurations.
+
+* Kvaser Blackbird setup program: New channel selection user
+  interface. The "automatic" choice is now replaced by "Search all
+  channels".
+
+* Kvaser Blackbird setup program: Added China as a regulatory domain.
+
+* Kvaser BlackBird: communication protocol slightly changed to improve
+  both latency and throughput.
+
+* (General) Fixed bug where the value returned by
+  canIOCTL_GET_TIMER_SCALE was wrong unless it was first set by a call
+  to canIOCTL_SET_TIMER_SCALE.  (#1693)
+
+* (General) Fixed problem where the length of the outstanding transmit
+  queue was incorrectly calculated, causing an overflow after sending
+  more than 10240 messages without calling any other API than canWrite.
+  (#1380)
+
+* Support for OEM products 00527-3, 00536-5 and 00541-9.
+
+
+New Features and Fixed Problems in V4.1 (Release 5-MAR-2009)
+======================================================================
+
+* Support for Kvaser Memorator Light and several new Kvaser Leaf types.
+
+* Kvaser Blackbird: The setup tool now allows for using WPA2 when
+  connecting to access points configured for both WPA and WPA2.
+
+
+New Features and Fixed Problems in V4.0e (Release 14-NOV-2008)
+======================================================================
+
+* All PCI boards: Fixed a problem that prevented computer shutdown at
+  certain occasion. The computer would just ignore shutdown, hang, or
+  even crash during a regular system shutdown.
+
+
+New Features and Fixed Problems in V4.0d (Release 4-SEP-2008)
+======================================================================
+
+* Fixed a problem where the channel assignments (for Vector CANalyzer)
+  were not writable from Kvaser Hardware.
+
+* Fixed problem with registry protection on certain keys in 64-bit Vista.
+  This caused problems with the proxy driver that Kvaser BlackBird uses.
+
+
+
+New Features and Fixed Problems in V4.0c (Release 8-JUL-2008)
+======================================================================
+
+* Compared to 4.0b, this release contains no changes visible to the
+  end users - only changes to certain manufacturing software are made.
+
+
+
+New Features and Fixed Problems in V4.0b (Release 27-MAY-2008)
+======================================================================
+
+* Kvaser BlackBird support: Fixed a problem with Kvaser Network Setup
+  and the enumeration service (used for Kvaser BlackBird) where a
+  registry key sometimes got a too restrictive protection.  This caused
+  the Network Setup to fail updating the list of BlackBirds on the
+  network and that would prohibit connections from the service to the
+  BlackBird.
+
+* Kvaser BlackBird support: Kvaser Network Setup will now issue an error
+  message if the registry keys we just mentioned cannot be written.
+
+* canlib32.dll: Added a missing DeleteCriticalSection when the DLL
+  unloads to balance the InitCriticalSection which is called when the
+  DLL initializes.
+
+* RP1210 support: Added GetLastErrorMsg and ReadDetailedVersion calls.
+  Added BlackBird support.
+
+* canlib32NET.dll, canlibCLSNET.dll: Added a strong name to the
+  assembly.
+
+* Kvaser BlackBird support: the parameter setter program now allows
+  access to the built-in web server to be configured.
+
+
+
+New Features and Fixed Problems in V4.0a (Release 20-APR-2008)
+======================================================================
+
+* Added support for Kvaser BlackBird.
+
+* Fixed bug in canWaitForEvent that happened in 64-bit Windows only,
+  although it was probably present also in Win32
+
+* J2534 library: 1. Implemented timestamps for TxDone-indications. 2.
+  Implemented ExtraDataIndex for all messages and indications. 3. Return
+  correct value of read messages when reading fails.
+
+* SDK: Added J1699/3 test application from Sourceforge; see
+  samples/J1699 Added a fix in VerifyBatteryVoltage so it can handle the
+  case when READ_VBATT isn't supported.
+
+* Restored support for PCIcan/PCIcanx with Kone transceivers.
+
+
+
+New Features and Fixed Problems in V4.0 (Release 2-FEB-2008)
+======================================================================
+
+* Kvaser Leaf, OEM versions: Fixed a BSOD in the driver when a certain
+  third party software (for whiteboards) was installed on the same
+  machine.
+
+* SDK: Several small documentation improvements
+
+* RP1210: Support for changing the baud rate on the ClientConnect call.
+
+* RP1210: Added the ability to remove the "Serial=" in the DeviceParams
+  line of a Device Block.  If a serial number is not provided in this
+  line, the first channel that matches the hardware type and the
+  required “Chan=” value is assigned to the device id.
+
+* RP1210: Added the ability to define a baud rate on the DeviceParams
+  line of the Device Block.  This allows legacy rp1210A code to use a
+  baud rate other than 250.
+
+* RP1210: Updated the INI file to have comments and match the latest
+  RP1210B specification.
+
+* For RP1210B please note: ReadDetailedVersion(), GetLastErrorMsg(),
+  Set Broadcast List command are yet not supported
+
+* J1587: The library functions j1587WriteMessageWait() and
+  j1587ReadMessageWait() are rewritten to avoid losing incomming
+  messages on a channel used for both reading and writing.
+
+* The J1587 library has a new implementation that is more robust and
+  should eliminate the certain timeout errors seen in the previous
+  release.
+
+* Corrected typo in INF files that could cause the PCI104 to get wrong
+  driver when installed.

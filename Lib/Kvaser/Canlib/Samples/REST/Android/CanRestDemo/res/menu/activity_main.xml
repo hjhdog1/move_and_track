@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_settings"
+        android:title="@string/menu_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    
+    <item android:id="@+id/menu_read_log"
+        android:title="@string/menu_read_log"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    
+    <item android:id="@+id/menu_raw_rest"
+        android:title="@string/menu_raw_rest"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    
+    <item android:id="@+id/menu_write"
+        android:title="@string/menu_write"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    
+        <item android:id="@+id/menu_prop"
+        android:title="@string/menu_prop"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+</menu>

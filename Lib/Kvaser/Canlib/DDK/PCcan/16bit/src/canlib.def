@@ -1,0 +1,60 @@
+;
+; $Revision$
+; $Header$
+;
+LIBRARY 
+EXETYPE WINDOWS
+CODE PRELOAD FIXED
+DATA PRELOAD FIXED SHARED
+HEAPSIZE 4096
+; STACKSIZE 8192
+SEGMENTS
+    _DATA SHARED
+
+; For thunking
+IMPORTS
+    C16ThkSL01      = KERNEL.631
+    ThunkConnect16  = KERNEL.651
+
+EXPORTS
+    WEP                         @1      RESIDENTNAME
+;    <disused>                  @2
+;    <disused>                  @3
+    CANOPEN                     @4
+    CANCLOSE                    @5
+    CANBUSON                    @6
+    CANBUSOFF                   @7
+    CANSETBUSPARAMS             @8
+    CANSETBUSOUTPUTCONTROL      @9
+    CANACCEPT                   @10
+    CANREADSTATUS               @11
+    CANREADERRORCOUNTERS        @12
+    CANWRITE                    @13
+    CANWRITESYNC                @14
+    CANREAD                     @15
+    CANREADWAIT                 @16
+    CANREADSPECIFIC             @17
+    CANREADSYNC                 @18
+    CANREADSYNCSPECIFIC         @19
+    CANINSTALLACTION            @20
+    CANUNINSTALLACTION          @21
+    CANINSTALLOWNBUFFER         @22
+    CANUNINSTALLOWNBUFFER       @23
+    CANSETNOTIFY                @24
+;    <disused>                  @25
+;    <disused>                  @26
+    CANLOCATEHARDWARE           @27
+    CANTRANSLATEBAUD            @28
+    CANGETERRORTEXT             @29
+    CANGETVERSION               @30
+    CANGETCIRCUITS              @31
+    CANIOCTL                    @32
+    CANREADTIMER                @33
+    CANGETBUSPARAMS             @34
+    CANGETBUSOUTPUTCONTROL      @35
+    CANREADSPECIFICSKIP         @36
+    CANINITIALIZELIBRARY        @37
+
+    THK_THUNKDATA16             @38  RESIDENTNAME
+    DllEntryPoint               @39  RESIDENTNAME
+

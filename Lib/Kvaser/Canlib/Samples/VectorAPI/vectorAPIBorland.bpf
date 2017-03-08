@@ -1,0 +1,6 @@
+USEUNIT("cancount.c");
+USELIB("..\..\Lib\Borland\vcand32.lib");
+//---------------------------------------------------------------------------
+This file is used by the project manager only and should be treated like the project file
+
+main
