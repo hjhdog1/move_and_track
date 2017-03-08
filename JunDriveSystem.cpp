@@ -25,7 +25,7 @@ JunDriveSystem::JunDriveSystem()
 
 void JunDriveSystem::SetVelocity(double velocity)
 {
-	m_velocity_in_inc = std::abs(velocity * m_to_inc);
+	m_velocity_in_inc = ::std::abs(velocity * m_to_inc);
 }
 
 void JunDriveSystem::SetAngleUnit(ANGLE_UNIT angle_unit)
@@ -65,12 +65,19 @@ void JunDriveSystem::Dither(double target_angle, double dither_magnitude, int nu
 {
 	for(int i = 0; i <= num_dither_steps; i++)
 	{
-		double cur_angle = target_angle + std::pow(-1.0, (double)i) * dither_magnitude * (double)(num_dither_steps-i)/(double)num_dither_steps;
+		double cur_angle = target_angle + ::std::pow(-1.0, (double)i) * dither_magnitude * (double)(num_dither_steps-i)/(double)num_dither_steps;
 		MoveTo(cur_angle);
 	}
 	MoveTo(target_angle);
 }
 
+double JunDriveSystem::GetCurrentAngle()
+{
+	double angle;
+	amp[4].GetPositionActual(angle);
+
+	return angle/m_to_inc;
+}
 
 void JunDriveSystem::InitializeAmp()
 {
@@ -102,7 +109,6 @@ void JunDriveSystem::InitializeAmp()
 	//showerr( err, "Opening network" );
 
 	// Initialize the amplifier using default settings
-	static Amp amp[AMPCT];
 	AmpSettings set;
 	set.guardTime = 0;
 	printf( "Doing init\n" );

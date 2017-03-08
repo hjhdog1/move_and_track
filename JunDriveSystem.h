@@ -17,6 +17,7 @@ public:
 	void					MoveTo(double angle);
 	void					Home();
 	void					Dither(double target_angle, double dither_magnitude, int num_dither_steps);
+	double					GetCurrentAngle();
 
 private:
 	void					InitializeAmp();
@@ -32,8 +33,9 @@ private:
 	double					m_inc_per_rev;
 
 	// regarding amps
-	Linkage					link;
 	static const int		AMPCT = 7;		// number of amps
+	Linkage					link;
+	Amp						amp[AMPCT];
 	
 };
 

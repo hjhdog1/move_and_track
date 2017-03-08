@@ -33,6 +33,9 @@
     <ClInclude Include="handleErrors.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="JunEMTracker.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -45,6 +48,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JunDriveSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JunEMTracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

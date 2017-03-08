@@ -28,6 +28,7 @@
 #include "LinkTrjPVTFile.h"
 
 #include "JunDriveSystem.h"
+#include "JunEMTracker.h"
 
 using namespace std;
 
@@ -46,6 +47,9 @@ CML::Amp* myAmp;
 bool acqFlag,stopFlag, once;
 double time0;
 std::ofstream fRec, fPos, fTrck[3];
+
+// JHa - temporary
+JunEMTracker* sensor;
 
 double preciseInc = 10.936 * 0.998888 * 1.000049260526897;
 DWORD WINAPI tracking_tracker3_Thread(LPVOID pData)
@@ -103,34 +107,36 @@ DWORD WINAPI tracking_Thread(LPVOID pData)
 		{
 			for(int i=0; i<2; i++)
 			{
-				int errCode = GetAsynchronousRecord(i, pRecord, sizeof(record));
-				if(errCode!=BIRD_ERROR_SUCCESS) {		errorHandler(errCode);		}
+				//int errCode = GetAsynchronousRecord(i, pRecord, sizeof(record));
+				//if(errCode!=BIRD_ERROR_SUCCESS) {		errorHandler(errCode);		}
 
-				if(once)	{
-					time0 = record.time;	once = false;
-				}
+				//if(once)	{
+				//	time0 = record.time;	once = false;
+				//}
 
-				coordinate.Y=6+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-				printf("%8.3f %8.3f %8.3f %8.3f", record.s[0][0], record.s[0][1], record.s[0][2], record.x*25.4);
-				fTrck[i]<<record.s[0][0]<<"\t"<<record.s[0][1]<<"\t"<<record.s[0][2]<<"\t"<<record.x*25.4<<"\n";
+				//coordinate.Y=6+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+				//printf("%8.3f %8.3f %8.3f %8.3f", record.s[0][0], record.s[0][1], record.s[0][2], record.x*25.4);
+				//fTrck[i]<<record.s[0][0]<<"\t"<<record.s[0][1]<<"\t"<<record.s[0][2]<<"\t"<<record.x*25.4<<"\n";
 
-				coordinate.Y=7+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-				printf("%8.3f %8.3f %8.3f %8.3f", record.s[1][0], record.s[1][1], record.s[1][2], record.y*25.4);
-				fTrck[i]<<record.s[1][0]<<"\t"<<record.s[1][1]<<"\t"<<record.s[1][2]<<"\t"<<record.y*25.4<<"\n";
+				//coordinate.Y=7+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+				//printf("%8.3f %8.3f %8.3f %8.3f", record.s[1][0], record.s[1][1], record.s[1][2], record.y*25.4);
+				//fTrck[i]<<record.s[1][0]<<"\t"<<record.s[1][1]<<"\t"<<record.s[1][2]<<"\t"<<record.y*25.4<<"\n";
 
-				coordinate.Y=8+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-				printf("%8.3f %8.3f %8.3f %8.3f", record.s[2][0], record.s[2][1], record.s[2][2], record.z*25.4);
-				fTrck[i]<<record.s[2][0]<<"\t"<<record.s[2][1]<<"\t"<<record.s[2][2]<<"\t"<<record.z*25.4<<"\n";
+				//coordinate.Y=8+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+				//printf("%8.3f %8.3f %8.3f %8.3f", record.s[2][0], record.s[2][1], record.s[2][2], record.z*25.4);
+				//fTrck[i]<<record.s[2][0]<<"\t"<<record.s[2][1]<<"\t"<<record.s[2][2]<<"\t"<<record.z*25.4<<"\n";
 
-				coordinate.Y=9+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-				printf("%8.3f %8.3f %8.3f %8.3f", 0, 0, 0, 1);
+				//coordinate.Y=9+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+				//printf("%8.3f %8.3f %8.3f %8.3f", 0, 0, 0, 1);
+				sensor->getTransformation(i, record);
+				sensor->displayTransformation(i, record);
 			}
 
 			for(int i=0; i<7; i++)	{	myAmp[i].GetPositionActual(pos[i]);		}
 
 			coordinate.Y=16;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
 			printf("%8.3f %8.3f %8.3f %8.3f %8.3f %8.3f %8.3f", pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6]);
-			fPos<<(record.time - time0)<<"\t"<<pos[3]<<"\t"<<pos[4]<<std::endl;
+			//fPos<<(record.time - time0)<<"\t"<<pos[3]<<"\t"<<pos[4]<<std::endl;
 		}
 		//::Sleep(10);
 	}
@@ -140,12 +146,18 @@ DWORD WINAPI tracking_Thread(LPVOID pData)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	sensor = new JunEMTracker();
+
+	HANDLE hThread = CreateThread(NULL, 0, tracking_Thread, 0, 0, NULL);
+
 	JunDriveSystem drive;
 	drive.Dither(0.0, 50, 5);
 	drive.Home();
+
+	
 }
 
-
+//
 //
 //int _tmain(int argc, _TCHAR* argv[])
 //{
@@ -538,5 +550,5 @@ int _tmain(int argc, _TCHAR* argv[])
 //	fTrck[0].close();
 //	fTrck[1].close();
 //}
-
-
+//
+//
