@@ -128,14 +128,14 @@ DWORD WINAPI tracking_Thread(LPVOID pData)
 
 				//coordinate.Y=9+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
 				//printf("%8.3f %8.3f %8.3f %8.3f", 0, 0, 0, 1);
-				sensor->getTransformation(i, record);
-				sensor->displayTransformation(i, record);
+				if(sensor->getTransformation(i, record))
+					sensor->displayTransformation(i, record);
 			}
 
-			for(int i=0; i<7; i++)	{	myAmp[i].GetPositionActual(pos[i]);		}
+			//for(int i=0; i<7; i++)	{	myAmp[i].GetPositionActual(pos[i]);		}
 
-			coordinate.Y=16;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-			printf("%8.3f %8.3f %8.3f %8.3f %8.3f %8.3f %8.3f", pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6]);
+			//coordinate.Y=16;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
+			//printf("%8.3f %8.3f %8.3f %8.3f %8.3f %8.3f %8.3f", pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6]);
 			//fPos<<(record.time - time0)<<"\t"<<pos[3]<<"\t"<<pos[4]<<std::endl;
 		}
 		//::Sleep(10);
@@ -149,12 +149,15 @@ int _tmain(int argc, _TCHAR* argv[])
 	sensor = new JunEMTracker();
 
 	HANDLE hThread = CreateThread(NULL, 0, tracking_Thread, 0, 0, NULL);
-
-	JunDriveSystem drive;
-	drive.Dither(0.0, 50, 5);
-	drive.Home();
-
+	stopFlag = false;
+	acqFlag = true;
 	
+
+	//JunDriveSystem drive;
+	//drive.Dither(0.0, 50, 5);
+	//drive.Home();
+
+	::Sleep(10000000);
 }
 
 //

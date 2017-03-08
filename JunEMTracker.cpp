@@ -32,9 +32,6 @@ void JunEMTracker::displayTransformation(int tracker_id,  const DOUBLE_POSITION_
 	
 	coordinate.Y=8+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
 	printf("%8.3f %8.3f %8.3f %8.3f", transformation.s[2][0], transformation.s[2][1], transformation.s[2][2], transformation.z*25.4);
-	
-	coordinate.Y=9+5*i;		coordinate.X=4;		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinate);
-	printf("%8.3f %8.3f %8.3f %8.3f", 0, 0, 0, 1);
 }
 
 
