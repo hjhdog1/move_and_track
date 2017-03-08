@@ -141,7 +141,7 @@ DWORD WINAPI tracking_Thread(LPVOID pData)
 int _tmain(int argc, _TCHAR* argv[])
 {
 	JunDriveSystem drive;
-	drive.MoveTo(100.0);
+	drive.Dither(0.0, 50, 5);
 	drive.Home();
 }
 

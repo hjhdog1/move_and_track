@@ -25,7 +25,7 @@ JunDriveSystem::JunDriveSystem()
 
 void JunDriveSystem::SetVelocity(double velocity)
 {
-	m_velocity_in_inc = velocity * m_to_inc;
+	m_velocity_in_inc = std::abs(velocity * m_to_inc);
 }
 
 void JunDriveSystem::SetAngleUnit(ANGLE_UNIT angle_unit)
@@ -83,7 +83,7 @@ void JunDriveSystem::InitializeAmp()
 
 	// Create an 'CanInterface' object used to access the low level CAN network.
 	#if defined( USE_CAN )
-	   KvaserCAN hw("CAN");
+	   static KvaserCAN hw("CAN");
 	   hw.SetBaud( canBPS );
 	#elif defined( WIN32 )
 	   WinUdpEcatHardware hw( "eth0" );
