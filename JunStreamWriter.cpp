@@ -1,6 +1,12 @@
 #include "JunStreamWriter.h"
 
 
+bool JunStreamWriter::m_bWriting;
+JunDriveSystem* JunStreamWriter::m_drive;
+JunEMTracker* JunStreamWriter::m_sensor;
+::std::ofstream* JunStreamWriter::m_sensorStrm[4];
+::std::ofstream* JunStreamWriter::m_driveStrm;
+HANDLE JunStreamWriter::hThread;
 
 void JunStreamWriter::Initialize(JunDriveSystem* drive, JunEMTracker* sensor)
 {
