@@ -1,5 +1,6 @@
 #include "JunStreamWriter.h"
 #include <string>
+#include <direct.h>
 
 
 bool					JunStreamWriter::m_bWriting;
@@ -25,6 +26,8 @@ void JunStreamWriter::Initialize(JunDriveSystem* drive, JunEMTracker* sensor)
 
 void JunStreamWriter::OpenStreams(::std::string fileNameTail)
 {
+	mkdir("./data");
+
 	::std::string fileName = "./data/JAng";
 	fileName.append(fileNameTail);
 	fileName.append(".txt");

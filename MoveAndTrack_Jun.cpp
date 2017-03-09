@@ -151,7 +151,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	JunStreamWriter::Initialize(&drive, &sensor);
 	
 	///////////////// first trajectory /////////////////////////
-	JunStreamWriter::OpenStreams("_temp");
+	JunStreamWriter::OpenStreams("_temp3");
 	JunStreamWriter::StartWriting();
 
 	drive.Dither(0.0, 50, 5);
@@ -162,7 +162,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	////////////////////////////////////////////////////////////
 
 	///////////////// first trajectory /////////////////////////
-	JunStreamWriter::OpenStreams("_temp2");
+	JunStreamWriter::OpenStreams("_temp4");
 	JunStreamWriter::StartWriting();
 
 	drive.Dither(0.0, 50, 5);
