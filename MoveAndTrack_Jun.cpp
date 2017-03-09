@@ -30,6 +30,7 @@
 #include "JunDriveSystem.h"
 #include "JunEMTracker.h"
 #include "JunStreamWriter.h"
+#include "JunMoveAndWrite.h"
 
 using namespace std;
 
@@ -145,32 +146,13 @@ std::ofstream fRec, fPos, fTrck[3];
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	JunDriveSystem drive;
-	JunEMTracker sensor;
+	JunMoveAndWrite move_and_write;
+	move_and_write.RunUnditeredMotion(120.0, 2);
+	move_and_write.RunDiteredMotion(120.0, 6, 50.0, 8, 2);
 
-	JunStreamWriter::Initialize(&drive, &sensor);
-	
-	///////////////// first trajectory /////////////////////////
-	JunStreamWriter::OpenStreams("_temp3");
-	JunStreamWriter::StartWriting();
+	//JunDriveSystem drive;
+	//JunEMTracker sensor;
 
-	drive.Dither(0.0, 50, 5);
-	drive.Home();
-	
-	JunStreamWriter::StopWriting();
-	JunStreamWriter::CloseStreams();
-	////////////////////////////////////////////////////////////
-
-	///////////////// first trajectory /////////////////////////
-	JunStreamWriter::OpenStreams("_temp4");
-	JunStreamWriter::StartWriting();
-
-	drive.Dither(0.0, 50, 5);
-	drive.Home();
-	
-	JunStreamWriter::StopWriting();
-	JunStreamWriter::CloseStreams();
-	////////////////////////////////////////////////////////////
 
 	::Sleep(3000);
 }

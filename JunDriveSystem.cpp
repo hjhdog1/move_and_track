@@ -63,6 +63,7 @@ void JunDriveSystem::Home()
 
 void JunDriveSystem::Dither(double target_angle, double dither_magnitude, int num_dither_steps)
 {
+	MoveTo(target_angle);
 	for(int i = 0; i <= num_dither_steps; i++)
 	{
 		double cur_angle = target_angle + ::std::pow(-1.0, (double)i) * dither_magnitude * (double)(num_dither_steps-i)/(double)num_dither_steps;

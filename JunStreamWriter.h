@@ -11,31 +11,31 @@
 
 class JunStreamWriter
 {
-private:
-	JunStreamWriter(){};
-
+	
 public:
-	static void					Initialize(JunDriveSystem* drive, JunEMTracker* sensor);
-	static void					OpenStreams(::std::string fileNameTail);
-	static void					OpenStreams(::std::string fileNameTail, int fileNumber);
-	static void					CloseStreams();
-	static void					StartWriting();
-	static void					StopWriting();
-	static void					TerminateWriter();
+	JunStreamWriter(JunDriveSystem* drive, JunEMTracker* sensor);
+	~JunStreamWriter();
+	void					OpenStreams(::std::string fileNameTail);
+	void					OpenStreams(::std::string fileNameTail, int fileNumber);
+	void					CloseStreams();
+	void					StartWriting();
+	void					StopWriting();
 
 private:
-	static DWORD WINAPI			writing_Thread(LPVOID pData);
-	static void					write_transformation(::std::ofstream* strm, const DOUBLE_POSITION_MATRIX_TIME_Q_RECORD& transformation);
-
+	void					Initialize(JunDriveSystem* drive, JunEMTracker* sensor);
+	static void				write_transformation(::std::ofstream* strm, const DOUBLE_POSITION_MATRIX_TIME_Q_RECORD& transformation);
+	static DWORD WINAPI		writing_Thread(LPVOID pData);
+	void					TerminateWriter();
+	
 private:
-	static bool					m_bWriting;
-	static JunDriveSystem*		m_drive;
-	static JunEMTracker*		m_sensor;
-	static ::std::vector<int>	m_sensorIds;
-	static ::std::ofstream		m_sensorStrm[4];
-	static ::std::ofstream		m_driveStrm;
+	bool					m_bWriting;
+	JunDriveSystem*			m_drive;
+	JunEMTracker*			m_sensor;
+	::std::vector<int>		m_sensorIds;
+	::std::ofstream			m_sensorStrm[4];
+	::std::ofstream			m_driveStrm;
 
-	static HANDLE				hThread;
+	HANDLE					hThread;
 
 };
 
