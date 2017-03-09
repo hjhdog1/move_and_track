@@ -12,7 +12,7 @@
 
 
 #include <cstdio>
-#include <cstdlib>;
+#include <cstdlib>
 #include <string>
 #include <vector>
 #include <fstream>
@@ -150,22 +150,27 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	JunStreamWriter::Initialize(&drive, &sensor);
 	
-	fPos.open("./JAng.txt");
-	fTrck[0].open("./Trck1.txt");
-	fTrck[1].open("./Trck2.txt");
-	fTrck[2].open("./Trck3.txt");
-
-	for(int i = 0 ; i < 3; i++)
-		JunStreamWriter::SetStream_sensor(i, &(fTrck[i]));
-	JunStreamWriter::SetStream_drive(&fPos);
-
+	///////////////// first trajectory /////////////////////////
+	JunStreamWriter::OpenStreams("_temp");
 	JunStreamWriter::StartWriting();
 
 	drive.Dither(0.0, 50, 5);
 	drive.Home();
 	
 	JunStreamWriter::StopWriting();
+	JunStreamWriter::CloseStreams();
+	////////////////////////////////////////////////////////////
 
+	///////////////// first trajectory /////////////////////////
+	JunStreamWriter::OpenStreams("_temp2");
+	JunStreamWriter::StartWriting();
+
+	drive.Dither(0.0, 50, 5);
+	drive.Home();
+	
+	JunStreamWriter::StopWriting();
+	JunStreamWriter::CloseStreams();
+	////////////////////////////////////////////////////////////
 
 	::Sleep(3000);
 }

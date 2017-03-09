@@ -3,14 +3,15 @@
 
 
 #include <ATC3DG.h>
-
+#include <vector>
 
 class JunEMTracker
 {
 public:
 	JunEMTracker();
-	bool					getTransformation(int tracker_id, DOUBLE_POSITION_MATRIX_TIME_Q_RECORD& transformation);
-	void					displayTransformation(int tracker_id,  const DOUBLE_POSITION_MATRIX_TIME_Q_RECORD& transformation);
+	bool					getTransformation(int tracker_id, DOUBLE_POSITION_MATRIX_TIME_Q_RECORD& transformation)	const;
+	void					displayTransformation(int tracker_id,  const DOUBLE_POSITION_MATRIX_TIME_Q_RECORD& transformation)	const;
+	::std::vector<int>		getConnectedTrackerIds()	const;
 	
 private:
 	void					Initialize();

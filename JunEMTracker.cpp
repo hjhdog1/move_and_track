@@ -7,7 +7,7 @@ JunEMTracker::JunEMTracker()
 	Initialize();
 }
 
- bool JunEMTracker::getTransformation(int tracker_id, DOUBLE_POSITION_MATRIX_TIME_Q_RECORD& trasformation)
+ bool JunEMTracker::getTransformation(int tracker_id, DOUBLE_POSITION_MATRIX_TIME_Q_RECORD& trasformation) const
 {
 	
 	int errCode = GetAsynchronousRecord(tracker_id, &trasformation, sizeof(trasformation));
@@ -19,7 +19,7 @@ JunEMTracker::JunEMTracker()
 	return true;
 }
 
-void JunEMTracker::displayTransformation(int tracker_id,  const DOUBLE_POSITION_MATRIX_TIME_Q_RECORD& transformation)
+void JunEMTracker::displayTransformation(int tracker_id,  const DOUBLE_POSITION_MATRIX_TIME_Q_RECORD& transformation) const
 {
 	COORD coordinate;
 	int i = tracker_id;
@@ -34,10 +34,20 @@ void JunEMTracker::displayTransformation(int tracker_id,  const DOUBLE_POSITION_
 	printf("%8.3f %8.3f %8.3f %8.3f", transformation.s[2][0], transformation.s[2][1], transformation.s[2][2], transformation.z*25.4);
 }
 
+::std::vector<int> JunEMTracker::getConnectedTrackerIds()	const
+{
+	int m_maxNumSensors = 4;
+	::std::vector<int> sensorIds;
+	for(int i = 0 ; i < m_maxNumSensors ; i++)
+		if(getTransformation(i, DOUBLE_POSITION_MATRIX_TIME_Q_RECORD()))
+			sensorIds.push_back(i);
+
+	return sensorIds;
+}
 
  void JunEMTracker::Initialize()
 {
-	
+
 	// ---------------------------------------------------------------- //
 	// CKim - Set up the Ascension EM tracker.
 	// Related include and library files are 'ATC3DG.h' 

@@ -16,11 +16,12 @@ private:
 
 public:
 	static void					Initialize(JunDriveSystem* drive, JunEMTracker* sensor);
-	static void					SetStream_drive(::std::ofstream* strm);
-	static void					SetStream_sensor(int tracker_id, ::std::ofstream* strm);
+	static void					OpenStreams(::std::string fileNameTail);
+	static void					OpenStreams(::std::string fileNameTail, int fileNumber);
+	static void					CloseStreams();
 	static void					StartWriting();
 	static void					StopWriting();
-	static void					CloseWriter();
+	static void					TerminateWriter();
 
 private:
 	static DWORD WINAPI			writing_Thread(LPVOID pData);
@@ -30,8 +31,9 @@ private:
 	static bool					m_bWriting;
 	static JunDriveSystem*		m_drive;
 	static JunEMTracker*		m_sensor;
-	static ::std::ofstream*		m_sensorStrm[4];
-	static ::std::ofstream*		m_driveStrm;
+	static ::std::vector<int>	m_sensorIds;
+	static ::std::ofstream		m_sensorStrm[4];
+	static ::std::ofstream		m_driveStrm;
 
 	static HANDLE				hThread;
 

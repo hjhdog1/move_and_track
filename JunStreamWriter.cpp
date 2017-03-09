@@ -1,35 +1,62 @@
 #include "JunStreamWriter.h"
+#include <string>
 
 
-bool JunStreamWriter::m_bWriting;
-JunDriveSystem* JunStreamWriter::m_drive;
-JunEMTracker* JunStreamWriter::m_sensor;
-::std::ofstream* JunStreamWriter::m_sensorStrm[4];
-::std::ofstream* JunStreamWriter::m_driveStrm;
-HANDLE JunStreamWriter::hThread;
+bool					JunStreamWriter::m_bWriting;
+JunDriveSystem*			JunStreamWriter::m_drive;
+JunEMTracker*			JunStreamWriter::m_sensor;
+::std::vector<int>		JunStreamWriter::m_sensorIds;
+::std::ofstream			JunStreamWriter::m_sensorStrm[4];
+::std::ofstream			JunStreamWriter::m_driveStrm;
+HANDLE					JunStreamWriter::hThread;
 
 void JunStreamWriter::Initialize(JunDriveSystem* drive, JunEMTracker* sensor)
 {
 	m_bWriting = false;
-	for(int i = 0; i < 4; i++)
-		m_sensorStrm[i] = NULL;
-	m_driveStrm = NULL;
+
 
 	m_drive = drive;
 	m_sensor = sensor;
+	m_sensorIds = m_sensor->getConnectedTrackerIds();
 
 	hThread = CreateThread(NULL, 0, writing_Thread, 0, 0, NULL);
 
 }
 
-void JunStreamWriter::SetStream_drive(::std::ofstream* strm)
+void JunStreamWriter::OpenStreams(::std::string fileNameTail)
 {
-	m_driveStrm = strm;
+	::std::string fileName = "./data/JAng";
+	fileName.append(fileNameTail);
+	fileName.append(".txt");
+	m_driveStrm.open(fileName);
+	for(unsigned int i = 0; i < m_sensorIds.size(); i++)
+	{
+		int sensorId = m_sensorIds[i];
+		
+		fileName = "./data/Trck";
+		fileName.append(std::to_string(sensorId+1));
+		fileName.append(fileNameTail);
+		fileName.append(".txt");
+
+		m_sensorStrm[sensorId].open(fileName);
+	}
 }
 
-void JunStreamWriter::SetStream_sensor(int tracker_id, ::std::ofstream* strm)
+void JunStreamWriter::OpenStreams(::std::string fileNameTail, int fileNumber)
 {
-	m_sensorStrm[tracker_id] = strm;
+	fileNameTail.append("_");
+	fileNameTail.append(std::to_string(fileNumber));
+
+	OpenStreams(fileNameTail);
+}
+
+void JunStreamWriter::CloseStreams()
+{
+	StopWriting();
+
+	m_driveStrm.close();
+	for(unsigned int i = 0; i < m_sensorIds.size(); i++)
+		m_sensorStrm[m_sensorIds[i]].close();
 }
 
 void JunStreamWriter::StartWriting()
@@ -40,19 +67,16 @@ void JunStreamWriter::StartWriting()
 void JunStreamWriter::StopWriting()
 {
 	m_bWriting = false;
-	for(int i = 0; i < 4; i++)
-		if(m_sensorStrm[i] != NULL)
-			m_sensorStrm[i]->flush();
+	::Sleep(100);
+	for(unsigned int i = 0; i < m_sensorIds.size(); i++)
+		m_sensorStrm[m_sensorIds[i]].flush();
 
-	if(m_driveStrm != NULL)
-		m_driveStrm->flush();
-
+	m_driveStrm.flush();
 }
 
-void JunStreamWriter::CloseWriter()
+void JunStreamWriter::TerminateWriter()
 {
 	StopWriting();
-	::Sleep(1000);
 	WaitForSingleObject(hThread,5000);
 }
 
@@ -61,9 +85,7 @@ DWORD WINAPI JunStreamWriter::writing_Thread(LPVOID pData)
 {
 	DOUBLE_POSITION_MATRIX_TIME_Q_RECORD transformation;				
 	DOUBLE_POSITION_MATRIX_TIME_Q_RECORD* pRecord = &transformation;	
-	COORD coordinate;
-	double pos[7];
-
+	
 	bool b_first_iter = true;
 	double time0;
 
@@ -71,9 +93,10 @@ DWORD WINAPI JunStreamWriter::writing_Thread(LPVOID pData)
 	{
 		if(m_bWriting)	
 		{
-			for(int i=0; i<3; i++)
+			for(unsigned int i = 0; i < m_sensorIds.size(); i++)
 			{
-				if(m_sensor->getTransformation(i, transformation))
+				int sensorId = m_sensorIds[i];
+				if(m_sensor->getTransformation(sensorId, transformation))
 				{
 					if(b_first_iter)
 					{
@@ -81,13 +104,13 @@ DWORD WINAPI JunStreamWriter::writing_Thread(LPVOID pData)
 						b_first_iter = false;
 					}
 
-					write_transformation(m_sensorStrm[i], transformation);
-					m_sensor->displayTransformation(i, transformation);
+					write_transformation(&m_sensorStrm[sensorId], transformation);
+					m_sensor->displayTransformation(sensorId, transformation);
 				}
 			}
 
 			double angle = m_drive->GetCurrentAngle();
-			*m_driveStrm << (transformation.time - time0) << "\t" << m_drive->GetCurrentAngle(3) << "\t" << m_drive->GetCurrentAngle(4) <<std::endl;
+			m_driveStrm << (transformation.time - time0) << "\t" << m_drive->GetCurrentAngle(3) << "\t" << m_drive->GetCurrentAngle(4) <<std::endl;
 		}
 	}
 
