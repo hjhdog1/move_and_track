@@ -15,6 +15,7 @@ public:
 	void					SetVelocity(double velocity);
 	void					SetAngleUnit(ANGLE_UNIT angle_unit);
 	void					MoveTo(double angle);
+	void					MoveAllTo(double angle);
 	void					Home();
 	void					Dither(double target_angle, double dither_magnitude, int num_dither_steps);
 	double					GetCurrentAngle(int amp_id = 4);

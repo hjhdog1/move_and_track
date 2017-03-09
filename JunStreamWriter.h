@@ -28,7 +28,7 @@ private:
 	void					TerminateWriter();
 	
 private:
-	bool					m_bWriting;
+	bool					m_bWriting, m_bStop;
 	JunDriveSystem*			m_drive;
 	JunEMTracker*			m_sensor;
 	::std::vector<int>		m_sensorIds;

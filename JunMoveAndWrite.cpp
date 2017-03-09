@@ -1,9 +1,13 @@
 #include "JunMoveAndWrite.h"
-
+#include <iostream>
 
 JunMoveAndWrite::JunMoveAndWrite()
 {
+	m_bEmergency = false;
 	RunBaseFrameMotion();
+
+	// emergency check thread
+	CreateThread(NULL, 0, checking_emergency, this, 0, NULL);
 }
 
 
@@ -12,27 +16,16 @@ void JunMoveAndWrite::RunUnditeredMotion(double vel, int num_repeats)
 	JunStreamWriter writer(&m_drive, &m_sensor);
 	m_drive.SetVelocity(vel);
 
+	int sleeping_time = 2000;
 	for(int i = 0; i < num_repeats; i++)
 	{
-		//// CCW motion
 		// initialize streams
-		writer.OpenStreams("_CCW", i);
+		writer.OpenStreams("", i);
 		writer.StartWriting();
 
 		// motion
-		m_drive.MoveTo(360.0);
-
-		// close streams
-		writer.StopWriting();
-		writer.CloseStreams();
-
-		
-		//// CW motion
-		// initialize streams
-		writer.OpenStreams("_CW", i);
-		writer.StartWriting();
-
-		// motion
+		MoveDriveSystemTo(360.0);
+		::Sleep(sleeping_time);
 		m_drive.Home();
 
 		// close streams
@@ -52,8 +45,8 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 	for(int i = 0; i < num_repeats; i++)
 	{
 		// initialize streams
-		writer_CCW.OpenStreams("_CCW", i);
-		writer_CW.OpenStreams("_CW", i);
+		writer_CCW.OpenStreams("_dithered_CCW", i);
+		writer_CW.OpenStreams("_dithered_CW", i);
 		
 		double step = 360.0/(double)num_measurements;
 		for(int j = 0; j < num_measurements; j++)
@@ -63,21 +56,21 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 				target_angle = -target_angle;
 
 
-			m_drive.MoveTo(target_angle);
+			MoveDriveSystemTo(target_angle);
 
 			// CCW
-			m_drive.MoveTo(target_angle - 180.0);
-			m_drive.MoveTo(target_angle + 180.0);
-			m_drive.Dither(target_angle, dither_magintude, num_dither_steps);
+			MoveDriveSystemTo(target_angle - 180.0);
+			MoveDriveSystemTo(target_angle + 180.0);
+			DitherDriveSystem(target_angle, dither_magintude, num_dither_steps);
 			// write
 			writer_CCW.StartWriting();
 			::Sleep(sleeping_time);
 			writer_CCW.StopWriting();
 			
 			// CW
-			m_drive.MoveTo(target_angle + 180.0);
-			m_drive.MoveTo(target_angle - 180.0);
-			m_drive.Dither(target_angle, -dither_magintude, num_dither_steps);
+			MoveDriveSystemTo(target_angle + 180.0);
+			MoveDriveSystemTo(target_angle - 180.0);
+			DitherDriveSystem(target_angle, -dither_magintude, num_dither_steps);
 			// write
 			writer_CW.StartWriting();
 			::Sleep(sleeping_time);
@@ -107,11 +100,56 @@ void JunMoveAndWrite::RunBaseFrameMotion()
 	writer.StartWriting();
 
 	// motion
-	m_drive.MoveTo(120.0);
-	m_drive.MoveTo(-120.0);
+	MoveDriveSystemAllTo(120.0);
+	MoveDriveSystemAllTo(-120.0);
 	m_drive.Home();
 
 	// close streams
 	writer.StopWriting();
 	writer.CloseStreams();
+}
+
+void JunMoveAndWrite::MoveDriveSystemTo(double angle)
+{
+	CheckEmergenceStop();
+	m_drive.MoveTo(angle);
+	CheckEmergenceStop();
+}
+
+void JunMoveAndWrite::MoveDriveSystemAllTo(double angle)
+{
+	CheckEmergenceStop();
+	m_drive.MoveAllTo(angle);
+	CheckEmergenceStop();
+}
+
+void JunMoveAndWrite::DitherDriveSystem(double target_angle, double dither_magintude, int num_dither_steps)
+{
+	CheckEmergenceStop();
+	m_drive.Dither(target_angle, dither_magintude, num_dither_steps);
+	CheckEmergenceStop();
+}
+
+void JunMoveAndWrite::CheckEmergenceStop()
+{
+	if(!m_bEmergency)
+		return;
+
+	::std::cout << "############### EMERGENCY!!! ###############" <<::std::endl;
+	m_drive.SetVelocity(100.0);
+	m_drive.Home();
+	::Sleep(1000);
+	exit(0);
+}
+
+DWORD WINAPI JunMoveAndWrite::checking_emergency(LPVOID pData)
+{
+	JunMoveAndWrite* move_and_write = (JunMoveAndWrite*)pData;
+	while(true)
+	{
+		char key = getchar();
+		if(key == 's' || key == 'S')
+			move_and_write->m_bEmergency = true;
+	}
+
 }

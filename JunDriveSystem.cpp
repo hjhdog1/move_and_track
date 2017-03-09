@@ -56,6 +56,24 @@ void JunDriveSystem::MoveTo(double angle)
 
 }
 
+
+void JunDriveSystem::MoveAllTo(double angle)
+{
+	const Error *err = NULL;
+
+	Point<AMPCT> pos;		
+	pos[0] = 0.0;	pos[1] = 0.0;	pos[2] = 0.0;	pos[3] = 0.0;	pos[4] = 0.0;	pos[5] = 0.0;	pos[6] = 0.0;
+
+	pos[3] = angle * m_to_inc;
+	pos[4] = angle * m_to_inc;
+	
+	err = link.MoveTo(pos, m_velocity_in_inc, 10.0*m_velocity_in_inc, 10.0*m_velocity_in_inc, 100.0*m_velocity_in_inc);
+	showerr( err, "Moving linkage" );
+	err = link.WaitMoveDone( 1000 * 1000 );
+	showerr( err, "waiting on linkage done" );
+
+}
+
 void JunDriveSystem::Home()
 {
 	MoveTo(0.0);

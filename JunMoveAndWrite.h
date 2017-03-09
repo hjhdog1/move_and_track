@@ -15,10 +15,17 @@ public:
 
 private:
 	void					RunBaseFrameMotion();
+	void					MoveDriveSystemTo(double angle);
+	void					MoveDriveSystemAllTo(double angle);
+	void					DitherDriveSystem(double target_angle, double dither_magintude, int num_dither_steps);
+	void					CheckEmergenceStop();
+	static DWORD WINAPI		checking_emergency(LPVOID pData);
+	
 
 private:
 	JunDriveSystem			m_drive;
 	JunEMTracker			m_sensor;
+	bool					m_bEmergency;
 	
 };
 

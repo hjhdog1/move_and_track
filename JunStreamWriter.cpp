@@ -17,13 +17,14 @@ JunStreamWriter::~JunStreamWriter()
 void JunStreamWriter::Initialize(JunDriveSystem* drive, JunEMTracker* sensor)
 {
 	m_bWriting = false;
+	m_bStop = false;
 
 
 	m_drive = drive;
 	m_sensor = sensor;
 	m_sensorIds = m_sensor->getConnectedTrackerIds();
 
-	hThread = CreateThread(NULL, 0, writing_Thread, 0, 0, NULL);
+	hThread = CreateThread(NULL, 0, writing_Thread, this, 0, NULL);
 
 }
 
@@ -90,7 +91,7 @@ DWORD WINAPI JunStreamWriter::writing_Thread(LPVOID pData)
 	bool b_first_iter = true;
 	double time0;
 
-	while(true)
+	while(!writer->m_bStop)
 	{
 		if(writer->m_bWriting)	
 		{
@@ -128,5 +129,7 @@ void JunStreamWriter::write_transformation(::std::ofstream* strm, const DOUBLE_P
 void JunStreamWriter::TerminateWriter()
 {
 	StopWriting();
-	WaitForSingleObject(hThread,5000);
+	m_bStop = true;
+	WaitForSingleObject(hThread, INFINITE);
+	CloseHandle(hThread);
 }
