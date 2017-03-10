@@ -32,13 +32,13 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	JunMoveAndWrite move_and_write;
 
-	double vel = 10.0;
-	int n_repeats = 4;
+	double vel = 120.0;
+	int n_repeats = 2;
 	move_and_write.RunUnditeredMotion(vel, n_repeats);
 
 	vel = 120.0;
 	int n_stops = 4;
-	double dither_magnitude = 50.0;
+	double dither_magnitude = 70.0;
 	int n_dither_steps = 20;
 	n_repeats = 1;
 	move_and_write.RunDiteredMotion(vel, n_stops, dither_magnitude, n_dither_steps, n_repeats);

@@ -27,6 +27,10 @@ void JunMoveAndWrite::RunUnditeredMotion(double vel, int num_repeats)
 		MoveDriveSystemTo(360.0);
 		::Sleep(sleeping_time);
 		m_drive.Home();
+		::Sleep(sleeping_time);
+		MoveDriveSystemTo(360.0);
+		::Sleep(sleeping_time);
+		m_drive.Home();
 
 		// close streams
 		writer.StopWriting();
@@ -41,12 +45,14 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 	
 	m_drive.SetVelocity(vel);
 
+
 	int sleeping_time = 2000;
 	for(int i = 0; i < num_repeats; i++)
 	{
 		// initialize streams
 		writer_CCW.OpenStreams("_dithered_CCW", i);
 		writer_CW.OpenStreams("_dithered_CW", i);
+		
 		
 		double step = 360.0/(double)num_measurements;
 		for(int j = 0; j < num_measurements; j++)
@@ -60,7 +66,7 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 
 			// CCW
 			MoveDriveSystemTo(target_angle - 180.0);
-			MoveDriveSystemTo(target_angle + 180.0);
+			MoveDriveSystemTo(target_angle);
 			DitherDriveSystem(target_angle, dither_magintude, num_dither_steps);
 			// write
 			writer_CCW.StartWriting();
@@ -69,7 +75,7 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 			
 			// CW
 			MoveDriveSystemTo(target_angle + 180.0);
-			MoveDriveSystemTo(target_angle - 180.0);
+			MoveDriveSystemTo(target_angle);
 			DitherDriveSystem(target_angle, -dither_magintude, num_dither_steps);
 			// write
 			writer_CW.StartWriting();
@@ -81,10 +87,7 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 		m_drive.Home();
 
 		// close streams
-		writer_CCW.StopWriting();
 		writer_CCW.CloseStreams();
-		
-		writer_CW.StopWriting();
 		writer_CW.CloseStreams();
 
 	}
