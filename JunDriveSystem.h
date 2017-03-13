@@ -2,6 +2,7 @@
 #define _JUN_DRIVE_SYSTEM_
 
 #include "LinkTrjPVTFile.h"
+#include <vector>
 
 
 
@@ -15,10 +16,13 @@ public:
 	void					SetVelocity(double velocity);
 	void					SetAngleUnit(ANGLE_UNIT angle_unit);
 	void					MoveTo(double angle);
-	void					MoveAllTo(double angle);
+	void					MoveTo(::std::vector<double> conf);	// move to (rotation1, rotation2, translation3)
+	void					RotateAllTo(double angle);	// rotate outer two tubes
 	void					Home();
 	void					Dither(double target_angle, double dither_magnitude, int num_dither_steps);
+	void					Dither(::std::vector<double> target_conf, double dither_magnitude, int num_dither_steps);
 	double					GetCurrentAngle(int amp_id = 4);
+	::std::vector<double>	JunDriveSystem::GetCurrentConfiguration();
 
 private:
 	void					InitializeAmp();
@@ -28,7 +32,7 @@ private:
 private:
 	// regarding angles
 	ANGLE_UNIT				m_unit;
-	double					m_to_inc;
+	double					m_angle_to_inc, m_mm_to_inc;
 	double					m_velocity_in_inc;
 
 	double					m_inc_per_rev;

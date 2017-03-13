@@ -17,6 +17,8 @@ public:
 	~JunStreamWriter();
 	void					OpenStreams(::std::string fileNameTail);
 	void					OpenStreams(::std::string fileNameTail, int fileNumber);
+	void					ActivateFullConfigurationRecording();
+	void					DeactivateFullConfigurationRecording();
 	void					CloseStreams();
 	void					StartWriting();
 	void					StopWriting();
@@ -28,7 +30,7 @@ private:
 	void					TerminateWriter();
 	
 private:
-	bool					m_bWriting, m_bStop;
+	bool					m_bWriting, m_bStop, m_recordFullConfiguration;
 	JunDriveSystem*			m_drive;
 	JunEMTracker*			m_sensor;
 	::std::vector<int>		m_sensorIds;

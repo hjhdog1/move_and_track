@@ -1,5 +1,6 @@
 #include "JunMoveAndWrite.h"
 #include <iostream>
+#include "Utilities.h"
 
 JunMoveAndWrite::JunMoveAndWrite()
 {
@@ -93,6 +94,29 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 	}
 }
 
+void JunMoveAndWrite::RunTrajectory(::std::string path2trajectory, double dither_magintude, int num_dither_steps)
+{
+	::std::vector< ::std::string> trajectoryStr = ReadLinesFromFile(path2trajectory);
+
+	
+	JunStreamWriter writer(&m_drive, &m_sensor);
+	writer.ActivateFullConfigurationRecording();
+	writer.OpenStreams("_test");
+
+	::std::vector<::std::string>::iterator it = trajectoryStr.begin();
+	::std::vector<double> conf;
+	for(it; it < trajectoryStr.end(); ++it)
+	{
+		conf = DoubleVectorFromString(*it);
+		DitherDriveSystem(conf, dither_magintude, num_dither_steps);
+		writer.StartWriting();
+		::Sleep(2000);
+		writer.StopWriting();
+	}
+	writer.CloseStreams();
+}
+
+
 void JunMoveAndWrite::RunBaseFrameMotion()
 {
 	JunStreamWriter writer(&m_drive, &m_sensor);
@@ -103,8 +127,8 @@ void JunMoveAndWrite::RunBaseFrameMotion()
 	writer.StartWriting();
 
 	// motion
-	MoveDriveSystemAllTo(120.0);
-	MoveDriveSystemAllTo(-120.0);
+	RotateDriveSystemAllTo(120.0);
+	RotateDriveSystemAllTo(-120.0);
 	m_drive.Home();
 
 	// close streams
@@ -119,10 +143,10 @@ void JunMoveAndWrite::MoveDriveSystemTo(double angle)
 	CheckEmergenceStop();
 }
 
-void JunMoveAndWrite::MoveDriveSystemAllTo(double angle)
+void JunMoveAndWrite::RotateDriveSystemAllTo(double angle)
 {
 	CheckEmergenceStop();
-	m_drive.MoveAllTo(angle);
+	m_drive.RotateAllTo(angle);
 	CheckEmergenceStop();
 }
 
@@ -130,6 +154,13 @@ void JunMoveAndWrite::DitherDriveSystem(double target_angle, double dither_magin
 {
 	CheckEmergenceStop();
 	m_drive.Dither(target_angle, dither_magintude, num_dither_steps);
+	CheckEmergenceStop();
+}
+
+void JunMoveAndWrite::DitherDriveSystem(::std::vector<double> target_conf, double dither_magintude, int num_dither_steps)
+{
+	CheckEmergenceStop();
+	m_drive.Dither(target_conf, dither_magintude, num_dither_steps);
 	CheckEmergenceStop();
 }
 

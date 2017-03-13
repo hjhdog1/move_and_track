@@ -18,6 +18,7 @@ void JunStreamWriter::Initialize(JunDriveSystem* drive, JunEMTracker* sensor)
 {
 	m_bWriting = false;
 	m_bStop = false;
+	m_recordFullConfiguration = false;
 
 
 	m_drive = drive;
@@ -55,6 +56,17 @@ void JunStreamWriter::OpenStreams(::std::string fileNameTail, int fileNumber)
 	fileNameTail.append(std::to_string(fileNumber));
 
 	OpenStreams(fileNameTail);
+}
+
+
+void JunStreamWriter::ActivateFullConfigurationRecording()
+{
+	m_recordFullConfiguration = true;
+}
+
+void JunStreamWriter::DeactivateFullConfigurationRecording()
+{
+	m_recordFullConfiguration = false;
 }
 
 void JunStreamWriter::CloseStreams()
@@ -111,8 +123,13 @@ DWORD WINAPI JunStreamWriter::writing_Thread(LPVOID pData)
 				}
 			}
 
-			double angle = writer->m_drive->GetCurrentAngle();
-			writer->m_driveStrm << (transformation.time - time0) << "\t" << writer->m_drive->GetCurrentAngle(3) << "\t" << writer->m_drive->GetCurrentAngle(4) <<std::endl;
+			if(writer->m_recordFullConfiguration)
+			{
+				::std::vector<double> conf = writer->m_drive->GetCurrentConfiguration();
+				writer->m_driveStrm << (transformation.time - time0) << "\t" << conf[0] << "\t" << conf[1] << "\t" << conf[2] <<std::endl;
+			}
+			else
+				writer->m_driveStrm << (transformation.time - time0) << "\t" << writer->m_drive->GetCurrentAngle(3) << "\t" << writer->m_drive->GetCurrentAngle(4) <<std::endl;
 		}
 	}
 
