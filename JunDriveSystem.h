@@ -37,6 +37,9 @@ private:
 
 	double					m_inc_per_rev;
 
+	// regarding 3-tube robot
+	double					m_innerTubeFullExtensionLength;	// in mm
+
 	// regarding amps
 	static const int		AMPCT = 7;		// number of amps
 	Linkage					link;

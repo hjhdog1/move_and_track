@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Utilities.h"
 
+
 JunMoveAndWrite::JunMoveAndWrite()
 {
 	m_bEmergency = false;
@@ -96,6 +97,8 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 
 void JunMoveAndWrite::RunTrajectory(::std::string path2trajectory, double dither_magintude, int num_dither_steps)
 {
+	m_drive.SetVelocity(120.0);
+
 	::std::vector< ::std::string> trajectoryStr = ReadLinesFromFile(path2trajectory);
 
 	
@@ -114,6 +117,9 @@ void JunMoveAndWrite::RunTrajectory(::std::string path2trajectory, double dither
 		writer.StopWriting();
 	}
 	writer.CloseStreams();
+
+	// back to home
+	MoveDriveSystemTo(0.0);
 }
 
 

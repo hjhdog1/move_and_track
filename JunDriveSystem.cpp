@@ -76,7 +76,7 @@ void JunDriveSystem::MoveTo(::std::vector<double> conf)
 
 	pos[4] = conf[0] * m_angle_to_inc;
 	pos[5] = conf[1] * m_angle_to_inc;
-	pos[1] = conf[2] * m_mm_to_inc;		// convert mm to motor count
+	pos[1] = (conf[2] - m_innerTubeFullExtensionLength) * m_mm_to_inc;		// convert mm to motor count
 	
 	err = link.MoveTo(pos, m_velocity_in_inc, 10.0*m_velocity_in_inc, 10.0*m_velocity_in_inc, 100.0*m_velocity_in_inc);
 	showerr( err, "Moving linkage" );
@@ -110,6 +110,10 @@ void JunDriveSystem::Home()
 void JunDriveSystem::Dither(double target_angle, double dither_magnitude, int num_dither_steps)
 {
 	MoveTo(target_angle);
+
+	if (num_dither_steps <= 0)
+		return;
+
 	for(int i = 0; i <= num_dither_steps; i++)
 	{
 		double cur_angle = target_angle + ::std::pow(-1.0, (double)i) * dither_magnitude * (double)(num_dither_steps-i)/(double)num_dither_steps;
@@ -121,7 +125,11 @@ void JunDriveSystem::Dither(double target_angle, double dither_magnitude, int nu
 void JunDriveSystem::Dither(::std::vector<double> target_conf, double dither_magnitude, int num_dither_steps)
 {
 	MoveTo(target_conf);
-	// dither 2nd tube
+	
+	if (num_dither_steps <= 0)
+		return;
+
+	// dither
 	for(int j = 0; j < 2; j++)
 	{
 		for(int i = 0; i <= num_dither_steps; i++)
@@ -150,7 +158,7 @@ double JunDriveSystem::GetCurrentAngle(int amp_id)
 	amp[5].GetPositionActual(conf[1]);
 	conf[1] /= m_angle_to_inc;
 	amp[1].GetPositionActual(conf[2]);
-	conf[2] /= m_mm_to_inc;
+	conf[2]  = conf[2]/m_mm_to_inc + m_innerTubeFullExtensionLength;
 
 	return conf;
 }
@@ -215,6 +223,8 @@ void JunDriveSystem::InitializeAmp()
 
 void JunDriveSystem::InitializeVariables()
 {
+	m_innerTubeFullExtensionLength = 55.0*0.5*JUN_PI;
+	
 	m_inc_per_rev = -10.936 * 0.998888 * 1.000049260526897;
 
 	m_mm_to_inc = 1.0 / 3.175;
