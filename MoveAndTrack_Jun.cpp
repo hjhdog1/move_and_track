@@ -27,8 +27,18 @@ using namespace std;
 // macros starts using it. 
 CML_NAMESPACE_USE();
 
+void clearTubePairExp();
+void ThreetubeRobotTrajectoryExp();
 
 int _tmain(int argc, _TCHAR* argv[])
+{
+
+	ThreetubeRobotTrajectoryExp();
+
+	::Sleep(3000);
+}
+
+void clearTubePairExp()
 {
 	JunMoveAndWrite move_and_write;
 
@@ -43,7 +53,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	n_repeats = 1;
 	move_and_write.RunDiteredMotion(vel, n_stops, dither_magnitude, n_dither_steps, n_repeats);
 
+}
 
+void ThreetubeRobotTrajectoryExp()
+{
+	JunMoveAndWrite move_and_write;
 
-	::Sleep(3000);
+	move_and_write.RunTrajectory("./trajectories/testTrajectory.txt", 0.0, 0);
 }

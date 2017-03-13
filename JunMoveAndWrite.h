@@ -13,7 +13,7 @@ public:
 	void					RunUnditeredMotion(double vel, int num_repeats);
 	void					RunDiteredMotion(double vel, int num_measurements, double dither_magintude, int num_dither_steps, int num_repeats);
 
-	void					RunTrajectory(::std::string path2trajectory, double dither_magintude, int num_dither_steps);
+	void					RunTrajectory(::std::string path2trajectory, double dither_magintude, int num_dither_steps);	// for 3 tube robot
 
 private:
 	void					RunBaseFrameMotion();
