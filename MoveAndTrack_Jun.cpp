@@ -59,5 +59,13 @@ void ThreetubeRobotTrajectoryExp()
 {
 	JunMoveAndWrite move_and_write;
 
-	move_and_write.RunTrajectory("./trajectories/testTrajectory.txt", 0.0, 0);
+	//move_and_write.RunTrajectory("./trajectories/joints_training.txt", "_undithered_training", 0.0, 0);
+	//move_and_write.RunTrajectory("./trajectories/joints_training.txt", "_dithered_training", 30.0, 20);
+	//move_and_write.RunTrajectory("./trajectories/joints_validation.txt", "_undithered_validation", 0.0, 0);
+	//move_and_write.RunTrajectory("./trajectories/joints_validation.txt", "_dithered_validation", 30.0, 20);
+
+	
+	move_and_write.RunTrajectory("./trajectories/joints_validation.txt", "_dithered_validation", 30.0, 20);
+	move_and_write.RunTrajectory("./trajectories/joints_validation.txt", "_undithered_validation", 0.0, 0);
+	move_and_write.RunTrajectory("./trajectories/joints_validation.txt", "_dithered_validation", 30.0, 20);
 }

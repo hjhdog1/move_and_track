@@ -95,7 +95,7 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 	}
 }
 
-void JunMoveAndWrite::RunTrajectory(::std::string path2trajectory, double dither_magintude, int num_dither_steps)
+void JunMoveAndWrite::RunTrajectory(::std::string path2trajectory, ::std::string outPutFileNameTail, double dither_magintude, int num_dither_steps)
 {
 	m_drive.SetVelocity(120.0);
 
@@ -104,7 +104,7 @@ void JunMoveAndWrite::RunTrajectory(::std::string path2trajectory, double dither
 	
 	JunStreamWriter writer(&m_drive, &m_sensor);
 	writer.ActivateFullConfigurationRecording();
-	writer.OpenStreams("_test");
+	writer.OpenStreams(outPutFileNameTail);
 
 	::std::vector<::std::string>::iterator it = trajectoryStr.begin();
 	::std::vector<double> conf;
