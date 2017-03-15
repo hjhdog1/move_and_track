@@ -28,6 +28,8 @@ CML_NAMESPACE_USE();
 
 const double JUN_PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342;
 
+const double moveToGains[3] = {100.0, 100.0, 1000.0};
+
 JunDriveSystem::JunDriveSystem()
 {
 	InitializeAmp();
@@ -60,7 +62,7 @@ void JunDriveSystem::MoveTo(double angle)
 
 	pos[4] = angle * m_angle_to_inc;
 	
-	err = link.MoveTo(pos, m_velocity_in_inc, 10.0*m_velocity_in_inc, 10.0*m_velocity_in_inc, 100.0*m_velocity_in_inc);
+	err = link.MoveTo(pos, m_velocity_in_inc, moveToGains[0]*m_velocity_in_inc, moveToGains[1]*m_velocity_in_inc, moveToGains[2]*m_velocity_in_inc);
 	showerr( err, "Moving linkage" );
 	err = link.WaitMoveDone( 1000 * 1000 );
 	showerr( err, "waiting on linkage done" );
@@ -78,7 +80,7 @@ void JunDriveSystem::MoveTo(::std::vector<double> conf)
 	pos[5] = conf[1] * m_angle_to_inc;
 	pos[1] = (conf[2] - m_innerTubeFullExtensionLength) * m_mm_to_inc;		// convert mm to motor count
 	
-	err = link.MoveTo(pos, m_velocity_in_inc, 10.0*m_velocity_in_inc, 10.0*m_velocity_in_inc, 100.0*m_velocity_in_inc);
+	err = link.MoveTo(pos, m_velocity_in_inc, moveToGains[0]*m_velocity_in_inc, moveToGains[1]*m_velocity_in_inc, moveToGains[2]*m_velocity_in_inc);
 	showerr( err, "Moving linkage" );
 	err = link.WaitMoveDone( 1000 * 1000 );
 	showerr( err, "waiting on linkage done" );
@@ -95,7 +97,7 @@ void JunDriveSystem::RotateAllTo(double angle)
 	pos[4] = angle * m_angle_to_inc;
 	pos[5] = angle * m_angle_to_inc;
 	
-	err = link.MoveTo(pos, m_velocity_in_inc, 10.0*m_velocity_in_inc, 10.0*m_velocity_in_inc, 100.0*m_velocity_in_inc);
+	err = link.MoveTo(pos, m_velocity_in_inc, moveToGains[0]*m_velocity_in_inc, moveToGains[1]*m_velocity_in_inc, moveToGains[2]*m_velocity_in_inc);
 	showerr( err, "Moving linkage" );
 	err = link.WaitMoveDone( 1000 * 1000 );
 	showerr( err, "waiting on linkage done" );

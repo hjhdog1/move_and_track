@@ -71,6 +71,7 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 			MoveDriveSystemTo(target_angle);
 			DitherDriveSystem(target_angle, dither_magintude, num_dither_steps);
 			// write
+			::Sleep(2000);	// waiting for drive system to converge
 			writer_CCW.StartWriting();
 			::Sleep(sleeping_time);
 			writer_CCW.StopWriting();
@@ -80,6 +81,7 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 			MoveDriveSystemTo(target_angle);
 			DitherDriveSystem(target_angle, -dither_magintude, num_dither_steps);
 			// write
+			::Sleep(2000);	// waiting for drive system to converge
 			writer_CW.StartWriting();
 			::Sleep(sleeping_time);
 			writer_CW.StopWriting();
@@ -97,7 +99,7 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 
 void JunMoveAndWrite::RunTrajectory(::std::string path2trajectory, ::std::string outPutFileNameTail, double dither_magintude, int num_dither_steps)
 {
-	m_drive.SetVelocity(120.0);
+	m_drive.SetVelocity(180.0);
 
 	::std::vector< ::std::string> trajectoryStr = ReadLinesFromFile(path2trajectory);
 
@@ -108,12 +110,15 @@ void JunMoveAndWrite::RunTrajectory(::std::string path2trajectory, ::std::string
 
 	::std::vector<::std::string>::iterator it = trajectoryStr.begin();
 	::std::vector<double> conf;
+	int sleepingTime = 2000;
 	for(it; it < trajectoryStr.end(); ++it)
 	{
 		conf = DoubleVectorFromString(*it);
 		DitherDriveSystem(conf, dither_magintude, num_dither_steps);
+		// write
+		::Sleep(2000);	// waiting for drive system to converge
 		writer.StartWriting();
-		::Sleep(2000);
+		::Sleep(sleepingTime);
 		writer.StopWriting();
 	}
 	writer.CloseStreams();
@@ -129,12 +134,12 @@ void JunMoveAndWrite::RunBaseFrameMotion()
 	m_drive.SetVelocity(30.0);
 
 	// initialize streams
-	writer.OpenStreams("");
+	writer.OpenStreams("_base");
 	writer.StartWriting();
 
 	// motion
-	RotateDriveSystemAllTo(120.0);
-	RotateDriveSystemAllTo(-120.0);
+	RotateDriveSystemAllTo(160.0);
+	RotateDriveSystemAllTo(-160.0);
 	m_drive.Home();
 
 	// close streams
