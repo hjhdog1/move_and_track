@@ -38,9 +38,9 @@ void ThreetubeTest();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	takePictures();
+	//takePictures();
 
-	//clearTubePairExp();
+	clearTubePairExp();
 
 	//ThreetubeTest();
 	//ThreetubeRobotTrajectoryExp();
@@ -63,12 +63,12 @@ void clearTubePairExp()
 
 	double vel = 10.0;
 	int n_repeats = 2;
-	move_and_write.RunUnditeredMotion(vel, n_repeats);
+	//move_and_write.RunUnditeredMotion(vel, n_repeats);
 
 	vel = 120.0;
-	int n_stops = 36;
-	double dither_magnitude = 60.0;
-	int n_dither_steps = 30;
+	int n_stops = 4;
+	double dither_magnitude = 30.0;
+	int n_dither_steps = 15;
 	n_repeats = 1;
 	move_and_write.RunDiteredMotion(vel, n_stops, dither_magnitude, n_dither_steps, n_repeats);
 

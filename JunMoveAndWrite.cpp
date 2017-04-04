@@ -49,27 +49,26 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 
 
 	int recording_time = 2000;
+	double prior_rotation = 180.0;
+	double step = 360.0/(double)num_measurements;
 	for(int i = 0; i < num_repeats; i++)
 	{
 		// initialize streams
 		writer_CCW.OpenStreams("_dithered_CCW", i);
 		writer_CW.OpenStreams("_dithered_CW", i);
 		
-		
-		double step = 360.0/(double)num_measurements;
+		// CCW
 		for(int j = 0; j < num_measurements; j++)
 		{
 			double target_angle = step*(double)((j+1)/2);
 			if(j%2 == 1)
 				target_angle -= 180.0;
-				//target_angle = -target_angle;
-
-
+				
 
 			MoveDriveSystemTo(target_angle);
 
-			// CCW
-			MoveDriveSystemTo(target_angle - 180.0);
+			// move
+			MoveDriveSystemTo(target_angle - prior_rotation);
 			MoveDriveSystemTo(target_angle);
 			DitherDriveSystem(target_angle, dither_magintude, num_dither_steps);
 			// write
@@ -77,9 +76,23 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 			writer_CCW.StartWriting();
 			::Sleep(recording_time);
 			writer_CCW.StopWriting();
+		}
+		
+		// back to home
+		m_drive.Home();
+
+		// CW
+		for(int j = 0; j < num_measurements; j++)
+		{
+			double target_angle = step*(double)((j+1)/2);
+			if(j%2 == 1)
+				target_angle -= 180.0;
 			
-			// CW
-			MoveDriveSystemTo(target_angle + 180.0);
+
+			MoveDriveSystemTo(target_angle);
+
+			// move
+			MoveDriveSystemTo(target_angle + prior_rotation);
 			MoveDriveSystemTo(target_angle);
 			DitherDriveSystem(target_angle, -dither_magintude, num_dither_steps);
 			// write
