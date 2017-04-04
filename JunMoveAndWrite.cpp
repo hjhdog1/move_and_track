@@ -49,7 +49,7 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 
 
 	int recording_time = 2000;
-	double prior_rotation = 180.0;
+	double prior_rotation = 90.0;
 	double step = 360.0/(double)num_measurements;
 	for(int i = 0; i < num_repeats; i++)
 	{
