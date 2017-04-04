@@ -12,6 +12,7 @@
 
 
 #include <windows.h>
+#include <iostream>
 
 
 #include "handleErrors.h"
@@ -28,16 +29,30 @@ using namespace std;
 CML_NAMESPACE_USE();
 
 void clearTubePairExp();
+void takePictures();
 void ThreetubeRobotTrajectoryExp();
-void ThreetubeRobotDitheringTest();
+void ThreetubeTest();
 
 
 
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	ThreetubeRobotDitheringTest();
+	takePictures();
+
+	//clearTubePairExp();
+
+	//ThreetubeTest();
 	//ThreetubeRobotTrajectoryExp();
+
+	//JunDriveSystem drive;
+	//drive.RigidBodyTranslation(-20);
+	//drive.Home();
+
+	//drive.RotateAllTo(90.0);
+
+	//::Sleep(30000);
+	//drive.Home();
 
 	::Sleep(3000);
 }
@@ -46,66 +61,78 @@ void clearTubePairExp()
 {
 	JunMoveAndWrite move_and_write;
 
-	double vel = 120.0;
+	double vel = 10.0;
 	int n_repeats = 2;
 	move_and_write.RunUnditeredMotion(vel, n_repeats);
 
 	vel = 120.0;
-	int n_stops = 4;
-	double dither_magnitude = 70.0;
-	int n_dither_steps = 20;
+	int n_stops = 36;
+	double dither_magnitude = 60.0;
+	int n_dither_steps = 30;
 	n_repeats = 1;
 	move_and_write.RunDiteredMotion(vel, n_stops, dither_magnitude, n_dither_steps, n_repeats);
 
 }
 
-void ThreetubeRobotTrajectoryExp()
+void takePictures()
 {
-	JunMoveAndWrite move_and_write;
+	JunDriveSystem drive;
 
-	double ditherMagnitude = 20.0;
-	int ditherSteps = 10;
+	double vel = 120.0;
+	double dither_magnitude = 40.0;
+	int n_dither_steps = 20;
 
-	move_and_write.RunTrajectory("./trajectories/joints_training_EM.txt", "_undithered_training", 0.0, 0);
-	move_and_write.RunTrajectory("./trajectories/joints_training_EM.txt", "_dithered_training", ditherMagnitude, ditherSteps);
-	move_and_write.RunTrajectory("./trajectories/joints_validation_EM.txt", "_undithered_validation", 0.0, 0);
-	move_and_write.RunTrajectory("./trajectories/joints_validation_EM.txt", "_dithered_validation", ditherMagnitude, ditherSteps);
+	drive.SetVelocity(vel);
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
-	::Sleep(300000);
+	
+	::std::cout << "Press enter to go 180 deg" << ::std::endl;
+	getchar();
+	drive.Dither(180.0, dither_magnitude, n_dither_steps);
 
-	ditherMagnitude = 30.0;
-	ditherSteps = 20;
+	::std::cout << "Press enter to go 0 deg" << ::std::endl;
+	getchar();
+	drive.Dither(0.0, dither_magnitude, n_dither_steps);
 
-	move_and_write.RunTrajectory("./trajectories/joints_training_EM.txt", "_dithered_training_2", ditherMagnitude, ditherSteps);
-	move_and_write.RunTrajectory("./trajectories/joints_validation_EM.txt", "_dithered_validation_2", ditherMagnitude, ditherSteps);
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
-	::Sleep(300000);
-
-	ditherMagnitude = 50.0;
-	ditherSteps = 30;
-
-	move_and_write.RunTrajectory("./trajectories/joints_training_EM.txt", "_dithered_training_3", ditherMagnitude, ditherSteps);
-	move_and_write.RunTrajectory("./trajectories/joints_validation_EM.txt", "_dithered_validation_3", ditherMagnitude, ditherSteps);
-
-
-
-	//move_and_write.RunTrajectory("./trajectories/joints_training_EM.txt", "_dithered_training", ditherMagnitude, ditherSteps);
-	//move_and_write.RunTrajectory("./trajectories/joints_training_EM.txt", "_undithered_training", 0.0, 0);
-	//move_and_write.RunTrajectory("./trajectories/joints_training_EM.txt", "_dithered_training2", ditherMagnitude, ditherSteps);
+	drive.Home();
 }
 
-void ThreetubeRobotDitheringTest()
+void ThreetubeRobotTrajectoryExp()
 {
+
 	JunMoveAndWrite move_and_write;
+	
+	double ditherMagnitude = 40.0;
+	int ditherSteps = 20;
 
-	double ditherMagnitude = 20.0;
-	int ditherSteps = 10;
+	// training sets
+	//move_and_write.RunTrajectory("./trajectories/joints512.txt", "_dithered_training", ditherMagnitude, ditherSteps);
+	//move_and_write.RunTrajectoryForAllApproachingDirections("./trajectories/joints512.txt", "_undithered_training_alldirections");
 
-	move_and_write.RunTrajectory("./trajectories/joints_test_undithered.txt", "_test_undithered", 0.0, 0);
-/*
-	move_and_write.RunTrajectory("./trajectories/joints_test_dithered.txt", "_test_dithered20", ditherMagnitude, ditherSteps);
-	move_and_write.RunTrajectory("./trajectories/joints_test_dithered.txt", "_test_dithered40", 2*ditherMagnitude, 2*ditherSteps);
-	move_and_write.RunTrajectory("./trajectories/joints_test_dithered.txt", "_test_dithered60", 3*ditherMagnitude, 3*ditherSteps);*/
+	// validation sets
+	//move_and_write.RunTrajectory("./trajectories/joints_rand500.txt", "_dithered_validation", ditherMagnitude, ditherSteps);
+	move_and_write.RunTrajectory("./trajectories/joints_rand500.txt", "_undithered_validation", 0.0, 0);
+	move_and_write.RunTrajectoryForRandomApproachingDirections("./trajectories/joints_rand500.txt", "_undithered_validation_rand");
+	
+}
+
+void ThreetubeTest()
+{
+
+	JunMoveAndWrite move_and_write;
+	
+	double ditherMagnitude = 40.0;
+	int ditherSteps = 20;
+
+	// training sets
+	move_and_write.RunTrajectory("./trajectories/joint_temp.txt", "_temp0", 0.0, 0);
+	//move_and_write.RunTrajectory("./trajectories/joints_test_dithered.txt", "_temp1", ditherMagnitude, ditherSteps);
+	//move_and_write.RunTrajectoryForAllApproachingDirections("./trajectories/joints_test_dithered.txt", "_temp2");
+	//move_and_write.RunTrajectoryForRandomApproachingDirections("./trajectories/joints_test_dithered.txt", "_temp3");
+	
+
+	//move_and_write.RunTrajectoryForAllApproachingDirections("./trajectories/joints_test_dithered.txt", "_test_undithered");
+	//move_and_write.RunTrajectory("./trajectories/joints_test_undithered.txt", "_test_undithered", 0.0, 0);
+	//move_and_write.RunTrajectory("./trajectories/joints_test_dithered.txt", "_test_dithered20", ditherMagnitude, ditherSteps);
+	//move_and_write.RunTrajectory("./trajectories/joints_test_dithered.txt", "_test_dithered40", 2*ditherMagnitude, 2*ditherSteps);
+	//move_and_write.RunTrajectory("./trajectories/joints_test_dithered.txt", "_test_dithered60", 3*ditherMagnitude, 3*ditherSteps);
 }

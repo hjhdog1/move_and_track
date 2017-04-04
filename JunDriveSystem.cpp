@@ -28,12 +28,18 @@ CML_NAMESPACE_USE();
 
 const double JUN_PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342;
 
-const double moveToGains[3] = {100.0, 100.0, 1000.0};
+const double moveToGains[3] = {10.0, 10.0, 100.0};
 
 JunDriveSystem::JunDriveSystem()
 {
 	InitializeAmp();
 	InitializeVariables();
+}
+
+JunDriveSystem::~JunDriveSystem()
+{
+	jointHistory.flush();
+	jointHistory.close();
 }
 
 void JunDriveSystem::SetVelocity(double velocity)
@@ -61,12 +67,17 @@ void JunDriveSystem::MoveTo(double angle)
 	pos[0] = 0.0;	pos[1] = 0.0;	pos[2] = 0.0;	pos[3] = 0.0;	pos[4] = 0.0;	pos[5] = 0.0;	pos[6] = 0.0;
 
 	pos[4] = angle * m_angle_to_inc;
-	
+
+	// record MoveTo history
+	recordJoint(pos, false);
+
 	err = link.MoveTo(pos, m_velocity_in_inc, moveToGains[0]*m_velocity_in_inc, moveToGains[1]*m_velocity_in_inc, moveToGains[2]*m_velocity_in_inc);
 	showerr( err, "Moving linkage" );
-	err = link.WaitMoveDone( 1000 * 1000 );
+	err = link.WaitMoveDone();
 	showerr( err, "waiting on linkage done" );
 
+	// record MoveTo history
+	recordJoint(pos, true);
 }
 
 void JunDriveSystem::MoveTo(::std::vector<double> conf)
@@ -80,10 +91,16 @@ void JunDriveSystem::MoveTo(::std::vector<double> conf)
 	pos[5] = conf[1] * m_angle_to_inc;
 	pos[1] = (conf[2] - m_innerTubeFullExtensionLength) * m_mm_to_inc;		// convert mm to motor count
 	
+	// record MoveTo history
+	recordJoint(pos, false);
+
 	err = link.MoveTo(pos, m_velocity_in_inc, moveToGains[0]*m_velocity_in_inc, moveToGains[1]*m_velocity_in_inc, moveToGains[2]*m_velocity_in_inc);
 	showerr( err, "Moving linkage" );
-	err = link.WaitMoveDone( 1000 * 1000 );
+	err = link.WaitMoveDone();
 	showerr( err, "waiting on linkage done" );
+
+	// record MoveTo history
+	recordJoint(pos, true);
 }
 
 void JunDriveSystem::RotateAllTo(double angle)
@@ -97,11 +114,16 @@ void JunDriveSystem::RotateAllTo(double angle)
 	pos[4] = angle * m_angle_to_inc;
 	pos[5] = angle * m_angle_to_inc;
 	
+	// record MoveTo history
+	recordJoint(pos, false);
+
 	err = link.MoveTo(pos, m_velocity_in_inc, moveToGains[0]*m_velocity_in_inc, moveToGains[1]*m_velocity_in_inc, moveToGains[2]*m_velocity_in_inc);
 	showerr( err, "Moving linkage" );
-	err = link.WaitMoveDone( 1000 * 1000 );
+	err = link.WaitMoveDone();
 	showerr( err, "waiting on linkage done" );
 
+	// record RotateAllTo history
+	recordJoint(pos, true);
 }
 
 void JunDriveSystem::Home()
@@ -119,6 +141,7 @@ void JunDriveSystem::Dither(double target_angle, double dither_magnitude, int nu
 	for(int i = 0; i <= num_dither_steps; i++)
 	{
 		double cur_angle = target_angle + ::std::pow(-1.0, (double)i) * dither_magnitude * (double)(num_dither_steps-i)/(double)num_dither_steps;
+		//double cur_angle = target_angle + ::std::pow(-1.0, (double)i) * dither_magnitude * (::std::exp(-(double)i/(double)num_dither_steps*3.0) - ::std::exp(-3.0));
 		MoveTo(cur_angle);
 	}
 	MoveTo(target_angle);
@@ -163,6 +186,28 @@ double JunDriveSystem::GetCurrentAngle(int amp_id)
 	conf[2]  = conf[2]/m_mm_to_inc + m_innerTubeFullExtensionLength;
 
 	return conf;
+}
+
+void JunDriveSystem::RigidBodyTranslation(double trans)
+{
+	const Error *err = NULL;
+
+	Point<AMPCT> pos;		
+	pos[0] = 0.0;	pos[1] = 0.0;	pos[2] = 0.0;	pos[3] = 0.0;	pos[4] = 0.0;	pos[5] = 0.0;	pos[6] = 0.0;
+
+	pos[0] = trans * m_mm_to_inc;
+	pos[1] = trans * m_mm_to_inc;
+	
+	// record MoveTo history
+	recordJoint(pos, false);
+
+	err = link.MoveTo(pos, m_velocity_in_inc, moveToGains[0]*m_velocity_in_inc, moveToGains[1]*m_velocity_in_inc, moveToGains[2]*m_velocity_in_inc);
+	showerr( err, "Moving linkage" );
+	err = link.WaitMoveDone();
+	showerr( err, "waiting on linkage done" );
+
+	// record RotateAllTo history
+	recordJoint(pos, true);
 }
 
 void JunDriveSystem::InitializeAmp()
@@ -232,4 +277,21 @@ void JunDriveSystem::InitializeVariables()
 	m_mm_to_inc = 1.0 / 3.175;
 	SetAngleUnit(DEGREE);
 	SetVelocity(60.0);			// set velocity to be 60deg/sec
+
+	jointHistory.open("JointsHistory.txt");
+}
+
+void JunDriveSystem::recordJoint(const Point<7>& pos, bool isAfterMove)
+{
+	if (isAfterMove)
+		jointHistory << "After move:\t";
+	else
+		jointHistory << "Before move:\t";
+
+	jointHistory << pos[3]/m_angle_to_inc << "\t";
+	jointHistory << pos[4]/m_angle_to_inc << "\t";
+	jointHistory << pos[5]/m_angle_to_inc << "\t";
+	jointHistory << pos[1]/m_mm_to_inc + m_innerTubeFullExtensionLength << ::std::endl;
+
+	jointHistory.flush();
 }

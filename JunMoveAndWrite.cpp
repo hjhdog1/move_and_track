@@ -48,7 +48,7 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 	m_drive.SetVelocity(vel);
 
 
-	int sleeping_time = 2000;
+	int recording_time = 2000;
 	for(int i = 0; i < num_repeats; i++)
 	{
 		// initialize streams
@@ -61,7 +61,9 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 		{
 			double target_angle = step*(double)((j+1)/2);
 			if(j%2 == 1)
-				target_angle = -target_angle;
+				target_angle -= 180.0;
+				//target_angle = -target_angle;
+
 
 
 			MoveDriveSystemTo(target_angle);
@@ -73,7 +75,7 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 			// write
 			::Sleep(2000);	// waiting for drive system to converge
 			writer_CCW.StartWriting();
-			::Sleep(sleeping_time);
+			::Sleep(recording_time);
 			writer_CCW.StopWriting();
 			
 			// CW
@@ -83,7 +85,7 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 			// write
 			::Sleep(2000);	// waiting for drive system to converge
 			writer_CW.StartWriting();
-			::Sleep(sleeping_time);
+			::Sleep(recording_time);
 			writer_CW.StopWriting();
 		}
 		
@@ -111,6 +113,11 @@ void JunMoveAndWrite::RunTrajectory(::std::string path2trajectory, ::std::string
 	::std::vector<::std::string>::iterator it = trajectoryStr.begin();
 	::std::vector<double> conf;
 	int sleepingTime = 2000;
+
+	int count = 0;
+	int nConf = trajectoryStr.size();
+	tic();
+
 	for(it; it < trajectoryStr.end(); ++it)
 	{
 		conf = DoubleVectorFromString(*it);
@@ -120,6 +127,9 @@ void JunMoveAndWrite::RunTrajectory(::std::string path2trajectory, ::std::string
 		writer.StartWriting();
 		::Sleep(sleepingTime);
 		writer.StopWriting();
+
+		double timeLeft = (double)(nConf-count)/(double)(++count)*toc()/60.0;	// in minutes
+		::std::cout << "[" << count << " / " << nConf << "], \t time left: " << timeLeft << " mins" << ::std::endl;
 	}
 	writer.CloseStreams();
 
@@ -127,6 +137,112 @@ void JunMoveAndWrite::RunTrajectory(::std::string path2trajectory, ::std::string
 	MoveDriveSystemTo(0.0);
 }
 
+void JunMoveAndWrite::RunTrajectoryForAllApproachingDirections(::std::string path2trajectory, ::std::string outPutFileNameTail)
+{
+	m_drive.SetVelocity(180.0);
+
+	::std::vector< ::std::string> trajectoryStr = ReadLinesFromFile(path2trajectory);
+
+	
+	JunStreamWriter writer(&m_drive, &m_sensor);
+	writer.ActivateFullConfigurationRecording();
+	writer.OpenStreams(outPutFileNameTail);
+
+	// constants for different approaching directions
+	double tempAngle_tube2[4] = {-180.0, -180.0, 180.0, 180.0};
+	double tempAngle_tube3[4] = {-360.0, 180.0, -180.0, 360.0};
+
+	::std::vector<::std::string>::iterator it = trajectoryStr.begin();
+	::std::vector<double> conf, tempConf;
+	int sleepingTime = 2000;
+
+	int count = 0;
+	int nConf = trajectoryStr.size();
+	tic();
+
+	for(it; it < trajectoryStr.end(); ++it)
+	{
+		conf = DoubleVectorFromString(*it);
+		DitherDriveSystem(conf, 0.0, 0);
+		
+		// (tube 2, tube 3) = (CCW, CCW), (CCW, CW), (CW, CCW), (CW, CW)
+		for(int i = 0 ; i < 4 ; i++)
+		{
+			tempConf = conf;
+			tempConf[0] += tempAngle_tube2[i];
+			tempConf[1] += tempAngle_tube3[i];
+			DitherDriveSystem(tempConf, 0.0, 0);
+			DitherDriveSystem(conf, 0.0, 0);
+
+			// write
+			::Sleep(2000);	// waiting for drive system to converge
+			writer.StartWriting();
+			::Sleep(sleepingTime);
+			writer.StopWriting();
+		}
+
+		double timeLeft = (double)(nConf-count)/(double)(++count)*toc()/60.0;	// in minutes
+		::std::cout << "[" << count << " / " << nConf << "], \t time left: " << timeLeft << " mins" << ::std::endl;
+	}
+	writer.CloseStreams();
+
+	// back to home
+	MoveDriveSystemTo(0.0);
+}
+
+void JunMoveAndWrite::RunTrajectoryForRandomApproachingDirections(::std::string path2trajectory, ::std::string outPutFileNameTail)
+{
+	m_drive.SetVelocity(180.0);
+
+	::std::vector< ::std::string> trajectoryStr = ReadLinesFromFile(path2trajectory);
+
+	
+	JunStreamWriter writer(&m_drive, &m_sensor);
+	writer.ActivateFullConfigurationRecording();
+	writer.OpenStreams(outPutFileNameTail);
+
+
+	::std::vector<::std::string>::iterator it = trajectoryStr.begin();
+	::std::vector<double> conf, tempConf;
+	int sleepingTime = 2000;
+
+	int count = 0;
+	int nConf = trajectoryStr.size();
+	tic();
+
+	for(it; it < trajectoryStr.end(); ++it)
+	{
+		conf = DoubleVectorFromString(*it);
+		DitherDriveSystem(conf, 0.0, 0);
+		
+		::std::vector<double> randValues = randVector(3);
+		double rand_a12 = 180.0 * (randValues[0] - 0.5);	// between -50 to 50
+		double rand_a13 = 180.0 * (randValues[1] - 0.5);	// between -50 to 50
+		double rand_t13 = 40.0 * (randValues[2] - 0.5);	// between -15 to 15
+
+		tempConf = conf;
+		tempConf[0] += rand_a12;
+		tempConf[1] += rand_a13;
+		tempConf[2] += rand_t13;
+		tempConf[2] = max(min(tempConf[2], 85.0), 5.0);
+
+		DitherDriveSystem(tempConf, 0.0, 0);
+		DitherDriveSystem(conf, 0.0, 0);
+
+		// write
+		::Sleep(2000);	// waiting for drive system to converge
+		writer.StartWriting();
+		::Sleep(sleepingTime);
+		writer.StopWriting();
+
+		double timeLeft = (double)(nConf-count)/(double)(++count)*toc()/60.0;	// in minutes
+		::std::cout << "[" << count << " / " << nConf << "], \t time left: " << timeLeft << " mins" << ::std::endl;
+	}
+	writer.CloseStreams();
+
+	// back to home
+	MoveDriveSystemTo(0.0);
+}
 
 void JunMoveAndWrite::RunBaseFrameMotion()
 {

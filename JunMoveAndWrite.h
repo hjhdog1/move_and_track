@@ -14,6 +14,8 @@ public:
 	void					RunDiteredMotion(double vel, int num_measurements, double dither_magintude, int num_dither_steps, int num_repeats);
 
 	void					RunTrajectory(::std::string path2trajectory, ::std::string outPutFileNameTail, double dither_magintude, int num_dither_steps);	// for 3 tube robot
+	void					RunTrajectoryForAllApproachingDirections(::std::string path2trajectory, ::std::string outPutFileNameTail);	// for 3 tube robot
+	void					RunTrajectoryForRandomApproachingDirections(::std::string path2trajectory, ::std::string outPutFileNameTail);	// for 3 tube robot
 
 private:
 	void					RunBaseFrameMotion();

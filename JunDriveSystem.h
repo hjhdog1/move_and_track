@@ -3,6 +3,7 @@
 
 #include "LinkTrjPVTFile.h"
 #include <vector>
+#include <fstream>
 
 
 
@@ -13,6 +14,7 @@ public:
 
 public:
 	JunDriveSystem();
+	~JunDriveSystem();
 	void					SetVelocity(double velocity);
 	void					SetAngleUnit(ANGLE_UNIT angle_unit);
 	void					MoveTo(double angle);
@@ -24,9 +26,13 @@ public:
 	double					GetCurrentAngle(int amp_id = 4);
 	::std::vector<double>	JunDriveSystem::GetCurrentConfiguration();
 
+	// test function
+	void					RigidBodyTranslation(double trans);
+
 private:
 	void					InitializeAmp();
 	void					InitializeVariables();
+	void					recordJoint(const Point<7>& pos, bool isAfterMove);
 	
 
 private:
@@ -44,6 +50,9 @@ private:
 	static const int		AMPCT = 7;		// number of amps
 	Linkage					link;
 	Amp						amp[AMPCT];
+
+	// for crash dump
+	::std::ofstream			jointHistory;
 	
 };
 
