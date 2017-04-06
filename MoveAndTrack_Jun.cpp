@@ -13,7 +13,7 @@
 
 #include <windows.h>
 #include <iostream>
-
+#include <string>
 
 #include "handleErrors.h"
 
@@ -30,6 +30,7 @@ CML_NAMESPACE_USE();
 
 void clearTubePairExp();
 void takePictures();
+void ContactExp();
 void ThreetubeRobotTrajectoryExp();
 void ThreetubeTest();
 
@@ -38,23 +39,9 @@ void ThreetubeTest();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	//takePictures();
-
 	clearTubePairExp();
 
-	//ThreetubeTest();
-	//ThreetubeRobotTrajectoryExp();
-
-	//JunDriveSystem drive;
-	//drive.RigidBodyTranslation(-20);
-	//drive.Home();
-
-	//drive.RotateAllTo(90.0);
-
-	//::Sleep(30000);
-	//drive.Home();
-
-	::Sleep(3000);
+	//::Sleep(3000);
 }
 
 void clearTubePairExp()
@@ -94,6 +81,32 @@ void takePictures()
 	drive.Dither(0.0, dither_magnitude, n_dither_steps);
 
 	drive.Home();
+}
+
+void ContactExp()
+{
+	JunDriveSystem drive;
+
+	double vel = 120.0;
+	double dither_magnitude = 40.0;
+	int n_dither_steps = 20;
+
+	drive.SetVelocity(vel);
+
+
+	while(true)
+	{
+		::std::cout << "Enter base angle in degree: ";
+		::std::string angle_str;
+		::std::cin >> angle_str;
+
+		double angle_dbl = atof(angle_str.c_str());
+		::std::cout << angle_dbl << ::std::endl;
+
+		::std::cout << "Your command is " << angle_dbl << "deg." << ::std::endl << ::std::endl;
+		
+		drive.Dither(angle_dbl, dither_magnitude, n_dither_steps);
+	}
 }
 
 void ThreetubeRobotTrajectoryExp()
