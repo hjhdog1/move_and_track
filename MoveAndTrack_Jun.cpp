@@ -39,7 +39,7 @@ void ThreetubeTest();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	clearTubePairExp();
+	ContactExp();
 
 	//::Sleep(3000);
 }
@@ -93,19 +93,62 @@ void ContactExp()
 
 	drive.SetVelocity(vel);
 
+	double base1, base2;
+	base1 = base2 = 0.0;
 
 	while(true)
 	{
-		::std::cout << "Enter base angle in degree: ";
-		::std::string angle_str;
-		::std::cin >> angle_str;
+		::std::cout << "Select motion - (h) home, (d) dither, (r) rigid-body rotation: ";
+		::std::string command;
+		::std::cin >> command;
+		if (command == "h" || command == "H")
+		{
+			::std::cout << "Your commanded home! ";
+			base1 = base2 = 0.0;
+			drive.Home();
+		}
+		else if (command == "d" || command == "D")
+		{
+			::std::cout << "Enter target base angle in degree: ";
+			::std::string angle_str;
+			::std::cin >> angle_str;
+			
+			double angle_dbl = atof(angle_str.c_str());
+			::std::cout << "Your commanded dithering at " << angle_dbl << " deg! ";
+			
+			base1 = 0;
+			base2 = angle_dbl;
+			drive.Dither(angle_dbl, dither_magnitude, n_dither_steps);
+		}
+		else if (command == "r" || command == "R")
+		{
+			while(true)
+			{
+				::std::cout << "Enter incremental angle or (q) quit: ";
+				::std::string inc_angle_str;
+				::std::cin >> inc_angle_str;
+				if (inc_angle_str == "q" || inc_angle_str == "Q")
+					break;
+				
+				double inc_angle_dbl = atof(inc_angle_str.c_str());
+				::std::cout << "Your commanded by " << inc_angle_dbl << " deg rigid-body rotation! ";
+				::std::vector<double> conf(3);
+				base1 += inc_angle_dbl;
+				base2 += inc_angle_dbl;
+				conf[0] = base1;
+				conf[1] = base2;
+				conf[2] = 0.0;
+				drive.MoveTo(conf);
+				::std::cout << "Now you are at [" << base1 << " deg, " << base2 << " deg]. " << ::std::endl << ::std::endl;
+			}
+		}
+		else
+		{
+			::std::cout << "##### Invalid command ##### " << ::std::endl;
+			continue;
+		}
+		::std::cout << "Now you are at [" << base1 << " deg, " << base2 << " deg]. " << ::std::endl << ::std::endl;
 
-		double angle_dbl = atof(angle_str.c_str());
-		::std::cout << angle_dbl << ::std::endl;
-
-		::std::cout << "Your command is " << angle_dbl << "deg." << ::std::endl << ::std::endl;
-		
-		drive.Dither(angle_dbl, dither_magnitude, n_dither_steps);
 	}
 }
 
