@@ -60,14 +60,14 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 		// CCW
 		for(int j = 0; j < num_measurements; j++)
 		{
-			double target_angle = step*(double)((j+1)/2);
+			double target_angle = step*(double)(j/2);
 			if(j%2 == 1)
 				target_angle -= 180.0;
 				
 
 			MoveDriveSystemTo(target_angle);
 
-			// move
+			// CCW move
 			MoveDriveSystemTo(target_angle - prior_rotation);
 			MoveDriveSystemTo(target_angle);
 			DitherDriveSystem(target_angle, dither_magintude, num_dither_steps);
@@ -76,6 +76,16 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 			writer_CCW.StartWriting();
 			::Sleep(recording_time);
 			writer_CCW.StopWriting();
+
+			//// CW move
+			//MoveDriveSystemTo(target_angle + prior_rotation);
+			//MoveDriveSystemTo(target_angle);
+			//DitherDriveSystem(target_angle, -dither_magintude, num_dither_steps);
+			//// write
+			//::Sleep(2000);	// waiting for drive system to converge
+			//writer_CW.StartWriting();
+			//::Sleep(recording_time);
+			//writer_CW.StopWriting();
 		}
 		
 		// back to home
@@ -84,14 +94,14 @@ void JunMoveAndWrite::RunDiteredMotion(double vel, int num_measurements, double 
 		// CW
 		for(int j = 0; j < num_measurements; j++)
 		{
-			double target_angle = step*(double)((j+1)/2);
+			double target_angle = step*(double)(j/2);
 			if(j%2 == 1)
 				target_angle -= 180.0;
 			
 
 			MoveDriveSystemTo(target_angle);
 
-			// move
+			// CW move
 			MoveDriveSystemTo(target_angle + prior_rotation);
 			MoveDriveSystemTo(target_angle);
 			DitherDriveSystem(target_angle, -dither_magintude, num_dither_steps);

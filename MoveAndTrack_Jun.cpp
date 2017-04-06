@@ -62,13 +62,13 @@ void clearTubePairExp()
 	JunMoveAndWrite move_and_write;
 
 	double vel = 10.0;
-	int n_repeats = 2;
-	//move_and_write.RunUnditeredMotion(vel, n_repeats);
+	int n_repeats = 1;
+	move_and_write.RunUnditeredMotion(vel, n_repeats);
 
 	vel = 120.0;
-	int n_stops = 4;
-	double dither_magnitude = 30.0;
-	int n_dither_steps = 15;
+	int n_stops = 36;
+	double dither_magnitude = 40.0;
+	int n_dither_steps = 20;
 	n_repeats = 1;
 	move_and_write.RunDiteredMotion(vel, n_stops, dither_magnitude, n_dither_steps, n_repeats);
 
