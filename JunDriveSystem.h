@@ -18,7 +18,7 @@ public:
 	void					SetVelocity(double velocity);
 	void					SetAngleUnit(ANGLE_UNIT angle_unit);
 	void					MoveTo(double angle);
-	void					MoveTo(::std::vector<double> conf);	// move to (rotation1, rotation2, translation3)
+	void					MoveTo(::std::vector<double> conf, double rigidbodyRot = 0.0);	// move to (rotation1, rotation2, translation3)
 	void					RotateAllTo(double angle);	// rotate outer two tubes
 	void					Home();
 	void					Dither(double target_angle, double dither_magnitude, int num_dither_steps);
@@ -28,6 +28,8 @@ public:
 
 	// test function
 	void					RigidBodyTranslation(double trans);
+
+	double					getFullTranslation() const {return m_innerTubeFullExtensionLength;}
 
 private:
 	void					InitializeAmp();

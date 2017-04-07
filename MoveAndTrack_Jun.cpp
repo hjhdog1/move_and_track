@@ -93,8 +93,8 @@ void ContactExp()
 
 	drive.SetVelocity(vel);
 
-	double base1, base2;
-	base1 = base2 = 0.0;
+	double a12, rigidRot;
+	a12 = rigidRot = 0.0;
 
 	while(true)
 	{
@@ -104,7 +104,7 @@ void ContactExp()
 		if (command == "h" || command == "H")
 		{
 			::std::cout << "Your commanded home! ";
-			base1 = base2 = 0.0;
+			a12 = rigidRot = 0.0;
 			drive.Home();
 		}
 		else if (command == "d" || command == "D")
@@ -116,8 +116,8 @@ void ContactExp()
 			double angle_dbl = atof(angle_str.c_str());
 			::std::cout << "Your commanded dithering at " << angle_dbl << " deg! ";
 			
-			base1 = 0;
-			base2 = angle_dbl;
+			rigidRot = 0;
+			a12 = angle_dbl;
 			drive.Dither(angle_dbl, dither_magnitude, n_dither_steps);
 		}
 		else if (command == "r" || command == "R")
@@ -133,13 +133,12 @@ void ContactExp()
 				double inc_angle_dbl = atof(inc_angle_str.c_str());
 				::std::cout << "Your commanded by " << inc_angle_dbl << " deg rigid-body rotation! ";
 				::std::vector<double> conf(3);
-				base1 += inc_angle_dbl;
-				base2 += inc_angle_dbl;
-				conf[0] = base1;
-				conf[1] = base2;
-				conf[2] = 0.0;
-				drive.MoveTo(conf);
-				::std::cout << "Now you are at [" << base1 << " deg, " << base2 << " deg]. " << ::std::endl << ::std::endl;
+				rigidRot += inc_angle_dbl;
+				conf[0] = a12;
+				conf[1] = 0.0;
+				conf[2] = drive.getFullTranslation();
+				drive.MoveTo(conf, rigidRot);
+				::std::cout << "Now you are at [" << a12 << " deg, " << rigidRot << " deg]. " << ::std::endl << ::std::endl;
 			}
 		}
 		else
@@ -147,7 +146,7 @@ void ContactExp()
 			::std::cout << "##### Invalid command ##### " << ::std::endl;
 			continue;
 		}
-		::std::cout << "Now you are at [" << base1 << " deg, " << base2 << " deg]. " << ::std::endl << ::std::endl;
+		::std::cout << "Now you are at [" << a12 << " deg, " << rigidRot << " deg]. " << ::std::endl << ::std::endl;
 
 	}
 }

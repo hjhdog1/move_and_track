@@ -80,15 +80,16 @@ void JunDriveSystem::MoveTo(double angle)
 	recordJoint(pos, true);
 }
 
-void JunDriveSystem::MoveTo(::std::vector<double> conf)
+void JunDriveSystem::MoveTo(::std::vector<double> conf, double rigidbodyRot)
 {
 	const Error *err = NULL;
 
 	Point<AMPCT> pos;		
 	pos[0] = 0.0;	pos[1] = 0.0;	pos[2] = 0.0;	pos[3] = 0.0;	pos[4] = 0.0;	pos[5] = 0.0;	pos[6] = 0.0;
 
-	pos[4] = conf[0] * m_angle_to_inc;
-	pos[5] = conf[1] * m_angle_to_inc;
+	pos[3] = rigidbodyRot * m_angle_to_inc;
+	pos[4] = (conf[0] + rigidbodyRot) * m_angle_to_inc;
+	pos[5] = (conf[1] + rigidbodyRot) * m_angle_to_inc;
 	pos[1] = (conf[2] - m_innerTubeFullExtensionLength) * m_mm_to_inc;		// convert mm to motor count
 	
 	// record MoveTo history
